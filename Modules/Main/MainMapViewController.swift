@@ -102,6 +102,7 @@ final class MainMapViewController: UIViewController {
     private var avatarAnnotation: AvatarAnnotation?
     private var hasInitiallyCentered = false
     private var hasCenteredOnHighAccuracy = false
+    private var hasShownWelcomeBanner = false
     
     // Interactive 500m build range overlay
     private var interactionCircle: MKCircle?
@@ -314,6 +315,9 @@ final class MainMapViewController: UIViewController {
         mapView.showsUserLocation = false // Hide native pulsing location circle, displaying only the custom avatar
         mapView.showsCompass = false
         
+        // Use abstract muted standard style by default
+        mapView.mapType = .mutedStandard
+        
         // Keep only majestic museums, landmarks, and national parks, completely hiding commercial clutter
         let strictFilter = MKPointOfInterestFilter(including: [.museum, .nationalPark])
         
@@ -329,10 +333,12 @@ final class MainMapViewController: UIViewController {
             mapView.setCameraZoomRange(zoomRange, animated: false)
         }
         
-        // Apply dark map style and enforce strict POI configuration for iOS 16+ which overrides mapView.pointOfInterestFilter
+        // Enforce muted dark styling and remove buildings footprints for tactical clean layout on iOS 16+
         if #available(iOS 16.0, *) {
             let config = MKStandardMapConfiguration(emphasisStyle: .muted)
             config.pointOfInterestFilter = strictFilter
+            config.showsBuildings = false // Abstract flat dark maps!
+            config.showsTraffic = false
             mapView.preferredConfiguration = config
             mapView.overrideUserInterfaceStyle = .dark
         } else {
@@ -748,6 +754,17 @@ final class MainMapViewController: UIViewController {
         
         placeAvatarAtLocation(coordinate)
         
+        // Perform reverse geocoding on the first successful location coordinates to resolve the city and welcome the user!
+        if !hasShownWelcomeBanner {
+            hasShownWelcomeBanner = true
+            let geocoder = CLGeocoder()
+            geocoder.reverseGeocodeLocation(location) { [weak self] placemarks, error in
+                guard let self = self else { return }
+                let cityName = placemarks?.first?.locality ?? placemarks?.first?.subAdministrativeArea ?? "GeoLive"
+                self.showWelcomeBanner(for: cityName)
+            }
+        }
+        
         // Dynamic re-centering on high-accuracy GPS location (accuracy <= 30 meters)
         if location.horizontalAccuracy > 0 && location.horizontalAccuracy <= 30 && !hasCenteredOnHighAccuracy {
             let region = MKCoordinateRegion(center: coordinate, latitudinalMeters: 500, longitudinalMeters: 500)
@@ -890,5 +907,84 @@ extension MainMapViewController: MKMapViewDelegate {
             }
         }
         return MKOverlayRenderer(overlay: overlay)
+    }
+    
+    // MARK: - Animated Welcome HUD Banner
+    private func showWelcomeBanner(for cityName: String) {
+        // Construct glassmorphic dark-blur container
+        let welcomeView = UIView()
+        welcomeView.backgroundColor = UIColor(white: 0.08, alpha: 0.88)
+        welcomeView.layer.cornerRadius = 24
+        welcomeView.layer.borderWidth = 1.2
+        welcomeView.layer.borderColor = UIColor.white.withAlphaComponent(0.20).cgColor
+        welcomeView.clipsToBounds = true
+        welcomeView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let blurEffect = UIBlurEffect(style: .dark)
+        let blurView = UIVisualEffectView(effect: blurEffect)
+        blurView.translatesAutoresizingMaskIntoConstraints = false
+        welcomeView.addSubview(blurView)
+        welcomeView.sendSubviewToBack(blurView)
+        
+        // Add Sub-title (WELCOME TO)
+        let subLabel = UILabel()
+        subLabel.text = "WELCOME TO"
+        subLabel.textColor = UIColor.white.withAlphaComponent(0.50)
+        subLabel.font = UIFont.systemFont(ofSize: 10, weight: .black)
+        subLabel.textAlignment = .center
+        subLabel.translatesAutoresizingMaskIntoConstraints = false
+        welcomeView.addSubview(subLabel)
+        
+        // Add Main Title (City Name)
+        let titleLabel = UILabel()
+        titleLabel.text = "\(cityName) 📍"
+        titleLabel.textColor = .white
+        titleLabel.font = UIFont.systemFont(ofSize: 22, weight: .bold)
+        titleLabel.textAlignment = .center
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        welcomeView.addSubview(titleLabel)
+        
+        view.addSubview(welcomeView)
+        
+        // Layout constraints centered on screen
+        NSLayoutConstraint.activate([
+            blurView.topAnchor.constraint(equalTo: welcomeView.topAnchor),
+            blurView.leadingAnchor.constraint(equalTo: welcomeView.leadingAnchor),
+            blurView.trailingAnchor.constraint(equalTo: welcomeView.trailingAnchor),
+            blurView.bottomAnchor.constraint(equalTo: welcomeView.bottomAnchor),
+            
+            welcomeView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            welcomeView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -60),
+            welcomeView.widthAnchor.constraint(equalToConstant: 280),
+            welcomeView.heightAnchor.constraint(equalToConstant: 80),
+            
+            subLabel.topAnchor.constraint(equalTo: welcomeView.topAnchor, constant: 14),
+            subLabel.centerXAnchor.constraint(equalTo: welcomeView.centerXAnchor),
+            
+            titleLabel.topAnchor.constraint(equalTo: subLabel.bottomAnchor, constant: 4),
+            titleLabel.leadingAnchor.constraint(equalTo: welcomeView.leadingAnchor, constant: 16),
+            titleLabel.trailingAnchor.constraint(equalTo: welcomeView.trailingAnchor, constant: -16)
+        ])
+        
+        // Haptic welcome feedback
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.success)
+        
+        // Scale and fade-in animation
+        welcomeView.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+        welcomeView.alpha = 0.0
+        
+        UIView.animate(withDuration: 0.65, delay: 0.15, usingSpringWithDamping: 0.72, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
+            welcomeView.transform = .identity
+            welcomeView.alpha = 1.0
+        }) { _ in
+            // Auto dismiss after 3.5 seconds
+            UIView.animate(withDuration: 0.50, delay: 3.50, options: .curveEaseIn, animations: {
+                welcomeView.transform = CGAffineTransform(scaleX: 0.85, y: 0.85)
+                welcomeView.alpha = 0.0
+            }) { _ in
+                welcomeView.removeFromSuperview()
+            }
+        }
     }
 }
