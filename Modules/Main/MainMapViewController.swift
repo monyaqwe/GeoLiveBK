@@ -103,11 +103,14 @@ final class MainMapViewController: UIViewController {
     private var hasInitiallyCentered = false
     private var hasCenteredOnHighAccuracy = false
     
-    // Floating nickname bar
-    private let topBar: UIView = {
+    // Interactive 75m build range overlay
+    private var interactionCircle: MKCircle?
+    
+    // Floating bottom menu and tab bar
+    private let bottomBar: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(white: 0.10, alpha: 0.85)
-        view.layer.cornerRadius = 24
+        view.layer.cornerRadius = 28
         view.layer.borderWidth = 1.0
         view.layer.borderColor = UIColor(white: 0.25, alpha: 0.60).cgColor
         view.clipsToBounds = true
@@ -130,9 +133,9 @@ final class MainMapViewController: UIViewController {
     
     private let nicknameLabel: UILabel = {
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 16, weight: .bold)
+        label.font = UIFont.systemFont(ofSize: 15, weight: .bold)
         label.textColor = .white
-        label.textAlignment = .center
+        label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -153,6 +156,51 @@ final class MainMapViewController: UIViewController {
         iv.backgroundColor = UIColor(white: 0.18, alpha: 1.0)
         iv.translatesAutoresizingMaskIntoConstraints = false
         return iv
+    }()
+    
+    // Quests Tab Button using sleek SF Symbols
+    private let questsButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        let config = UIImage.SymbolConfiguration(pointSize: 14, weight: .bold)
+        let icon = UIImage(systemName: "sparkles", withConfiguration: config)
+        button.setImage(icon, for: .normal)
+        button.tintColor = .white
+        button.backgroundColor = UIColor.white.withAlphaComponent(0.12)
+        button.layer.cornerRadius = 18
+        button.layer.borderWidth = 1.0
+        button.layer.borderColor = UIColor.white.withAlphaComponent(0.20).cgColor
+        return button
+    }()
+    
+    // Build Tab Button using sleek SF Symbols
+    private let buildButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        let config = UIImage.SymbolConfiguration(pointSize: 14, weight: .bold)
+        let icon = UIImage(systemName: "hammer.fill", withConfiguration: config)
+        button.setImage(icon, for: .normal)
+        button.tintColor = .white
+        button.backgroundColor = UIColor.white.withAlphaComponent(0.12)
+        button.layer.cornerRadius = 18
+        button.layer.borderWidth = 1.0
+        button.layer.borderColor = UIColor.white.withAlphaComponent(0.20).cgColor
+        return button
+    }()
+    
+    // Profile Tab Button using sleek SF Symbols
+    private let profileButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        let config = UIImage.SymbolConfiguration(pointSize: 14, weight: .bold)
+        let icon = UIImage(systemName: "person.fill", withConfiguration: config)
+        button.setImage(icon, for: .normal)
+        button.tintColor = .white
+        button.backgroundColor = UIColor.white.withAlphaComponent(0.12)
+        button.layer.cornerRadius = 18
+        button.layer.borderWidth = 1.0
+        button.layer.borderColor = UIColor.white.withAlphaComponent(0.20).cgColor
+        return button
     }()
     
     // Center-on-me button
@@ -246,49 +294,66 @@ final class MainMapViewController: UIViewController {
     private func setupUI() {
         view.backgroundColor = UIColor(white: 0.06, alpha: 1.0)
         
-        // Top bar
-        view.addSubview(topBar)
-        topBar.addSubview(avatarThumb)
-        topBar.addSubview(nicknameLabel)
-        topBar.addSubview(statusDot)
+        // Bottom bar
+        view.addSubview(bottomBar)
+        bottomBar.addSubview(avatarThumb)
+        bottomBar.addSubview(statusDot)
+        bottomBar.addSubview(nicknameLabel)
         
         nicknameLabel.text = nickname
         avatarThumb.image = avatarImage
+        
+        // Quests, Build, and Profile Stack View
+        let tabsStackView = UIStackView(arrangedSubviews: [questsButton, buildButton, profileButton])
+        tabsStackView.axis = .horizontal
+        tabsStackView.spacing = 10
+        tabsStackView.distribution = .fillEqually
+        tabsStackView.translatesAutoresizingMaskIntoConstraints = false
+        bottomBar.addSubview(tabsStackView)
         
         // Floating buttons
         view.addSubview(centerButton)
         view.addSubview(disconnectButton)
         
         NSLayoutConstraint.activate([
-            // Top bar
-            topBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 12),
-            topBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            topBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            topBar.heightAnchor.constraint(equalToConstant: 52),
+            // Bottom Tab Bar
+            bottomBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            bottomBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            bottomBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            bottomBar.heightAnchor.constraint(equalToConstant: 56),
             
-            avatarThumb.leadingAnchor.constraint(equalTo: topBar.leadingAnchor, constant: 8),
-            avatarThumb.centerYAnchor.constraint(equalTo: topBar.centerYAnchor),
+            avatarThumb.leadingAnchor.constraint(equalTo: bottomBar.leadingAnchor, constant: 10),
+            avatarThumb.centerYAnchor.constraint(equalTo: bottomBar.centerYAnchor),
             avatarThumb.widthAnchor.constraint(equalToConstant: 36),
             avatarThumb.heightAnchor.constraint(equalToConstant: 36),
             
-            statusDot.leadingAnchor.constraint(equalTo: avatarThumb.trailingAnchor, constant: 10),
-            statusDot.centerYAnchor.constraint(equalTo: topBar.centerYAnchor),
+            statusDot.leadingAnchor.constraint(equalTo: avatarThumb.trailingAnchor, constant: 8),
+            statusDot.centerYAnchor.constraint(equalTo: bottomBar.centerYAnchor),
             statusDot.widthAnchor.constraint(equalToConstant: 10),
             statusDot.heightAnchor.constraint(equalToConstant: 10),
             
             nicknameLabel.leadingAnchor.constraint(equalTo: statusDot.trailingAnchor, constant: 8),
-            nicknameLabel.trailingAnchor.constraint(equalTo: topBar.trailingAnchor, constant: -16),
-            nicknameLabel.centerYAnchor.constraint(equalTo: topBar.centerYAnchor),
+            nicknameLabel.trailingAnchor.constraint(lessThanOrEqualTo: tabsStackView.leadingAnchor, constant: -12),
+            nicknameLabel.centerYAnchor.constraint(equalTo: bottomBar.centerYAnchor),
             
-            // Center button
-            centerButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            centerButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -24),
+            // Tabs Stack (Quests, Build, Profile)
+            tabsStackView.trailingAnchor.constraint(equalTo: bottomBar.trailingAnchor, constant: -10),
+            tabsStackView.centerYAnchor.constraint(equalTo: bottomBar.centerYAnchor),
+            tabsStackView.heightAnchor.constraint(equalToConstant: 36),
+            
+            questsButton.widthAnchor.constraint(equalToConstant: 36),
+            buildButton.widthAnchor.constraint(equalToConstant: 36),
+            profileButton.widthAnchor.constraint(equalToConstant: 36),
+            
+            // Center button positioned floats perfectly above the bottom bar
+            centerButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            centerButton.bottomAnchor.constraint(equalTo: bottomBar.topAnchor, constant: -16),
             centerButton.widthAnchor.constraint(equalToConstant: 52),
             centerButton.heightAnchor.constraint(equalToConstant: 52),
             
-            // Disconnect button
-            disconnectButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            disconnectButton.bottomAnchor.constraint(equalTo: centerButton.topAnchor, constant: -14),
+            // Disconnect button stacked vertically above center button
+            disconnectButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            disconnectButton.bottomAnchor.constraint(equalTo: centerButton.topAnchor, constant: -12),
             disconnectButton.widthAnchor.constraint(equalToConstant: 52),
             disconnectButton.heightAnchor.constraint(equalToConstant: 52),
         ])
@@ -298,6 +363,73 @@ final class MainMapViewController: UIViewController {
     private func setupActions() {
         centerButton.addTarget(self, action: #selector(centerOnUserTapped), for: .touchUpInside)
         disconnectButton.addTarget(self, action: #selector(disconnectTapped), for: .touchUpInside)
+        
+        // Quests, Build, and Profile click actions
+        questsButton.addTarget(self, action: #selector(questsTapped), for: .touchUpInside)
+        buildButton.addTarget(self, action: #selector(buildTapped), for: .touchUpInside)
+        profileButton.addTarget(self, action: #selector(profileTapped), for: .touchUpInside)
+    }
+    
+    @objc private func questsTapped() {
+        // High-fidelity tactile spring scale bounce
+        UIView.animate(withDuration: 0.12, animations: {
+            self.questsButton.transform = CGAffineTransform(scaleX: 0.85, y: 0.85)
+        }) { _ in
+            UIView.animate(withDuration: 0.1) {
+                self.questsButton.transform = .identity
+            }
+            
+            // Present a gorgeous premium HUD alert showing active game quests!
+            let alert = UIAlertController(
+                title: "GeoLive Quests 📜",
+                message: "1. 🌎 Explore your local area (Walk 1 km)\n2. 🏗️ Build your first shelter inside your 75m range!\n\nRank Points: 150 GP",
+                preferredStyle: .alert
+            )
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            self.present(alert, animated: true)
+        }
+    }
+    
+    @objc private func buildTapped() {
+        UIView.animate(withDuration: 0.12, animations: {
+            self.buildButton.transform = CGAffineTransform(scaleX: 0.85, y: 0.85)
+        }) { _ in
+            UIView.animate(withDuration: 0.1) {
+                self.buildButton.transform = .identity
+            }
+            
+            let alert = UIAlertController(
+                title: "Build Mode Activated 🏗️",
+                message: "Your 75-meter electromagnetic build range is fully online! You can place GeoCities structures anywhere inside the dashed blue perimeter.",
+                preferredStyle: .alert
+            )
+            alert.addAction(UIAlertAction(title: "Awesome", style: .default))
+            self.present(alert, animated: true)
+        }
+    }
+    
+    @objc private func profileTapped() {
+        UIView.animate(withDuration: 0.12, animations: {
+            self.profileButton.transform = CGAffineTransform(scaleX: 0.85, y: 0.85)
+        }) { _ in
+            UIView.animate(withDuration: 0.1) {
+                self.profileButton.transform = .identity
+            }
+            
+            let details = """
+            Avatar ID: \(self.selectedGender == .male ? "GEN-MALE // CLAY-01" : "GEN-FEMALE // CLAY-02")
+            Sync Status: Online 🟢
+            Energy Field: 75 Meters
+            Territory Range: Local
+            """
+            let alert = UIAlertController(
+                title: "Profile: \(self.nickname) 👤",
+                message: details,
+                preferredStyle: .alert
+            )
+            alert.addAction(UIAlertAction(title: "Close", style: .cancel))
+            self.present(alert, animated: true)
+        }
     }
     
     @objc private func centerOnUserTapped() {
@@ -407,8 +539,16 @@ final class MainMapViewController: UIViewController {
             mapView.addAnnotation(annotation)
         }
         
+        // Update the 75-meter interactive build range circle overlay
+        if let oldCircle = interactionCircle {
+            mapView.removeOverlay(oldCircle)
+        }
+        let newCircle = MKCircle(center: coordinate, radius: 75) // 75m gaming radius field!
+        interactionCircle = newCircle
+        mapView.addOverlay(newCircle)
+        
         if !hasInitiallyCentered {
-            let region = MKCoordinateRegion(center: coordinate, latitudinalMeters: 800, longitudinalMeters: 800)
+            let region = MKCoordinateRegion(center: coordinate, latitudinalMeters: 500, longitudinalMeters: 500)
             mapView.setRegion(region, animated: true)
             hasInitiallyCentered = true
         }
@@ -489,5 +629,18 @@ extension MainMapViewController: MKMapViewDelegate {
         view.annotation = avatarAnnotation
         view.configure(with: avatarAnnotation.avatarImage)
         return view
+    }
+    
+    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+        if let circleOverlay = overlay as? MKCircle {
+            let renderer = MKCircleRenderer(circle: circleOverlay)
+            // Premium game-like translucent electric blue glow
+            renderer.fillColor = UIColor(red: 0.05, green: 0.40, blue: 0.95, alpha: 0.12)
+            renderer.strokeColor = UIColor(red: 0.05, green: 0.40, blue: 0.95, alpha: 0.45)
+            renderer.lineWidth = 2.0
+            renderer.lineDashPattern = [6, 4] // Beautiful dashed outline!
+            return renderer
+        }
+        return MKOverlayRenderer(overlay: overlay)
     }
 }
