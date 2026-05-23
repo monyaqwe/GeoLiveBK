@@ -103,12 +103,37 @@ final class MainMapViewController: UIViewController {
     private var hasInitiallyCentered = false
     private var hasCenteredOnHighAccuracy = false
     
-    // Interactive 1000m build range overlay
+    // Interactive 500m build range overlay
     private var interactionCircle: MKCircle?
     
     // Bottom bar height adjustment state
     private var bottomBarHeightConstraint: NSLayoutConstraint?
     private var isBottomBarExpanded = false
+    
+    // Premium horizontal top status bar (Gems, Coins, Backpack)
+    private let topStatsBar: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(white: 0.10, alpha: 0.85)
+        view.layer.cornerRadius = 20
+        view.layer.borderWidth = 1.0
+        view.layer.borderColor = UIColor(white: 0.25, alpha: 0.60).cgColor
+        view.clipsToBounds = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        let blurEffect = UIBlurEffect(style: .dark)
+        let blurView = UIVisualEffectView(effect: blurEffect)
+        blurView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(blurView)
+        view.sendSubviewToBack(blurView)
+        NSLayoutConstraint.activate([
+            blurView.topAnchor.constraint(equalTo: view.topAnchor),
+            blurView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            blurView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            blurView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        
+        return view
+    }()
     
     // Floating bottom menu and tab bar
     private let bottomBar: UIView = {
@@ -287,7 +312,7 @@ final class MainMapViewController: UIViewController {
         mapView.showsCompass = false
         // Keep only important historical/cultural points of interest, hiding commercial clutter
         if #available(iOS 13.0, *) {
-            mapView.pointOfInterestFilter = MKPointOfInterestFilter(including: [.museum, .nationalPark, .park, .stadium, .theater, .zoo, .aquarium, .amusementPark])
+            mapView.pointOfInterestFilter = MKPointOfInterestFilter(including: [.museum, .nationalPark, .park])
         } else {
             mapView.pointOfInterestFilter = .excludingAll
         }
@@ -342,6 +367,21 @@ final class MainMapViewController: UIViewController {
         // Setup empty inventory content
         setupInventoryUI()
         
+        // Add Top Stats Bar (Coins, Gems, Backpack Capacity)
+        view.addSubview(topStatsBar)
+        
+        let coinsSegment = createStatSegment(iconName: "dollarsign.circle.fill", iconColor: UIColor(red: 0.95, green: 0.75, blue: 0.15, alpha: 1.0), text: "1,250")
+        let gemsSegment = createStatSegment(iconName: "suit.diamond.fill", iconColor: UIColor(red: 0.20, green: 0.80, blue: 1.00, alpha: 1.0), text: "45")
+        let bagSegment = createStatSegment(iconName: "backpack.fill", iconColor: UIColor(white: 0.75, alpha: 1.0), text: "0/8")
+        
+        let statsStack = UIStackView(arrangedSubviews: [coinsSegment, gemsSegment, bagSegment])
+        statsStack.axis = .horizontal
+        statsStack.spacing = 16
+        statsStack.distribution = .equalSpacing
+        statsStack.alignment = .center
+        statsStack.translatesAutoresizingMaskIntoConstraints = false
+        topStatsBar.addSubview(statsStack)
+        
         // Floating buttons
         view.addSubview(centerButton)
         view.addSubview(disconnectButton)
@@ -349,6 +389,16 @@ final class MainMapViewController: UIViewController {
         bottomBarHeightConstraint = bottomBar.heightAnchor.constraint(equalToConstant: 76)
         
         NSLayoutConstraint.activate([
+            // Top Stats Bar
+            topStatsBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 12),
+            topStatsBar.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            topStatsBar.heightAnchor.constraint(equalToConstant: 40),
+            topStatsBar.widthAnchor.constraint(equalToConstant: 290),
+            
+            statsStack.centerXAnchor.constraint(equalTo: topStatsBar.centerXAnchor),
+            statsStack.centerYAnchor.constraint(equalTo: topStatsBar.centerYAnchor),
+            statsStack.heightAnchor.constraint(equalTo: topStatsBar.heightAnchor),
+            
             // Bottom Tab Bar
             bottomBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
             bottomBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
@@ -406,6 +456,40 @@ final class MainMapViewController: UIViewController {
             disconnectButton.widthAnchor.constraint(equalToConstant: 52),
             disconnectButton.heightAnchor.constraint(equalToConstant: 52),
         ])
+    }
+    
+    // MARK: - Premium Segment Builder
+    private func createStatSegment(iconName: String, iconColor: UIColor, text: String) -> UIView {
+        let container = UIView()
+        container.translatesAutoresizingMaskIntoConstraints = false
+        
+        let config = UIImage.SymbolConfiguration(pointSize: 13, weight: .bold)
+        let iconView = UIImageView(image: UIImage(systemName: iconName, withConfiguration: config))
+        iconView.tintColor = iconColor
+        iconView.contentMode = .scaleAspectFit
+        iconView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let label = UILabel()
+        label.text = text
+        label.textColor = .white
+        label.font = UIFont.systemFont(ofSize: 13, weight: .bold)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        
+        container.addSubview(iconView)
+        container.addSubview(label)
+        
+        NSLayoutConstraint.activate([
+            iconView.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            iconView.centerYAnchor.constraint(equalTo: container.centerYAnchor),
+            iconView.widthAnchor.constraint(equalToConstant: 16),
+            iconView.heightAnchor.constraint(equalToConstant: 16),
+            
+            label.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 6),
+            label.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+            label.centerYAnchor.constraint(equalTo: container.centerYAnchor)
+        ])
+        
+        return container
     }
     
     // MARK: - Setup Inventory UI
@@ -532,7 +616,7 @@ final class MainMapViewController: UIViewController {
             
             let alert = UIAlertController(
                 title: "Build Mode Activated 🏗️",
-                message: "Your 1000-meter electromagnetic build range is fully online! You can place GeoCities structures anywhere inside the dashed blue perimeter.",
+                message: "Your 500-meter electromagnetic build range is fully online! You can place GeoCities structures anywhere inside the dashed blue perimeter.",
                 preferredStyle: .alert
             )
             alert.addAction(UIAlertAction(title: "Awesome", style: .default))
@@ -551,7 +635,7 @@ final class MainMapViewController: UIViewController {
             let details = """
             Avatar ID: \(self.selectedGender == .male ? "GEN-MALE // CLAY-01" : "GEN-FEMALE // CLAY-02")
             Sync Status: Online 🟢
-            Energy Field: 1000 Meters
+            Energy Field: 500 Meters
             Territory Range: Local
             """
             let alert = UIAlertController(
@@ -671,11 +755,11 @@ final class MainMapViewController: UIViewController {
             mapView.addAnnotation(annotation)
         }
         
-        // Update the 1000-meter interactive build range circle overlay
+        // Update the 500-meter interactive build range circle overlay
         if let oldCircle = interactionCircle {
             mapView.removeOverlay(oldCircle)
         }
-        let newCircle = MKCircle(center: coordinate, radius: 1000) // 1000m gaming radius field!
+        let newCircle = MKCircle(center: coordinate, radius: 500) // 500m gaming radius field!
         interactionCircle = newCircle
         mapView.addOverlay(newCircle)
         
@@ -766,10 +850,10 @@ extension MainMapViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if let circleOverlay = overlay as? MKCircle {
             let renderer = MKCircleRenderer(circle: circleOverlay)
-            // Premium game-like translucent electric blue glow
-            renderer.fillColor = UIColor(red: 0.05, green: 0.40, blue: 0.95, alpha: 0.12)
-            renderer.strokeColor = UIColor(red: 0.05, green: 0.40, blue: 0.95, alpha: 0.45)
-            renderer.lineWidth = 2.0
+            // Highly subtle, elegant interactive blue overlay
+            renderer.fillColor = UIColor(red: 0.05, green: 0.40, blue: 0.95, alpha: 0.03)
+            renderer.strokeColor = UIColor(red: 0.05, green: 0.40, blue: 0.95, alpha: 0.18)
+            renderer.lineWidth = 1.5
             renderer.lineDashPattern = [6, 4] // Beautiful dashed outline!
             return renderer
         }
