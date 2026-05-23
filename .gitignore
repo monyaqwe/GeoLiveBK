@@ -7,8 +7,3 @@ DerivedData/
 *.dSYM.zip
 *.dSYM
 
-# Personal settings
-xcuserdata/
-
-# CocoaPods
-Pods/
