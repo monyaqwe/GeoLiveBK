@@ -106,6 +106,9 @@ final class MainMapViewController: UIViewController {
     // Interactive 500m build range overlay
     private var interactionCircle: MKCircle?
     
+    // Interactive 1500m attack range wave overlay
+    private var attackCircle: MKCircle?
+    
     // Bottom bar height adjustment state
     private var bottomBarHeightConstraint: NSLayoutConstraint?
     private var isBottomBarExpanded = false
@@ -310,9 +313,12 @@ final class MainMapViewController: UIViewController {
         mapView.delegate = self
         mapView.showsUserLocation = false // Hide native pulsing location circle, displaying only the custom avatar
         mapView.showsCompass = false
-        // Keep only important historical/cultural points of interest, hiding commercial clutter
+        
+        // Keep only majestic museums, landmarks, and national parks, completely hiding commercial clutter
+        let strictFilter = MKPointOfInterestFilter(including: [.museum, .nationalPark])
+        
         if #available(iOS 13.0, *) {
-            mapView.pointOfInterestFilter = MKPointOfInterestFilter(including: [.museum, .nationalPark, .park])
+            mapView.pointOfInterestFilter = strictFilter
         } else {
             mapView.pointOfInterestFilter = .excludingAll
         }
@@ -323,9 +329,10 @@ final class MainMapViewController: UIViewController {
             mapView.setCameraZoomRange(zoomRange, animated: false)
         }
         
-        // Apply dark map style
+        // Apply dark map style and enforce strict POI configuration for iOS 16+ which overrides mapView.pointOfInterestFilter
         if #available(iOS 16.0, *) {
             let config = MKStandardMapConfiguration(emphasisStyle: .muted)
+            config.pointOfInterestFilter = strictFilter
             mapView.preferredConfiguration = config
             mapView.overrideUserInterfaceStyle = .dark
         } else {
@@ -729,8 +736,15 @@ final class MainMapViewController: UIViewController {
         let coordinate = location.coordinate
         guard CLLocationCoordinate2DIsValid(coordinate) else { return }
         
-        // Exclude standard 0,0 placeholder coordinate unless it's explicitly desired
-        guard coordinate.latitude != 0.0 || coordinate.longitude != 0.0 else { return }
+        // GPS Jitter filter: if stationary, do not update position
+        if let existing = avatarAnnotation {
+            let oldLocation = CLLocation(latitude: existing.coordinate.latitude, longitude: existing.coordinate.longitude)
+            let distance = location.distance(from: oldLocation)
+            // If movement displacement is less than 8 meters, ignore it to prevent constant jitter/wiggle when standing still!
+            if distance < 8.0 {
+                return
+            }
+        }
         
         placeAvatarAtLocation(coordinate)
         
@@ -762,6 +776,14 @@ final class MainMapViewController: UIViewController {
         let newCircle = MKCircle(center: coordinate, radius: 500) // 500m gaming radius field!
         interactionCircle = newCircle
         mapView.addOverlay(newCircle)
+        
+        // Update the 1500-meter interactive attack range wave overlay (3x larger)
+        if let oldAttack = attackCircle {
+            mapView.removeOverlay(oldAttack)
+        }
+        let newAttack = MKCircle(center: coordinate, radius: 1500) // 1500m attack radius wave!
+        attackCircle = newAttack
+        mapView.addOverlay(newAttack)
         
         if !hasInitiallyCentered {
             let region = MKCoordinateRegion(center: coordinate, latitudinalMeters: 500, longitudinalMeters: 500)
@@ -849,13 +871,23 @@ extension MainMapViewController: MKMapViewDelegate {
     
     func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if let circleOverlay = overlay as? MKCircle {
-            let renderer = MKCircleRenderer(circle: circleOverlay)
-            // Highly subtle, elegant interactive blue overlay
-            renderer.fillColor = UIColor(red: 0.05, green: 0.40, blue: 0.95, alpha: 0.03)
-            renderer.strokeColor = UIColor(red: 0.05, green: 0.40, blue: 0.95, alpha: 0.18)
-            renderer.lineWidth = 1.5
-            renderer.lineDashPattern = [6, 4] // Beautiful dashed outline!
-            return renderer
+            if circleOverlay.radius > 600 {
+                // Interactive 1500m attack range wave overlay (soft white wave)
+                let renderer = MKCircleRenderer(circle: circleOverlay)
+                renderer.fillColor = UIColor.white.withAlphaComponent(0.01)
+                renderer.strokeColor = UIColor.white.withAlphaComponent(0.12)
+                renderer.lineWidth = 1.2
+                renderer.lineDashPattern = [4, 6] // Beautiful thin white wave pattern
+                return renderer
+            } else {
+                // Interactive 500m build range circle overlay (clearly read but elegant electric blue)
+                let renderer = MKCircleRenderer(circle: circleOverlay)
+                renderer.fillColor = UIColor(red: 0.05, green: 0.40, blue: 0.95, alpha: 0.06)
+                renderer.strokeColor = UIColor(red: 0.05, green: 0.40, blue: 0.95, alpha: 0.28)
+                renderer.lineWidth = 1.5
+                renderer.lineDashPattern = [6, 4] // Dashed outline
+                return renderer
+            }
         }
         return MKOverlayRenderer(overlay: overlay)
     }
