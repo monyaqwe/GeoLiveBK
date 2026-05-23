@@ -1,0 +1,14 @@
+# Xcode
+.DS_Store
+build/
+DerivedData/
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Personal settings
+xcuserdata/
+
+# CocoaPods
+Pods/
