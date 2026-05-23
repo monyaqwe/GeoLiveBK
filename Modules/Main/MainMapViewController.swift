@@ -314,6 +314,8 @@ final class MainMapViewController: UIViewController {
         mapView.delegate = self
         mapView.showsUserLocation = false // Hide native pulsing location circle, displaying only the custom avatar
         mapView.showsCompass = false
+        mapView.showsBuildings = false // Abstract flat maps (no blocky building shapes)!
+        mapView.showsTraffic = false // Wipe out street traffic lines!
         
         // Use abstract muted standard style by default
         mapView.mapType = .mutedStandard
@@ -333,12 +335,10 @@ final class MainMapViewController: UIViewController {
             mapView.setCameraZoomRange(zoomRange, animated: false)
         }
         
-        // Enforce muted dark styling and remove buildings footprints for tactical clean layout on iOS 16+
+        // Enforce muted dark styling for tactical clean layout on iOS 16+
         if #available(iOS 16.0, *) {
             let config = MKStandardMapConfiguration(emphasisStyle: .muted)
             config.pointOfInterestFilter = strictFilter
-            config.showsBuildings = false // Abstract flat dark maps!
-            config.showsTraffic = false
             mapView.preferredConfiguration = config
             mapView.overrideUserInterfaceStyle = .dark
         } else {
