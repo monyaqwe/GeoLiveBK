@@ -287,7 +287,7 @@ final class MainMapViewController: UIViewController {
         mapView.showsCompass = false
         // Keep only important historical/cultural points of interest, hiding commercial clutter
         if #available(iOS 13.0, *) {
-            mapView.pointOfInterestFilter = MKPointOfInterestFilter(including: [.culturalSite, .museum, .nationalPark, .park, .stadium])
+            mapView.pointOfInterestFilter = MKPointOfInterestFilter(including: [.museum, .nationalPark, .park, .stadium, .theater, .zoo, .aquarium, .amusementPark])
         } else {
             mapView.pointOfInterestFilter = .excludingAll
         }
