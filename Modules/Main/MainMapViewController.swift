@@ -103,8 +103,12 @@ final class MainMapViewController: UIViewController {
     private var hasInitiallyCentered = false
     private var hasCenteredOnHighAccuracy = false
     
-    // Interactive 75m build range overlay
+    // Interactive 1000m build range overlay
     private var interactionCircle: MKCircle?
+    
+    // Bottom bar height adjustment state
+    private var bottomBarHeightConstraint: NSLayoutConstraint?
+    private var isBottomBarExpanded = false
     
     // Floating bottom menu and tab bar
     private let bottomBar: UIView = {
@@ -131,6 +135,32 @@ final class MainMapViewController: UIViewController {
         return view
     }()
     
+    // Top portion header container within bottomBar
+    private let headerContainerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .clear
+        return view
+    }()
+    
+    // Sleek premium horizontal handle indicator for swipes
+    private let pullHandle: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.white.withAlphaComponent(0.28)
+        view.layer.cornerRadius = 2.5
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    // Scrollable/expandable inventory section below header
+    private let inventoryContainerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .clear
+        view.alpha = 0.0 // Invisible when collapsed
+        return view
+    }()
+    
     private let nicknameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 15, weight: .bold)
@@ -151,26 +181,11 @@ final class MainMapViewController: UIViewController {
     private let avatarThumb: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFit
-        iv.layer.cornerRadius = 18
+        iv.layer.cornerRadius = 19
         iv.clipsToBounds = true
         iv.backgroundColor = UIColor(white: 0.18, alpha: 1.0)
         iv.translatesAutoresizingMaskIntoConstraints = false
         return iv
-    }()
-    
-    // Quests Tab Button using sleek SF Symbols
-    private let questsButton: UIButton = {
-        let button = UIButton(type: .custom)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        let config = UIImage.SymbolConfiguration(pointSize: 14, weight: .bold)
-        let icon = UIImage(systemName: "sparkles", withConfiguration: config)
-        button.setImage(icon, for: .normal)
-        button.tintColor = .white
-        button.backgroundColor = UIColor.white.withAlphaComponent(0.12)
-        button.layer.cornerRadius = 18
-        button.layer.borderWidth = 1.0
-        button.layer.borderColor = UIColor.white.withAlphaComponent(0.20).cgColor
-        return button
     }()
     
     // Build Tab Button using sleek SF Symbols
@@ -182,7 +197,7 @@ final class MainMapViewController: UIViewController {
         button.setImage(icon, for: .normal)
         button.tintColor = .white
         button.backgroundColor = UIColor.white.withAlphaComponent(0.12)
-        button.layer.cornerRadius = 18
+        button.layer.cornerRadius = 19
         button.layer.borderWidth = 1.0
         button.layer.borderColor = UIColor.white.withAlphaComponent(0.20).cgColor
         return button
@@ -197,7 +212,7 @@ final class MainMapViewController: UIViewController {
         button.setImage(icon, for: .normal)
         button.tintColor = .white
         button.backgroundColor = UIColor.white.withAlphaComponent(0.12)
-        button.layer.cornerRadius = 18
+        button.layer.cornerRadius = 19
         button.layer.borderWidth = 1.0
         button.layer.borderColor = UIColor.white.withAlphaComponent(0.20).cgColor
         return button
@@ -270,7 +285,12 @@ final class MainMapViewController: UIViewController {
         mapView.delegate = self
         mapView.showsUserLocation = false // Hide native pulsing location circle, displaying only the custom avatar
         mapView.showsCompass = false
-        mapView.pointOfInterestFilter = .excludingAll
+        // Keep only important historical/cultural points of interest, hiding commercial clutter
+        if #available(iOS 13.0, *) {
+            mapView.pointOfInterestFilter = MKPointOfInterestFilter(including: [.culturalSite, .museum, .nationalPark, .park, .stadium])
+        } else {
+            mapView.pointOfInterestFilter = .excludingAll
+        }
         
         // Restrict maximum zoom out to prevent heavy GPU/CPU rendering and phone load
         if #available(iOS 13.0, *) {
@@ -291,59 +311,88 @@ final class MainMapViewController: UIViewController {
     }
     
     // MARK: - UI Setup
+    // MARK: - UI Setup
     private func setupUI() {
         view.backgroundColor = UIColor(white: 0.06, alpha: 1.0)
         
         // Bottom bar
         view.addSubview(bottomBar)
-        bottomBar.addSubview(avatarThumb)
-        bottomBar.addSubview(statusDot)
-        bottomBar.addSubview(nicknameLabel)
+        
+        // Add header container and inventory container to bottomBar
+        bottomBar.addSubview(headerContainerView)
+        bottomBar.addSubview(inventoryContainerView)
+        
+        // Add header views into headerContainerView
+        headerContainerView.addSubview(pullHandle)
+        headerContainerView.addSubview(avatarThumb)
+        headerContainerView.addSubview(statusDot)
+        headerContainerView.addSubview(nicknameLabel)
         
         nicknameLabel.text = nickname
         avatarThumb.image = avatarImage
         
-        // Quests, Build, and Profile Stack View
-        let tabsStackView = UIStackView(arrangedSubviews: [questsButton, buildButton, profileButton])
+        // Build and Profile Stack View
+        let tabsStackView = UIStackView(arrangedSubviews: [buildButton, profileButton])
         tabsStackView.axis = .horizontal
         tabsStackView.spacing = 10
         tabsStackView.distribution = .fillEqually
         tabsStackView.translatesAutoresizingMaskIntoConstraints = false
-        bottomBar.addSubview(tabsStackView)
+        headerContainerView.addSubview(tabsStackView)
+        
+        // Setup empty inventory content
+        setupInventoryUI()
         
         // Floating buttons
         view.addSubview(centerButton)
         view.addSubview(disconnectButton)
+        
+        bottomBarHeightConstraint = bottomBar.heightAnchor.constraint(equalToConstant: 76)
         
         NSLayoutConstraint.activate([
             // Bottom Tab Bar
             bottomBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
             bottomBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             bottomBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            bottomBar.heightAnchor.constraint(equalToConstant: 56),
+            bottomBarHeightConstraint!,
             
-            avatarThumb.leadingAnchor.constraint(equalTo: bottomBar.leadingAnchor, constant: 10),
-            avatarThumb.centerYAnchor.constraint(equalTo: bottomBar.centerYAnchor),
-            avatarThumb.widthAnchor.constraint(equalToConstant: 36),
-            avatarThumb.heightAnchor.constraint(equalToConstant: 36),
+            // Header Container View (pinned to the top of the bottomBar, always 76 tall)
+            headerContainerView.topAnchor.constraint(equalTo: bottomBar.topAnchor),
+            headerContainerView.leadingAnchor.constraint(equalTo: bottomBar.leadingAnchor),
+            headerContainerView.trailingAnchor.constraint(equalTo: bottomBar.trailingAnchor),
+            headerContainerView.heightAnchor.constraint(equalToConstant: 76),
+            
+            // Pull handle centered horizontally at the top of the header container
+            pullHandle.topAnchor.constraint(equalTo: headerContainerView.topAnchor, constant: 6),
+            pullHandle.centerXAnchor.constraint(equalTo: headerContainerView.centerXAnchor),
+            pullHandle.widthAnchor.constraint(equalToConstant: 36),
+            pullHandle.heightAnchor.constraint(equalToConstant: 5),
+            
+            avatarThumb.leadingAnchor.constraint(equalTo: headerContainerView.leadingAnchor, constant: 12),
+            avatarThumb.centerYAnchor.constraint(equalTo: headerContainerView.centerYAnchor, constant: 2), // slightly offset for perfect vertical alignment under pull handle
+            avatarThumb.widthAnchor.constraint(equalToConstant: 38),
+            avatarThumb.heightAnchor.constraint(equalToConstant: 38),
             
             statusDot.leadingAnchor.constraint(equalTo: avatarThumb.trailingAnchor, constant: 8),
-            statusDot.centerYAnchor.constraint(equalTo: bottomBar.centerYAnchor),
+            statusDot.centerYAnchor.constraint(equalTo: avatarThumb.centerYAnchor),
             statusDot.widthAnchor.constraint(equalToConstant: 10),
             statusDot.heightAnchor.constraint(equalToConstant: 10),
             
             nicknameLabel.leadingAnchor.constraint(equalTo: statusDot.trailingAnchor, constant: 8),
             nicknameLabel.trailingAnchor.constraint(lessThanOrEqualTo: tabsStackView.leadingAnchor, constant: -12),
-            nicknameLabel.centerYAnchor.constraint(equalTo: bottomBar.centerYAnchor),
+            nicknameLabel.centerYAnchor.constraint(equalTo: avatarThumb.centerYAnchor),
             
-            // Tabs Stack (Quests, Build, Profile)
-            tabsStackView.trailingAnchor.constraint(equalTo: bottomBar.trailingAnchor, constant: -10),
-            tabsStackView.centerYAnchor.constraint(equalTo: bottomBar.centerYAnchor),
-            tabsStackView.heightAnchor.constraint(equalToConstant: 36),
+            // Tabs Stack (Build, Profile)
+            tabsStackView.trailingAnchor.constraint(equalTo: headerContainerView.trailingAnchor, constant: -12),
+            tabsStackView.centerYAnchor.constraint(equalTo: avatarThumb.centerYAnchor),
+            tabsStackView.heightAnchor.constraint(equalToConstant: 38),
             
-            questsButton.widthAnchor.constraint(equalToConstant: 36),
-            buildButton.widthAnchor.constraint(equalToConstant: 36),
-            profileButton.widthAnchor.constraint(equalToConstant: 36),
+            buildButton.widthAnchor.constraint(equalToConstant: 38),
+            profileButton.widthAnchor.constraint(equalToConstant: 38),
+            
+            // Inventory Container View (starts below the header container view)
+            inventoryContainerView.topAnchor.constraint(equalTo: headerContainerView.bottomAnchor),
+            inventoryContainerView.leadingAnchor.constraint(equalTo: bottomBar.leadingAnchor),
+            inventoryContainerView.trailingAnchor.constraint(equalTo: bottomBar.trailingAnchor),
             
             // Center button positioned floats perfectly above the bottom bar
             centerButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
@@ -359,35 +408,118 @@ final class MainMapViewController: UIViewController {
         ])
     }
     
+    // MARK: - Setup Inventory UI
+    private func setupInventoryUI() {
+        let inventoryTitleLabel = UILabel()
+        inventoryTitleLabel.text = "INVENTORY"
+        inventoryTitleLabel.textColor = UIColor.white.withAlphaComponent(0.45)
+        inventoryTitleLabel.font = UIFont.systemFont(ofSize: 11, weight: .black)
+        inventoryTitleLabel.textAlignment = .left
+        inventoryTitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        inventoryContainerView.addSubview(inventoryTitleLabel)
+        
+        let gridStackView = UIStackView()
+        gridStackView.axis = .vertical
+        gridStackView.spacing = 12
+        gridStackView.distribution = .fillEqually
+        gridStackView.translatesAutoresizingMaskIntoConstraints = false
+        inventoryContainerView.addSubview(gridStackView)
+        
+        for _ in 0..<2 {
+            let rowStackView = UIStackView()
+            rowStackView.axis = .horizontal
+            rowStackView.spacing = 12
+            rowStackView.distribution = .fillEqually
+            
+            for _ in 0..<4 {
+                let slotView = UIView()
+                slotView.backgroundColor = UIColor.white.withAlphaComponent(0.06)
+                slotView.layer.cornerRadius = 12
+                slotView.layer.borderWidth = 1.0
+                slotView.layer.borderColor = UIColor.white.withAlphaComponent(0.12).cgColor
+                
+                let innerDot = UIView()
+                innerDot.backgroundColor = UIColor.white.withAlphaComponent(0.08)
+                innerDot.layer.cornerRadius = 4
+                innerDot.translatesAutoresizingMaskIntoConstraints = false
+                slotView.addSubview(innerDot)
+                
+                NSLayoutConstraint.activate([
+                    innerDot.centerXAnchor.constraint(equalTo: slotView.centerXAnchor),
+                    innerDot.centerYAnchor.constraint(equalTo: slotView.centerYAnchor),
+                    innerDot.widthAnchor.constraint(equalToConstant: 8),
+                    innerDot.heightAnchor.constraint(equalToConstant: 8)
+                ])
+                
+                rowStackView.addArrangedSubview(slotView)
+            }
+            gridStackView.addArrangedSubview(rowStackView)
+        }
+        
+        NSLayoutConstraint.activate([
+            inventoryTitleLabel.topAnchor.constraint(equalTo: inventoryContainerView.topAnchor, constant: 6),
+            inventoryTitleLabel.leadingAnchor.constraint(equalTo: inventoryContainerView.leadingAnchor, constant: 16),
+            inventoryTitleLabel.trailingAnchor.constraint(equalTo: inventoryContainerView.trailingAnchor, constant: -16),
+            
+            gridStackView.topAnchor.constraint(equalTo: inventoryTitleLabel.bottomAnchor, constant: 10),
+            gridStackView.leadingAnchor.constraint(equalTo: inventoryContainerView.leadingAnchor, constant: 16),
+            gridStackView.trailingAnchor.constraint(equalTo: inventoryContainerView.trailingAnchor, constant: -16),
+            gridStackView.heightAnchor.constraint(equalToConstant: 160)
+        ])
+    }
+    
     // MARK: - Actions
     private func setupActions() {
         centerButton.addTarget(self, action: #selector(centerOnUserTapped), for: .touchUpInside)
         disconnectButton.addTarget(self, action: #selector(disconnectTapped), for: .touchUpInside)
         
-        // Quests, Build, and Profile click actions
-        questsButton.addTarget(self, action: #selector(questsTapped), for: .touchUpInside)
         buildButton.addTarget(self, action: #selector(buildTapped), for: .touchUpInside)
         profileButton.addTarget(self, action: #selector(profileTapped), for: .touchUpInside)
+        
+        // Add premium swipe gestures to bottomBar
+        let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGesture(_:)))
+        swipeUp.direction = .up
+        bottomBar.addGestureRecognizer(swipeUp)
+        
+        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGesture(_:)))
+        swipeDown.direction = .down
+        bottomBar.addGestureRecognizer(swipeDown)
     }
     
-    @objc private func questsTapped() {
-        // High-fidelity tactile spring scale bounce
-        UIView.animate(withDuration: 0.12, animations: {
-            self.questsButton.transform = CGAffineTransform(scaleX: 0.85, y: 0.85)
-        }) { _ in
-            UIView.animate(withDuration: 0.1) {
-                self.questsButton.transform = .identity
-            }
-            
-            // Present a gorgeous premium HUD alert showing active game quests!
-            let alert = UIAlertController(
-                title: "GeoLive Quests 📜",
-                message: "1. 🌎 Explore your local area (Walk 1 km)\n2. 🏗️ Build your first shelter inside your 75m range!\n\nRank Points: 150 GP",
-                preferredStyle: .alert
-            )
-            alert.addAction(UIAlertAction(title: "OK", style: .default))
-            self.present(alert, animated: true)
+    @objc private func handleSwipeGesture(_ gesture: UISwipeGestureRecognizer) {
+        if gesture.direction == .up {
+            expandBottomBar()
+        } else if gesture.direction == .down {
+            collapseBottomBar()
         }
+    }
+    
+    private func expandBottomBar() {
+        guard !isBottomBarExpanded else { return }
+        isBottomBarExpanded = true
+        
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.impactOccurred()
+        
+        UIView.animate(withDuration: 0.55, delay: 0.0, usingSpringWithDamping: 0.78, initialSpringVelocity: 0.6, options: [.allowUserInteraction, .beginFromCurrentState], animations: {
+            self.bottomBarHeightConstraint?.constant = 340
+            self.inventoryContainerView.alpha = 1.0
+            self.view.layoutIfNeeded()
+        }, completion: nil)
+    }
+    
+    private func collapseBottomBar() {
+        guard isBottomBarExpanded else { return }
+        isBottomBarExpanded = false
+        
+        let generator = UIImpactFeedbackGenerator(style: .light)
+        generator.impactOccurred()
+        
+        UIView.animate(withDuration: 0.45, delay: 0.0, usingSpringWithDamping: 0.82, initialSpringVelocity: 0.5, options: [.allowUserInteraction, .beginFromCurrentState], animations: {
+            self.bottomBarHeightConstraint?.constant = 76
+            self.inventoryContainerView.alpha = 0.0
+            self.view.layoutIfNeeded()
+        }, completion: nil)
     }
     
     @objc private func buildTapped() {
@@ -400,7 +532,7 @@ final class MainMapViewController: UIViewController {
             
             let alert = UIAlertController(
                 title: "Build Mode Activated 🏗️",
-                message: "Your 75-meter electromagnetic build range is fully online! You can place GeoCities structures anywhere inside the dashed blue perimeter.",
+                message: "Your 1000-meter electromagnetic build range is fully online! You can place GeoCities structures anywhere inside the dashed blue perimeter.",
                 preferredStyle: .alert
             )
             alert.addAction(UIAlertAction(title: "Awesome", style: .default))
@@ -419,7 +551,7 @@ final class MainMapViewController: UIViewController {
             let details = """
             Avatar ID: \(self.selectedGender == .male ? "GEN-MALE // CLAY-01" : "GEN-FEMALE // CLAY-02")
             Sync Status: Online 🟢
-            Energy Field: 75 Meters
+            Energy Field: 1000 Meters
             Territory Range: Local
             """
             let alert = UIAlertController(
@@ -539,11 +671,11 @@ final class MainMapViewController: UIViewController {
             mapView.addAnnotation(annotation)
         }
         
-        // Update the 75-meter interactive build range circle overlay
+        // Update the 1000-meter interactive build range circle overlay
         if let oldCircle = interactionCircle {
             mapView.removeOverlay(oldCircle)
         }
-        let newCircle = MKCircle(center: coordinate, radius: 75) // 75m gaming radius field!
+        let newCircle = MKCircle(center: coordinate, radius: 1000) // 1000m gaming radius field!
         interactionCircle = newCircle
         mapView.addOverlay(newCircle)
         
