@@ -331,7 +331,7 @@ final class MainMapViewController: UIViewController {
         
         // Restrict maximum zoom out to prevent heavy GPU/CPU rendering and phone load
         if #available(iOS 13.0, *) {
-            let zoomRange = MKMapView.CameraZoomRange(maxCenterCoordinateDistance: 20000)
+            let zoomRange = MKMapView.CameraZoomRange(maxCenterCoordinateDistance: 8000)
             mapView.setCameraZoomRange(zoomRange, animated: false)
         }
         
@@ -794,11 +794,11 @@ final class MainMapViewController: UIViewController {
         interactionCircle = newCircle
         mapView.addOverlay(newCircle)
         
-        // Update the 1500-meter interactive attack range wave overlay (3x larger)
+        // Update the 1200-meter interactive attack range wave overlay
         if let oldAttack = attackCircle {
             mapView.removeOverlay(oldAttack)
         }
-        let newAttack = MKCircle(center: coordinate, radius: 1500) // 1500m attack radius wave!
+        let newAttack = MKCircle(center: coordinate, radius: 1200) // 1200m attack radius wave!
         attackCircle = newAttack
         mapView.addOverlay(newAttack)
         
@@ -954,7 +954,7 @@ extension MainMapViewController: MKMapViewDelegate {
             blurView.bottomAnchor.constraint(equalTo: welcomeView.bottomAnchor),
             
             welcomeView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            welcomeView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -60),
+            welcomeView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -160),
             welcomeView.widthAnchor.constraint(equalToConstant: 280),
             welcomeView.heightAnchor.constraint(equalToConstant: 80),
             
@@ -978,8 +978,8 @@ extension MainMapViewController: MKMapViewDelegate {
             welcomeView.transform = .identity
             welcomeView.alpha = 1.0
         }) { _ in
-            // Auto dismiss after 3.5 seconds
-            UIView.animate(withDuration: 0.50, delay: 3.50, options: .curveEaseIn, animations: {
+            // Auto dismiss after 2.0 seconds
+            UIView.animate(withDuration: 0.40, delay: 2.00, options: .curveEaseIn, animations: {
                 welcomeView.transform = CGAffineTransform(scaleX: 0.85, y: 0.85)
                 welcomeView.alpha = 0.0
             }) { _ in
