@@ -89,6 +89,179 @@ final class AvatarAnnotationView: MKAnnotationView {
     }
 }
 
+// MARK: - Building Models
+enum BuildingType: String {
+    case kiosk = "Kiosk"
+    case cafe = "Cafe"
+    case bar = "Bar"
+    
+    var cost: Int {
+        switch self {
+        case .kiosk: return 10000
+        case .cafe: return 20000
+        case .bar: return 30000
+        }
+    }
+    
+    var emoji: String {
+        switch self {
+        case .kiosk: return "🏪"
+        case .cafe: return "☕"
+        case .bar: return "🍺"
+        }
+    }
+}
+
+struct BuildingItem {
+    let id = UUID()
+    let type: BuildingType
+    var coordinate: CLLocationCoordinate2D
+    var level: Int = 1
+    var currentHP: Int = 100
+    var maxHP: Int = 100
+    
+    var name: String { type.rawValue }
+    var cost: Int { type.cost }
+    var capacity: Int { level }
+    var emoji: String { type.emoji }
+}
+
+final class BuildingAnnotation: NSObject, MKAnnotation {
+    dynamic var coordinate: CLLocationCoordinate2D
+    var buildingItem: BuildingItem
+    
+    var title: String? { "\(buildingItem.name) (Lv. \(buildingItem.level))" }
+    var subtitle: String? { "HP: \(buildingItem.currentHP)/\(buildingItem.maxHP) | Slots: \(buildingItem.capacity)" }
+    
+    init(coordinate: CLLocationCoordinate2D, buildingItem: BuildingItem) {
+        self.coordinate = coordinate
+        self.buildingItem = buildingItem
+        super.init()
+    }
+}
+
+// MARK: - Building Annotation View
+final class BuildingAnnotationView: MKAnnotationView {
+    static let reuseID = "BuildingAnnotationView"
+    
+    private let containerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(white: 0.12, alpha: 0.88)
+        view.layer.cornerRadius = 16
+        view.layer.borderWidth = 1.0
+        view.layer.borderColor = UIColor.white.withAlphaComponent(0.20).cgColor
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+        blurView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(blurView)
+        view.sendSubviewToBack(blurView)
+        NSLayoutConstraint.activate([
+            blurView.topAnchor.constraint(equalTo: view.topAnchor),
+            blurView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            blurView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            blurView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        
+        return view
+    }()
+    
+    private let emojiLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 26)
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private let badgeLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 9, weight: .black)
+        label.textColor = .white
+        label.textAlignment = .center
+        label.backgroundColor = UIColor(red: 0.15, green: 0.55, blue: 0.95, alpha: 1.0)
+        label.layer.cornerRadius = 7
+        label.layer.masksToBounds = true
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private let groundShadowView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.28)
+        view.layer.cornerRadius = 5
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
+        super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
+        setupView()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupView() {
+        canShowCallout = false
+        backgroundColor = .clear
+        
+        frame = CGRect(x: 0, y: 0, width: 56, height: 62)
+        centerOffset = CGPoint(x: 0, y: -24)
+        
+        addSubview(groundShadowView)
+        addSubview(containerView)
+        containerView.addSubview(emojiLabel)
+        containerView.addSubview(badgeLabel)
+        
+        NSLayoutConstraint.activate([
+            groundShadowView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 2),
+            groundShadowView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            groundShadowView.widthAnchor.constraint(equalToConstant: 30),
+            groundShadowView.heightAnchor.constraint(equalToConstant: 10),
+            
+            containerView.topAnchor.constraint(equalTo: topAnchor),
+            containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            containerView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
+            
+            emojiLabel.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            emojiLabel.centerYAnchor.constraint(equalTo: containerView.centerYAnchor, constant: -2),
+            
+            badgeLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: -4),
+            badgeLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: 4),
+            badgeLabel.widthAnchor.constraint(equalToConstant: 24),
+            badgeLabel.heightAnchor.constraint(equalToConstant: 14)
+        ])
+    }
+    
+    func configure(with building: BuildingItem) {
+        emojiLabel.text = building.emoji
+        badgeLabel.text = "L\(building.level)"
+        
+        // Premium bounce animation on first load
+        transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+        UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
+            self.transform = .identity
+        }, completion: nil)
+    }
+}
+
+// MARK: - Store Card View
+final class StoreCardView: UIView {
+    let buildingType: BuildingType
+    
+    init(type: BuildingType) {
+        self.buildingType = type
+        super.init(frame: .zero)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
 // MARK: - Main Map View Controller
 final class MainMapViewController: UIViewController {
     
@@ -283,7 +456,25 @@ final class MainMapViewController: UIViewController {
         return button
     }()
     
-    // MARK: - Init
+    // Player dynamic resources
+    private var coins: Int = 100000
+    private var gems: Int = 0
+    
+    // UI Outlets for stats
+    private var coinsLabel: UILabel?
+    private var gemsLabel: UILabel?
+    
+    // Construction and Upgrade states
+    private var placedBuildings: [BuildingItem] = []
+    private var isPlacementModeActive: Bool = false
+    private var selectedTypeToPlace: BuildingType?
+    private var placementOverlayView: UIView?
+    private var mapTapRecognizer: UITapGestureRecognizer?
+    private var buildStorePanel: UIView?
+    private var inspectionPanel: UIView?
+    private var selectedBuildingAnnotation: BuildingAnnotation?
+    
+    // MARK: - Initю
     init(nickname: String, gender: Gender, avatarImage: UIImage?, onDisconnect: (() -> Void)?) {
         self.nickname = nickname
         self.selectedGender = gender
@@ -383,11 +574,14 @@ final class MainMapViewController: UIViewController {
         // Add Top Stats Bar (Coins, Gems, Backpack Capacity)
         view.addSubview(topStatsBar)
         
-        let coinsSegment = createStatSegment(iconName: "dollarsign.circle.fill", iconColor: UIColor(red: 0.95, green: 0.75, blue: 0.15, alpha: 1.0), text: "1,250")
-        let gemsSegment = createStatSegment(iconName: "suit.diamond.fill", iconColor: UIColor(red: 0.20, green: 0.80, blue: 1.00, alpha: 1.0), text: "45")
-        let bagSegment = createStatSegment(iconName: "backpack.fill", iconColor: UIColor(white: 0.75, alpha: 1.0), text: "0/8")
+        let coinsResult = createStatSegment(iconName: "dollarsign.circle.fill", iconColor: UIColor(red: 0.95, green: 0.75, blue: 0.15, alpha: 1.0), text: "100,000")
+        let gemsResult = createStatSegment(iconName: "suit.diamond.fill", iconColor: UIColor(red: 0.20, green: 0.80, blue: 1.00, alpha: 1.0), text: "0")
+        let bagResult = createStatSegment(iconName: "backpack.fill", iconColor: UIColor(white: 0.75, alpha: 1.0), text: "0/8")
         
-        let statsStack = UIStackView(arrangedSubviews: [coinsSegment, gemsSegment, bagSegment])
+        self.coinsLabel = coinsResult.1
+        self.gemsLabel = gemsResult.1
+        
+        let statsStack = UIStackView(arrangedSubviews: [coinsResult.0, gemsResult.0, bagResult.0])
         statsStack.axis = .horizontal
         statsStack.spacing = 16
         statsStack.distribution = .equalSpacing
@@ -472,7 +666,7 @@ final class MainMapViewController: UIViewController {
     }
     
     // MARK: - Premium Segment Builder
-    private func createStatSegment(iconName: String, iconColor: UIColor, text: String) -> UIView {
+    private func createStatSegment(iconName: String, iconColor: UIColor, text: String) -> (UIView, UILabel) {
         let container = UIView()
         container.translatesAutoresizingMaskIntoConstraints = false
         
@@ -502,7 +696,7 @@ final class MainMapViewController: UIViewController {
             label.centerYAnchor.constraint(equalTo: container.centerYAnchor)
         ])
         
-        return container
+        return (container, label)
     }
     
     // MARK: - Setup Inventory UI
@@ -626,14 +820,7 @@ final class MainMapViewController: UIViewController {
             UIView.animate(withDuration: 0.1) {
                 self.buildButton.transform = .identity
             }
-            
-            let alert = UIAlertController(
-                title: "Build Mode Activated 🏗️",
-                message: "Your 500-meter electromagnetic build range is fully online! You can place GeoCities structures anywhere inside the dashed blue perimeter.",
-                preferredStyle: .alert
-            )
-            alert.addAction(UIAlertAction(title: "Awesome", style: .default))
-            self.present(alert, animated: true)
+            self.showBuildStorePanel()
         }
     }
     
@@ -658,6 +845,779 @@ final class MainMapViewController: UIViewController {
             )
             alert.addAction(UIAlertAction(title: "Close", style: .cancel))
             self.present(alert, animated: true)
+        }
+    }
+    
+    // MARK: - Build Store & Dynamic Placement Engine
+    private func showBuildStorePanel() {
+        dismissActivePanels(animated: false)
+        
+        // Hide bottom bar with smooth animation
+        UIView.animate(withDuration: 0.35, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
+            self.bottomBar.transform = CGAffineTransform(translationX: 0, y: 150)
+            self.bottomBar.alpha = 0
+            self.centerButton.transform = CGAffineTransform(translationX: 0, y: 150)
+            self.centerButton.alpha = 0
+            self.disconnectButton.transform = CGAffineTransform(translationX: 0, y: 150)
+            self.disconnectButton.alpha = 0
+        }, completion: nil)
+        
+        let panelHeight: CGFloat = 280
+        
+        let panel = UIView()
+        panel.backgroundColor = UIColor(white: 0.10, alpha: 0.90)
+        panel.layer.cornerRadius = 24
+        panel.layer.borderWidth = 1.0
+        panel.layer.borderColor = UIColor.white.withAlphaComponent(0.18).cgColor
+        panel.clipsToBounds = true
+        panel.translatesAutoresizingMaskIntoConstraints = false
+        
+        let blurEffect = UIBlurEffect(style: .dark)
+        let blurView = UIVisualEffectView(effect: blurEffect)
+        blurView.translatesAutoresizingMaskIntoConstraints = false
+        panel.addSubview(blurView)
+        NSLayoutConstraint.activate([
+            blurView.topAnchor.constraint(equalTo: panel.topAnchor),
+            blurView.leadingAnchor.constraint(equalTo: panel.leadingAnchor),
+            blurView.trailingAnchor.constraint(equalTo: panel.trailingAnchor),
+            blurView.bottomAnchor.constraint(equalTo: panel.bottomAnchor)
+        ])
+        
+        // Drag indicator handle
+        let dragHandle = UIView()
+        dragHandle.backgroundColor = UIColor.white.withAlphaComponent(0.25)
+        dragHandle.layer.cornerRadius = 2.5
+        dragHandle.translatesAutoresizingMaskIntoConstraints = false
+        panel.addSubview(dragHandle)
+        
+        // Header
+        let titleLabel = UILabel()
+        titleLabel.text = "BUILD STORE 🏗️"
+        titleLabel.textColor = .white
+        titleLabel.font = UIFont.systemFont(ofSize: 17, weight: .bold)
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        panel.addSubview(titleLabel)
+        
+        let subtitleLabel = UILabel()
+        subtitleLabel.text = "Select a business to construct in your zone"
+        subtitleLabel.textColor = UIColor.white.withAlphaComponent(0.5)
+        subtitleLabel.font = UIFont.systemFont(ofSize: 11, weight: .medium)
+        subtitleLabel.translatesAutoresizingMaskIntoConstraints = false
+        panel.addSubview(subtitleLabel)
+        
+        // Close Button
+        let closeButton = UIButton(type: .system)
+        let closeConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .semibold)
+        let closeIcon = UIImage(systemName: "xmark.circle.fill", withConfiguration: closeConfig)
+        closeButton.setImage(closeIcon, for: .normal)
+        closeButton.tintColor = UIColor.white.withAlphaComponent(0.4)
+        closeButton.translatesAutoresizingMaskIntoConstraints = false
+        closeButton.addTarget(self, action: #selector(closeStorePanel), for: .touchUpInside)
+        panel.addSubview(closeButton)
+        
+        // Horizontal stack of cards
+        let cardsStack = UIStackView()
+        cardsStack.axis = .horizontal
+        cardsStack.spacing = 10
+        cardsStack.distribution = .fillEqually
+        cardsStack.translatesAutoresizingMaskIntoConstraints = false
+        panel.addSubview(cardsStack)
+        
+        // Create 3 cards: Kiosk, Cafe, Bar
+        let types: [BuildingType] = [.kiosk, .cafe, .bar]
+        for type in types {
+            let card = createStoreCard(for: type)
+            cardsStack.addArrangedSubview(card)
+        }
+        
+        view.addSubview(panel)
+        self.buildStorePanel = panel
+        
+        NSLayoutConstraint.activate([
+            panel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            panel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            panel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            panel.heightAnchor.constraint(equalToConstant: panelHeight),
+            
+            dragHandle.topAnchor.constraint(equalTo: panel.topAnchor, constant: 8),
+            dragHandle.centerXAnchor.constraint(equalTo: panel.centerXAnchor),
+            dragHandle.widthAnchor.constraint(equalToConstant: 36),
+            dragHandle.heightAnchor.constraint(equalToConstant: 5),
+            
+            titleLabel.topAnchor.constraint(equalTo: dragHandle.bottomAnchor, constant: 12),
+            titleLabel.leadingAnchor.constraint(equalTo: panel.leadingAnchor, constant: 18),
+            
+            subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 2),
+            subtitleLabel.leadingAnchor.constraint(equalTo: panel.leadingAnchor, constant: 18),
+            
+            closeButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
+            closeButton.trailingAnchor.constraint(equalTo: panel.trailingAnchor, constant: -18),
+            closeButton.widthAnchor.constraint(equalToConstant: 28),
+            closeButton.heightAnchor.constraint(equalToConstant: 28),
+            
+            cardsStack.topAnchor.constraint(equalTo: subtitleLabel.bottomAnchor, constant: 16),
+            cardsStack.leadingAnchor.constraint(equalTo: panel.leadingAnchor, constant: 18),
+            cardsStack.trailingAnchor.constraint(equalTo: panel.trailingAnchor, constant: -18),
+            cardsStack.bottomAnchor.constraint(equalTo: panel.bottomAnchor, constant: -20)
+        ])
+        
+        // Animate slide up with bounce
+        panel.transform = CGAffineTransform(translationX: 0, y: 350)
+        panel.alpha = 0
+        UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.78, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
+            panel.transform = .identity
+            panel.alpha = 1.0
+        }, completion: nil)
+        
+        // Haptic feedback
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.impactOccurred()
+    }
+    
+    private func createStoreCard(for type: BuildingType) -> StoreCardView {
+        let card = StoreCardView(type: type)
+        card.backgroundColor = UIColor.white.withAlphaComponent(0.05)
+        card.layer.cornerRadius = 18
+        card.layer.borderWidth = 1.0
+        card.layer.borderColor = UIColor.white.withAlphaComponent(0.12).cgColor
+        card.translatesAutoresizingMaskIntoConstraints = false
+        
+        let emojiLabel = UILabel()
+        emojiLabel.text = type.emoji
+        emojiLabel.font = .systemFont(ofSize: 34)
+        emojiLabel.textAlignment = .center
+        emojiLabel.translatesAutoresizingMaskIntoConstraints = false
+        card.addSubview(emojiLabel)
+        
+        let nameLabel = UILabel()
+        nameLabel.text = type.rawValue.uppercased()
+        nameLabel.textColor = .white
+        nameLabel.font = UIFont.systemFont(ofSize: 12, weight: .black)
+        nameLabel.textAlignment = .center
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        card.addSubview(nameLabel)
+        
+        let costLabel = UILabel()
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        let formattedCost = formatter.string(from: NSNumber(value: type.cost)) ?? "\(type.cost)"
+        costLabel.text = "\(formattedCost) 🪙"
+        costLabel.textColor = UIColor(red: 0.95, green: 0.75, blue: 0.15, alpha: 1.0)
+        costLabel.font = UIFont.systemFont(ofSize: 11, weight: .bold)
+        costLabel.textAlignment = .center
+        costLabel.translatesAutoresizingMaskIntoConstraints = false
+        card.addSubview(costLabel)
+        
+        NSLayoutConstraint.activate([
+            emojiLabel.topAnchor.constraint(equalTo: card.topAnchor, constant: 16),
+            emojiLabel.centerXAnchor.constraint(equalTo: card.centerXAnchor),
+            
+            nameLabel.topAnchor.constraint(equalTo: emojiLabel.bottomAnchor, constant: 10),
+            nameLabel.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 4),
+            nameLabel.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -4),
+            
+            costLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 4),
+            costLabel.centerXAnchor.constraint(equalTo: card.centerXAnchor),
+            costLabel.bottomAnchor.constraint(equalTo: card.bottomAnchor, constant: -16)
+        ])
+        
+        // Tap Gesture Recognizer
+        let tap = UITapGestureRecognizer(target: self, action: #selector(storeCardTapped(_:)))
+        card.addGestureRecognizer(tap)
+        card.isUserInteractionEnabled = true
+        
+        return card
+    }
+    
+    @objc private func storeCardTapped(_ gesture: UITapGestureRecognizer) {
+        guard let card = gesture.view as? StoreCardView else { return }
+        
+        // Micro-bounce visual touch animation on the card
+        UIView.animate(withDuration: 0.12, animations: {
+            card.transform = CGAffineTransform(scaleX: 0.92, y: 0.92)
+        }) { _ in
+            UIView.animate(withDuration: 0.1) {
+                card.transform = .identity
+            }
+            self.storeCardSelected(type: card.buildingType)
+        }
+    }
+    
+    private func storeCardSelected(type: BuildingType) {
+        dismissActivePanels(animated: true)
+        
+        isPlacementModeActive = true
+        selectedTypeToPlace = type
+        
+        // Create top HUD banner
+        let hud = UIView()
+        hud.backgroundColor = UIColor(white: 0.08, alpha: 0.90)
+        hud.layer.cornerRadius = 16
+        hud.layer.borderWidth = 1.0
+        hud.layer.borderColor = UIColor.white.withAlphaComponent(0.18).cgColor
+        hud.clipsToBounds = true
+        hud.translatesAutoresizingMaskIntoConstraints = false
+        
+        let blurEffect = UIBlurEffect(style: .dark)
+        let blurView = UIVisualEffectView(effect: blurEffect)
+        blurView.translatesAutoresizingMaskIntoConstraints = false
+        hud.addSubview(blurView)
+        NSLayoutConstraint.activate([
+            blurView.topAnchor.constraint(equalTo: hud.topAnchor),
+            blurView.leadingAnchor.constraint(equalTo: hud.leadingAnchor),
+            blurView.trailingAnchor.constraint(equalTo: hud.trailingAnchor),
+            blurView.bottomAnchor.constraint(equalTo: hud.bottomAnchor)
+        ])
+        
+        let textLabel = UILabel()
+        textLabel.numberOfLines = 2
+        textLabel.textAlignment = .left
+        
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        let formattedCost = formatter.string(from: NSNumber(value: type.cost)) ?? "\(type.cost)"
+        
+        let titleAttr = [
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12, weight: .bold),
+            NSAttributedString.Key.foregroundColor: UIColor.white
+        ]
+        let subAttr = [
+            NSAttributedString.Key.font: UIFont.systemFont(ofSize: 10, weight: .semibold),
+            NSAttributedString.Key.foregroundColor: UIColor.white.withAlphaComponent(0.6)
+        ]
+        
+        let attrString = NSMutableAttributedString(string: "PLACING \(type.rawValue.uppercased())\n", attributes: titleAttr)
+        attrString.append(NSAttributedString(string: "Tap inside 500m blue range | Cost: \(formattedCost) 🪙", attributes: subAttr))
+        textLabel.attributedText = attrString
+        textLabel.translatesAutoresizingMaskIntoConstraints = false
+        hud.addSubview(textLabel)
+        
+        let cancelBtn = UIButton(type: .system)
+        cancelBtn.setTitle("CANCEL", for: .normal)
+        cancelBtn.titleLabel?.font = UIFont.systemFont(ofSize: 10, weight: .black)
+        cancelBtn.tintColor = UIColor(red: 1.0, green: 0.35, blue: 0.35, alpha: 1.0)
+        cancelBtn.backgroundColor = UIColor.white.withAlphaComponent(0.08)
+        cancelBtn.layer.cornerRadius = 10
+        cancelBtn.layer.borderWidth = 1.0
+        cancelBtn.layer.borderColor = UIColor.white.withAlphaComponent(0.15).cgColor
+        cancelBtn.translatesAutoresizingMaskIntoConstraints = false
+        cancelBtn.addTarget(self, action: #selector(cancelPlacementMode), for: .touchUpInside)
+        hud.addSubview(cancelBtn)
+        
+        view.addSubview(hud)
+        self.placementOverlayView = hud
+        
+        NSLayoutConstraint.activate([
+            hud.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 12),
+            hud.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            hud.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            hud.heightAnchor.constraint(equalToConstant: 54),
+            
+            textLabel.leadingAnchor.constraint(equalTo: hud.leadingAnchor, constant: 16),
+            textLabel.centerYAnchor.constraint(equalTo: hud.centerYAnchor),
+            
+            cancelBtn.trailingAnchor.constraint(equalTo: hud.trailingAnchor, constant: -12),
+            cancelBtn.centerYAnchor.constraint(equalTo: hud.centerYAnchor),
+            cancelBtn.widthAnchor.constraint(equalToConstant: 72),
+            cancelBtn.heightAnchor.constraint(equalToConstant: 28)
+        ])
+        
+        // Hide topStatsBar
+        UIView.animate(withDuration: 0.25) {
+            self.topStatsBar.transform = CGAffineTransform(translationX: 0, y: -100)
+            self.topStatsBar.alpha = 0
+        }
+        
+        // Slide in HUD from top
+        hud.transform = CGAffineTransform(translationX: 0, y: -100)
+        hud.alpha = 0
+        UIView.animate(withDuration: 0.45, delay: 0.0, usingSpringWithDamping: 0.78, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
+            hud.transform = .identity
+            hud.alpha = 1.0
+        }, completion: nil)
+        
+        // Add tap gesture to map
+        if let oldTap = mapTapRecognizer {
+            mapView.removeGestureRecognizer(oldTap)
+        }
+        let tap = UITapGestureRecognizer(target: self, action: #selector(handleMapTap(_:)))
+        mapView.addGestureRecognizer(tap)
+        self.mapTapRecognizer = tap
+    }
+    
+    @objc private func cancelPlacementMode() {
+        guard isPlacementModeActive else { return }
+        isPlacementModeActive = false
+        selectedTypeToPlace = nil
+        
+        // Remove map tap recognizer
+        if let tap = mapTapRecognizer {
+            mapView.removeGestureRecognizer(tap)
+            mapTapRecognizer = nil
+        }
+        
+        // Slide out top HUD
+        if let hud = placementOverlayView {
+            placementOverlayView = nil
+            UIView.animate(withDuration: 0.35, animations: {
+                hud.transform = CGAffineTransform(translationX: 0, y: -100)
+                hud.alpha = 0
+            }) { _ in
+                hud.removeFromSuperview()
+            }
+        }
+        
+        // Bring back topStatsBar and bottomBar
+        UIView.animate(withDuration: 0.40, delay: 0.0, usingSpringWithDamping: 0.78, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
+            self.topStatsBar.transform = .identity
+            self.topStatsBar.alpha = 1.0
+            
+            self.bottomBar.transform = .identity
+            self.bottomBar.alpha = 1.0
+            self.centerButton.transform = .identity
+            self.centerButton.alpha = 1.0
+            self.disconnectButton.transform = .identity
+            self.disconnectButton.alpha = 1.0
+        }, completion: nil)
+    }
+    
+    @objc private func closeStorePanel() {
+        dismissActivePanels(animated: true)
+        
+        // Bring back bottomBar and location buttons
+        UIView.animate(withDuration: 0.40, delay: 0.0, usingSpringWithDamping: 0.78, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
+            self.bottomBar.transform = .identity
+            self.bottomBar.alpha = 1.0
+            self.centerButton.transform = .identity
+            self.centerButton.alpha = 1.0
+            self.disconnectButton.transform = .identity
+            self.disconnectButton.alpha = 1.0
+        }, completion: nil)
+    }
+    
+    @objc private func handleMapTap(_ gesture: UITapGestureRecognizer) {
+        guard isPlacementModeActive, let type = selectedTypeToPlace else { return }
+        
+        // Convert screen touch to map coordinate
+        let touchPoint = gesture.location(in: mapView)
+        let tapCoordinate = mapView.convert(touchPoint, toCoordinateFrom: mapView)
+        
+        // Get user coordinate
+        guard let userCoord = avatarAnnotation?.coordinate else {
+            showNotificationHUD(message: "Location unavailable! Stand where GPS syncs.")
+            return
+        }
+        
+        // Calculate distance in meters
+        let userLoc = CLLocation(latitude: userCoord.latitude, longitude: userCoord.longitude)
+        let tapLoc = CLLocation(latitude: tapCoordinate.latitude, longitude: tapCoordinate.longitude)
+        let distance = tapLoc.distance(from: userLoc)
+        
+        // 1. Distance check
+        if distance > 500.0 {
+            showNotificationHUD(message: "OUT OF RANGE 📡\nDistance is \(Int(distance))m. Must be inside 500m circle!")
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.error)
+            return
+        }
+        
+        // 2. Fund check
+        if coins < type.cost {
+            showNotificationHUD(message: "INSUFFICIENT FUNDS 🪙\nNeed \(type.cost) coins, you have \(coins)!")
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.error)
+            return
+        }
+        
+        // 3. Construction Successful!
+        coins -= type.cost
+        updateStatsBarLabels()
+        
+        let newBuilding = BuildingItem(type: type, coordinate: tapCoordinate)
+        placedBuildings.append(newBuilding)
+        
+        let annotation = BuildingAnnotation(coordinate: tapCoordinate, buildingItem: newBuilding)
+        mapView.addAnnotation(annotation)
+        
+        // Haptic feedback
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.success)
+        
+        showNotificationHUD(message: "CONSTRUCTION SUCCESSFUL 🏗️\nPlaced \(type.rawValue)!")
+        
+        // Exit placement mode
+        cancelPlacementMode()
+    }
+    
+    // MARK: - Inspection & Upgrade Engine
+    private func showBuildingInspectionPanel(for annotation: BuildingAnnotation) {
+        dismissActivePanels(animated: false)
+        
+        self.selectedBuildingAnnotation = annotation
+        
+        // Hide bottom bar with smooth animation
+        UIView.animate(withDuration: 0.35, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
+            self.bottomBar.transform = CGAffineTransform(translationX: 0, y: 150)
+            self.bottomBar.alpha = 0
+            self.centerButton.transform = CGAffineTransform(translationX: 0, y: 150)
+            self.centerButton.alpha = 0
+            self.disconnectButton.transform = CGAffineTransform(translationX: 0, y: 150)
+            self.disconnectButton.alpha = 0
+        }, completion: nil)
+        
+        let panelHeight: CGFloat = 220
+        
+        let panel = UIView()
+        panel.backgroundColor = UIColor(white: 0.10, alpha: 0.90)
+        panel.layer.cornerRadius = 24
+        panel.layer.borderWidth = 1.0
+        panel.layer.borderColor = UIColor.white.withAlphaComponent(0.18).cgColor
+        panel.clipsToBounds = true
+        panel.translatesAutoresizingMaskIntoConstraints = false
+        
+        let blurEffect = UIBlurEffect(style: .dark)
+        let blurView = UIVisualEffectView(effect: blurEffect)
+        blurView.translatesAutoresizingMaskIntoConstraints = false
+        panel.addSubview(blurView)
+        NSLayoutConstraint.activate([
+            blurView.topAnchor.constraint(equalTo: panel.topAnchor),
+            blurView.leadingAnchor.constraint(equalTo: panel.leadingAnchor),
+            blurView.trailingAnchor.constraint(equalTo: panel.trailingAnchor),
+            blurView.bottomAnchor.constraint(equalTo: panel.bottomAnchor)
+        ])
+        
+        // Drag indicator handle
+        let dragHandle = UIView()
+        dragHandle.backgroundColor = UIColor.white.withAlphaComponent(0.25)
+        dragHandle.layer.cornerRadius = 2.5
+        dragHandle.translatesAutoresizingMaskIntoConstraints = false
+        panel.addSubview(dragHandle)
+        
+        // Building Title & Info
+        let building = annotation.buildingItem
+        
+        let emojiLabel = UILabel()
+        emojiLabel.text = building.emoji
+        emojiLabel.font = .systemFont(ofSize: 38)
+        emojiLabel.translatesAutoresizingMaskIntoConstraints = false
+        panel.addSubview(emojiLabel)
+        
+        let nameLabel = UILabel()
+        nameLabel.text = "\(building.name.uppercased())"
+        nameLabel.textColor = .white
+        nameLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        nameLabel.translatesAutoresizingMaskIntoConstraints = false
+        panel.addSubview(nameLabel)
+        
+        let levelLabel = UILabel()
+        levelLabel.text = "LEVEL \(building.level)"
+        levelLabel.textColor = UIColor(red: 0.15, green: 0.55, blue: 0.95, alpha: 1.0)
+        levelLabel.font = UIFont.systemFont(ofSize: 11, weight: .black)
+        levelLabel.translatesAutoresizingMaskIntoConstraints = false
+        panel.addSubview(levelLabel)
+        
+        // Close Button
+        let closeButton = UIButton(type: .system)
+        let closeConfig = UIImage.SymbolConfiguration(pointSize: 20, weight: .semibold)
+        let closeIcon = UIImage(systemName: "xmark.circle.fill", withConfiguration: closeConfig)
+        closeButton.setImage(closeIcon, for: .normal)
+        closeButton.tintColor = UIColor.white.withAlphaComponent(0.4)
+        closeButton.translatesAutoresizingMaskIntoConstraints = false
+        closeButton.addTarget(self, action: #selector(closeInspectionPanel), for: .touchUpInside)
+        panel.addSubview(closeButton)
+        
+        // Detail values: Income, Capacity (Slots), HP
+        let incomeLabel = UILabel()
+        let currentIncome = calculateIncome(for: building)
+        incomeLabel.text = "INCOME: \(currentIncome) 🪙/hr"
+        incomeLabel.textColor = UIColor.white.withAlphaComponent(0.7)
+        incomeLabel.font = UIFont.systemFont(ofSize: 11, weight: .bold)
+        incomeLabel.translatesAutoresizingMaskIntoConstraints = false
+        panel.addSubview(incomeLabel)
+        
+        let capacityLabel = UILabel()
+        capacityLabel.text = "CAPACITY: \(building.capacity) SLOT\(building.capacity > 1 ? "S" : "")"
+        capacityLabel.textColor = UIColor.white.withAlphaComponent(0.7)
+        capacityLabel.font = UIFont.systemFont(ofSize: 11, weight: .bold)
+        capacityLabel.translatesAutoresizingMaskIntoConstraints = false
+        panel.addSubview(capacityLabel)
+        
+        // HP Progress Section
+        let hpLabel = UILabel()
+        hpLabel.text = "HP: \(building.currentHP)/\(building.maxHP)"
+        hpLabel.textColor = UIColor.white.withAlphaComponent(0.5)
+        hpLabel.font = UIFont.systemFont(ofSize: 10, weight: .semibold)
+        hpLabel.translatesAutoresizingMaskIntoConstraints = false
+        panel.addSubview(hpLabel)
+        
+        let hpProgressContainer = UIView()
+        hpProgressContainer.backgroundColor = UIColor.white.withAlphaComponent(0.08)
+        hpProgressContainer.layer.cornerRadius = 3
+        hpProgressContainer.translatesAutoresizingMaskIntoConstraints = false
+        panel.addSubview(hpProgressContainer)
+        
+        let hpProgressBar = UIView()
+        hpProgressBar.backgroundColor = UIColor(red: 0.15, green: 0.85, blue: 0.45, alpha: 1.0)
+        hpProgressBar.layer.cornerRadius = 3
+        hpProgressBar.translatesAutoresizingMaskIntoConstraints = false
+        hpProgressContainer.addSubview(hpProgressBar)
+        
+        // Upgrade button
+        let upgradeButton = UIButton(type: .system)
+        let upgradeCost = building.level * 5000
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        let formattedCost = formatter.string(from: NSNumber(value: upgradeCost)) ?? "\(upgradeCost)"
+        upgradeButton.setTitle("UPGRADE - \(formattedCost) 🪙", for: .normal)
+        upgradeButton.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .black)
+        upgradeButton.tintColor = .white
+        upgradeButton.backgroundColor = UIColor(red: 0.15, green: 0.55, blue: 0.95, alpha: 1.0)
+        upgradeButton.layer.cornerRadius = 14
+        upgradeButton.layer.borderWidth = 1.0
+        upgradeButton.layer.borderColor = UIColor.white.withAlphaComponent(0.20).cgColor
+        upgradeButton.translatesAutoresizingMaskIntoConstraints = false
+        upgradeButton.addTarget(self, action: #selector(upgradeBuildingTapped), for: .touchUpInside)
+        panel.addSubview(upgradeButton)
+        
+        view.addSubview(panel)
+        self.inspectionPanel = panel
+        
+        let hpRatio = CGFloat(building.currentHP) / CGFloat(building.maxHP)
+        
+        NSLayoutConstraint.activate([
+            panel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
+            panel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            panel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            panel.heightAnchor.constraint(equalToConstant: panelHeight),
+            
+            dragHandle.topAnchor.constraint(equalTo: panel.topAnchor, constant: 8),
+            dragHandle.centerXAnchor.constraint(equalTo: panel.centerXAnchor),
+            dragHandle.widthAnchor.constraint(equalToConstant: 36),
+            dragHandle.heightAnchor.constraint(equalToConstant: 5),
+            
+            emojiLabel.topAnchor.constraint(equalTo: dragHandle.bottomAnchor, constant: 14),
+            emojiLabel.leadingAnchor.constraint(equalTo: panel.leadingAnchor, constant: 20),
+            emojiLabel.widthAnchor.constraint(equalToConstant: 44),
+            emojiLabel.heightAnchor.constraint(equalToConstant: 44),
+            
+            nameLabel.topAnchor.constraint(equalTo: emojiLabel.topAnchor, constant: 2),
+            nameLabel.leadingAnchor.constraint(equalTo: emojiLabel.trailingAnchor, constant: 12),
+            
+            levelLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 2),
+            levelLabel.leadingAnchor.constraint(equalTo: emojiLabel.trailingAnchor, constant: 12),
+            
+            closeButton.centerYAnchor.constraint(equalTo: nameLabel.centerYAnchor),
+            closeButton.trailingAnchor.constraint(equalTo: panel.trailingAnchor, constant: -20),
+            closeButton.widthAnchor.constraint(equalToConstant: 28),
+            closeButton.heightAnchor.constraint(equalToConstant: 28),
+            
+            incomeLabel.topAnchor.constraint(equalTo: emojiLabel.bottomAnchor, constant: 16),
+            incomeLabel.leadingAnchor.constraint(equalTo: panel.leadingAnchor, constant: 20),
+            
+            capacityLabel.topAnchor.constraint(equalTo: incomeLabel.bottomAnchor, constant: 6),
+            capacityLabel.leadingAnchor.constraint(equalTo: panel.leadingAnchor, constant: 20),
+            
+            hpLabel.topAnchor.constraint(equalTo: capacityLabel.bottomAnchor, constant: 12),
+            hpLabel.leadingAnchor.constraint(equalTo: panel.leadingAnchor, constant: 20),
+            
+            hpProgressContainer.topAnchor.constraint(equalTo: hpLabel.bottomAnchor, constant: 6),
+            hpProgressContainer.leadingAnchor.constraint(equalTo: panel.leadingAnchor, constant: 20),
+            hpProgressContainer.widthAnchor.constraint(equalToConstant: 120),
+            hpProgressContainer.heightAnchor.constraint(equalToConstant: 6),
+            
+            hpProgressBar.leadingAnchor.constraint(equalTo: hpProgressContainer.leadingAnchor),
+            hpProgressBar.topAnchor.constraint(equalTo: hpProgressContainer.topAnchor),
+            hpProgressBar.bottomAnchor.constraint(equalTo: hpProgressContainer.bottomAnchor),
+            hpProgressBar.widthAnchor.constraint(equalTo: hpProgressContainer.widthAnchor, multiplier: hpRatio),
+            
+            upgradeButton.trailingAnchor.constraint(equalTo: panel.trailingAnchor, constant: -20),
+            upgradeButton.bottomAnchor.constraint(equalTo: panel.bottomAnchor, constant: -20),
+            upgradeButton.widthAnchor.constraint(equalToConstant: 150),
+            upgradeButton.heightAnchor.constraint(equalToConstant: 44)
+        ])
+        
+        // Animate slide up
+        panel.transform = CGAffineTransform(translationX: 0, y: 350)
+        panel.alpha = 0
+        UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.78, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
+            panel.transform = .identity
+            panel.alpha = 1.0
+        }, completion: nil)
+        
+        // Haptic feedback
+        let generator = UIImpactFeedbackGenerator(style: .medium)
+        generator.impactOccurred()
+    }
+    
+    private func calculateIncome(for building: BuildingItem) -> Int {
+        switch building.type {
+        case .kiosk: return building.level * 250
+        case .cafe: return building.level * 600
+        case .bar: return building.level * 1000
+        }
+    }
+    
+    @objc private func closeInspectionPanel() {
+        dismissActivePanels(animated: true)
+        
+        // Bring back bottomBar and location buttons
+        UIView.animate(withDuration: 0.40, delay: 0.0, usingSpringWithDamping: 0.78, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
+            self.bottomBar.transform = .identity
+            self.bottomBar.alpha = 1.0
+            self.centerButton.transform = .identity
+            self.centerButton.alpha = 1.0
+            self.disconnectButton.transform = .identity
+            self.disconnectButton.alpha = 1.0
+        }, completion: nil)
+    }
+    
+    @objc private func upgradeBuildingTapped() {
+        guard let annotation = selectedBuildingAnnotation else { return }
+        let currentLevel = annotation.buildingItem.level
+        let upgradeCost = currentLevel * 5000
+        
+        // 1. Check funds
+        if coins < upgradeCost {
+            showNotificationHUD(message: "INSUFFICIENT FUNDS 🪙\nNeed \(upgradeCost) coins to upgrade!")
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.error)
+            return
+        }
+        
+        // 2. Perform upgrade
+        coins -= upgradeCost
+        updateStatsBarLabels()
+        
+        // Modify actual structure values
+        annotation.buildingItem.level += 1
+        annotation.buildingItem.currentHP = 100
+        
+        // Refresh annotation
+        mapView.removeAnnotation(annotation)
+        mapView.addAnnotation(annotation)
+        
+        // Trigger haptics
+        let generator = UINotificationFeedbackGenerator()
+        generator.notificationOccurred(.success)
+        
+        // Show success toast
+        showNotificationHUD(message: "UPGRADED TO LEVEL \(currentLevel + 1) 🚀")
+        
+        // Re-open inspection panel to show new values!
+        showBuildingInspectionPanel(for: annotation)
+    }
+    
+    // MARK: - Premium Dynamic Notification Toast & Stats
+    private func updateStatsBarLabels() {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        
+        if let formattedCoins = formatter.string(from: NSNumber(value: coins)) {
+            coinsLabel?.text = formattedCoins
+        } else {
+            coinsLabel?.text = "\(coins)"
+        }
+        
+        gemsLabel?.text = "\(gems)"
+        
+        // Add a micro-animation (brief scale pop) to stats bar labels when they update
+        UIView.animate(withDuration: 0.1, animations: {
+            self.coinsLabel?.transform = CGAffineTransform(scaleX: 1.15, y: 1.15)
+        }) { _ in
+            UIView.animate(withDuration: 0.1) {
+                self.coinsLabel?.transform = .identity
+            }
+        }
+    }
+    
+    private func showNotificationHUD(message: String) {
+        let toast = UIView()
+        toast.backgroundColor = UIColor(white: 0.12, alpha: 0.92)
+        toast.layer.cornerRadius = 20
+        toast.layer.borderWidth = 1.0
+        toast.layer.borderColor = UIColor.white.withAlphaComponent(0.20).cgColor
+        toast.clipsToBounds = true
+        toast.translatesAutoresizingMaskIntoConstraints = false
+        
+        let blurEffect = UIBlurEffect(style: .dark)
+        let blurView = UIVisualEffectView(effect: blurEffect)
+        blurView.translatesAutoresizingMaskIntoConstraints = false
+        toast.addSubview(blurView)
+        NSLayoutConstraint.activate([
+            blurView.topAnchor.constraint(equalTo: toast.topAnchor),
+            blurView.leadingAnchor.constraint(equalTo: toast.leadingAnchor),
+            blurView.trailingAnchor.constraint(equalTo: toast.trailingAnchor),
+            blurView.bottomAnchor.constraint(equalTo: toast.bottomAnchor)
+        ])
+        
+        let label = UILabel()
+        label.text = message
+        label.textColor = .white
+        label.font = UIFont.systemFont(ofSize: 12, weight: .bold)
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        toast.addSubview(label)
+        
+        view.addSubview(toast)
+        
+        NSLayoutConstraint.activate([
+            toast.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            toast.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -100),
+            toast.widthAnchor.constraint(greaterThanOrEqualToConstant: 180),
+            toast.widthAnchor.constraint(lessThanOrEqualToConstant: 300),
+            toast.heightAnchor.constraint(greaterThanOrEqualToConstant: 40),
+            
+            label.topAnchor.constraint(equalTo: toast.topAnchor, constant: 10),
+            label.leadingAnchor.constraint(equalTo: toast.leadingAnchor, constant: 16),
+            label.trailingAnchor.constraint(equalTo: toast.trailingAnchor, constant: -16),
+            label.bottomAnchor.constraint(equalTo: toast.bottomAnchor, constant: -10)
+        ])
+        
+        toast.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+        toast.alpha = 0.0
+        
+        UIView.animate(withDuration: 0.45, delay: 0.0, usingSpringWithDamping: 0.72, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
+            toast.transform = .identity
+            toast.alpha = 1.0
+        }) { _ in
+            UIView.animate(withDuration: 0.35, delay: 1.8, options: .curveEaseIn, animations: {
+                toast.transform = CGAffineTransform(scaleX: 0.85, y: 0.85)
+                toast.alpha = 0.0
+            }) { _ in
+                toast.removeFromSuperview()
+            }
+        }
+    }
+    
+    private func dismissActivePanels(animated: Bool = true) {
+        if let panel = buildStorePanel {
+            buildStorePanel = nil
+            if animated {
+                UIView.animate(withDuration: 0.3, animations: {
+                    panel.transform = CGAffineTransform(translationX: 0, y: 350)
+                    panel.alpha = 0
+                }) { _ in
+                    panel.removeFromSuperview()
+                }
+            } else {
+                panel.removeFromSuperview()
+            }
+        }
+        
+        if let panel = inspectionPanel {
+            inspectionPanel = nil
+            selectedBuildingAnnotation = nil
+            if animated {
+                UIView.animate(withDuration: 0.3, animations: {
+                    panel.transform = CGAffineTransform(translationX: 0, y: 350)
+                    panel.alpha = 0
+                }) { _ in
+                    panel.removeFromSuperview()
+                }
+            } else {
+                panel.removeFromSuperview()
+            }
         }
     }
     
@@ -876,6 +1836,14 @@ extension MainMapViewController: MKMapViewDelegate {
             return view
         }
         
+        if let buildingAnnotation = annotation as? BuildingAnnotation {
+            let view = mapView.dequeueReusableAnnotationView(withIdentifier: BuildingAnnotationView.reuseID) as? BuildingAnnotationView
+                ?? BuildingAnnotationView(annotation: buildingAnnotation, reuseIdentifier: BuildingAnnotationView.reuseID)
+            view.annotation = buildingAnnotation
+            view.configure(with: buildingAnnotation.buildingItem)
+            return view
+        }
+        
         guard let avatarAnnotation = annotation as? AvatarAnnotation else { return nil }
         
         let view = mapView.dequeueReusableAnnotationView(withIdentifier: AvatarAnnotationView.reuseID) as? AvatarAnnotationView
@@ -907,6 +1875,12 @@ extension MainMapViewController: MKMapViewDelegate {
             }
         }
         return MKOverlayRenderer(overlay: overlay)
+    }
+    
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        guard let buildingAnnotation = view.annotation as? BuildingAnnotation else { return }
+        mapView.deselectAnnotation(buildingAnnotation, animated: true)
+        showBuildingInspectionPanel(for: buildingAnnotation)
     }
     
     // MARK: - Animated Welcome HUD Banner
