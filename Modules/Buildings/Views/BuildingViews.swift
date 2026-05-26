@@ -29,7 +29,7 @@ public final class BuildingAnnotationView: MKAnnotationView {
     
     private let emojiLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 26)
+        label.font = .systemFont(ofSize: 22)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -105,13 +105,16 @@ public final class BuildingAnnotationView: MKAnnotationView {
         emojiLabel.text = building.emoji
         badgeLabel.text = "L\(building.level)"
         
+        let scale = 1.0 + CGFloat(building.level / 10) * 0.03
         if !isAnimated {
             isAnimated = true
             // Premium bounce animation on first load
             transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
             UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
-                self.transform = .identity
+                self.transform = CGAffineTransform(scaleX: scale, y: scale)
             }, completion: nil)
+        } else {
+            self.transform = CGAffineTransform(scaleX: scale, y: scale)
         }
     }
     

@@ -5,7 +5,7 @@ import CoreLocation
 // MARK: - Building Type
 public enum BuildingType: String {
     case kiosk = "Kiosk"
-    case cafe  = "Cafe"
+    case cafe  = "Laundry"
     case bar   = "Bar"
 
     public var cost: Int {
@@ -19,7 +19,7 @@ public enum BuildingType: String {
     public var emoji: String {
         switch self {
         case .kiosk: return "🏪"
-        case .cafe:  return "☕"
+        case .cafe:  return "🧺"
         case .bar:   return "🍺"
         }
     }
@@ -43,10 +43,46 @@ public struct BuildingItem {
     /// Timestamp of the last income collection (or placement time)
     public var lastCollectedDate: Date = Date()
 
-    public var name: String  { type.rawValue }
+    public var name: String {
+        switch type {
+        case .kiosk:
+            if level >= 30 { return "Small Factory" }
+            else if level >= 20 { return "Supermarket" }
+            else if level >= 10 { return "Shop" }
+            else { return "Kiosk" }
+        case .cafe:
+            if level >= 30 { return "Atelier" }
+            else if level >= 20 { return "Boutique" }
+            else if level >= 10 { return "Dry Cleaner" }
+            else { return "Laundry" }
+        case .bar:
+            if level >= 30 { return "Hotel" }
+            else if level >= 20 { return "Restaurant" }
+            else if level >= 10 { return "Cafe" }
+            else { return "Bar" }
+        }
+    }
     public var cost: Int     { type.cost }
     public var capacity: Int { level }
-    public var emoji: String { type.emoji }
+    public var emoji: String {
+        switch type {
+        case .kiosk:
+            if level >= 30 { return "🏭" }
+            else if level >= 20 { return "🛒" }
+            else if level >= 10 { return "🛍️" }
+            else { return "🏪" }
+        case .cafe:
+            if level >= 30 { return "🪡" }
+            else if level >= 20 { return "👗" }
+            else if level >= 10 { return "🧼" }
+            else { return "🧺" }
+        case .bar:
+            if level >= 30 { return "🏨" }
+            else if level >= 20 { return "🍽️" }
+            else if level >= 10 { return "☕" }
+            else { return "🍺" }
+        }
+    }
 
     public var maxHP: Int {
         return 100 + (staffLevel * 20) + (equipLevel * 30)
@@ -103,22 +139,4 @@ public final class BuildingAnnotation: NSObject, MKAnnotation {
     }
 }
 
-// MARK: - Exclusion Overlay (translucent square barrier per building)
-public final class BuildingExclusionOverlay: NSObject, MKOverlay {
-    public let coordinate: CLLocationCoordinate2D
-    public let boundingMapRect: MKMapRect
-    public let buildingID: UUID
 
-    public init(center: CLLocationCoordinate2D, radiusMeters: Double, buildingID: UUID) {
-        self.coordinate = center
-        self.buildingID = buildingID
-
-        let centerPoint = MKMapPoint(center)
-        let metersPerPoint = MKMetersPerMapPointAtLatitude(center.latitude)
-        let delta = radiusMeters / metersPerPoint
-        let origin = MKMapPoint(x: centerPoint.x - delta, y: centerPoint.y - delta)
-        self.boundingMapRect = MKMapRect(origin: origin,
-                                         size: MKMapSize(width: delta * 2, height: delta * 2))
-        super.init()
-    }
-}
