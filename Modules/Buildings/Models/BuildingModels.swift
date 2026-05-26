@@ -103,22 +103,4 @@ public final class BuildingAnnotation: NSObject, MKAnnotation {
     }
 }
 
-// MARK: - Exclusion Overlay (translucent square barrier per building)
-public final class BuildingExclusionOverlay: NSObject, MKOverlay {
-    public let coordinate: CLLocationCoordinate2D
-    public let boundingMapRect: MKMapRect
-    public let buildingID: UUID
 
-    public init(center: CLLocationCoordinate2D, radiusMeters: Double, buildingID: UUID) {
-        self.coordinate = center
-        self.buildingID = buildingID
-
-        let centerPoint = MKMapPoint(center)
-        let metersPerPoint = MKMetersPerMapPointAtLatitude(center.latitude)
-        let delta = radiusMeters / metersPerPoint
-        let origin = MKMapPoint(x: centerPoint.x - delta, y: centerPoint.y - delta)
-        self.boundingMapRect = MKMapRect(origin: origin,
-                                         size: MKMapSize(width: delta * 2, height: delta * 2))
-        super.init()
-    }
-}

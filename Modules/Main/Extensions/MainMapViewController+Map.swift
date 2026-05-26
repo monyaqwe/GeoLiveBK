@@ -38,14 +38,8 @@ extension MainMapViewController: MKMapViewDelegate {
     // MARK: Overlay rendering
     public func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
 
-        // Square exclusion barrier
-        if let exclusion = overlay as? BuildingExclusionOverlay {
-            let renderer = MKPolygonRenderer(polygon: squarePolygon(from: exclusion))
-            renderer.fillColor   = UIColor(red: 1.0, green: 0.35, blue: 0.10, alpha: 0.12)
-            renderer.strokeColor = UIColor(red: 1.0, green: 0.45, blue: 0.10, alpha: 0.55)
-            renderer.lineWidth   = 1.5
-            renderer.lineDashPattern = [5, 4]
-            return renderer
+        if let zonesOverlay = overlay as? BuildingExclusionZonesOverlay {
+            return BuildingExclusionZonesRenderer(overlay: zonesOverlay)
         }
 
         if let circle = overlay as? MKCircle {
@@ -56,12 +50,18 @@ extension MainMapViewController: MKMapViewDelegate {
                 renderer.strokeColor = UIColor.white.withAlphaComponent(0.12)
                 renderer.lineWidth   = 1.2
                 renderer.lineDashPattern = [4, 6]
-            } else {
+            } else if circle.radius == 150 {
                 // 150m build-range ring
                 renderer.fillColor   = UIColor(red: 0.05, green: 0.40, blue: 0.95, alpha: 0.06)
                 renderer.strokeColor = UIColor(red: 0.05, green: 0.40, blue: 0.95, alpha: 0.28)
                 renderer.lineWidth   = 1.5
                 renderer.lineDashPattern = [6, 4]
+            } else {
+                // 100m building exclusion ring
+                renderer.fillColor   = UIColor(red: 1.0, green: 0.35, blue: 0.10, alpha: 0.12)
+                renderer.strokeColor = UIColor(red: 1.0, green: 0.45, blue: 0.10, alpha: 0.55)
+                renderer.lineWidth   = 1.5
+                renderer.lineDashPattern = [5, 4]
             }
             return renderer
         }
@@ -97,16 +97,4 @@ extension MainMapViewController: MKMapViewDelegate {
     }
 
     // MARK: - Helpers
-
-    /// Build a square MKPolygon from an exclusion overlay (for rendering)
-    private func squarePolygon(from exclusion: BuildingExclusionOverlay) -> MKPolygon {
-        let rect   = exclusion.boundingMapRect
-        let points = [
-            MKMapPoint(x: rect.minX, y: rect.minY),
-            MKMapPoint(x: rect.maxX, y: rect.minY),
-            MKMapPoint(x: rect.maxX, y: rect.maxY),
-            MKMapPoint(x: rect.minX, y: rect.maxY),
-        ]
-        return MKPolygon(points: points, count: 4)
-    }
 }
