@@ -261,15 +261,15 @@ public final class MainMapViewController: UIViewController {
     }
     public var activeSheetState: SheetState = .collapsed
     public var slotsInspectionView: UIView?
-    
+
     // Player dynamic resources
     private var coins: Int = 100000
     private var gems: Int = 0
-    
+
     // UI Outlets for stats
     private var coinsLabel: UILabel?
     private var gemsLabel: UILabel?
-    
+
     // Construction and Upgrade states
     public var placedBuildings: [BuildingItem] = []
     public var isPlacementModeActive: Bool = false
@@ -282,6 +282,12 @@ public final class MainMapViewController: UIViewController {
     public var inspectionPanelHeightConstraint: NSLayoutConstraint?
     public var isInspectionPanelExpanded: Bool = false
     public var expandedInspectionView: UIView?
+
+    /// Tracks exclusion-zone overlays keyed by building UUID
+    public var exclusionOverlays: [UUID: BuildingExclusionOverlay] = [:]
+
+    /// Collect-button inside the inspection panel (updated on open)
+    private weak var collectButton: UIButton?
     
     // MARK: - Init
     init(nickname: String, gender: Gender, avatarImage: UIImage?, onDisconnect: (() -> Void)?) {
@@ -1195,45 +1201,59 @@ public final class MainMapViewController: UIViewController {
     
     @objc private func handleMapTap(_ gesture: UITapGestureRecognizer) {
         guard isPlacementModeActive, let type = selectedTypeToPlace else { return }
-        
-        let touchPoint = gesture.location(in: mapView)
+
+        let touchPoint    = gesture.location(in: mapView)
         let tapCoordinate = mapView.convert(touchPoint, toCoordinateFrom: mapView)
-        
+
         guard let userCoord = avatarAnnotation?.coordinate else {
             showNotificationHUD(message: "Location unavailable! Stand where GPS syncs.")
             return
         }
-        
-        let userLoc = CLLocation(latitude: userCoord.latitude, longitude: userCoord.longitude)
-        let tapLoc = CLLocation(latitude: tapCoordinate.latitude, longitude: tapCoordinate.longitude)
-        let distance = tapLoc.distance(from: userLoc)
-        
-        if distance > 350.0 {
-            showNotificationHUD(message: "OUT OF RANGE 📡\nDistance is \(Int(distance))m. Must be inside 350m circle!")
-            let generator = UINotificationFeedbackGenerator()
-            generator.notificationOccurred(.error)
+
+        let userLoc = CLLocation(latitude: userCoord.latitude,     longitude: userCoord.longitude)
+        let tapLoc  = CLLocation(latitude: tapCoordinate.latitude, longitude: tapCoordinate.longitude)
+        let distanceFromUser = tapLoc.distance(from: userLoc)
+
+        if distanceFromUser > 350.0 {
+            showNotificationHUD(message: "OUT OF RANGE 📡\nDistance \(Int(distanceFromUser))m — must be inside 350m zone!")
+            UINotificationFeedbackGenerator().notificationOccurred(.error)
             return
         }
-        
+
+        // Exclusion zone check — can't build within 100m of an existing building
+        for building in placedBuildings {
+            let bLoc  = CLLocation(latitude: building.coordinate.latitude, longitude: building.coordinate.longitude)
+            let dist  = tapLoc.distance(from: bLoc)
+            if dist < BuildingType.exclusionRadius {
+                showNotificationHUD(message: "TOO CLOSE ⛔\nAnother building is within \(Int(BuildingType.exclusionRadius))m!")
+                UINotificationFeedbackGenerator().notificationOccurred(.error)
+                return
+            }
+        }
+
         if coins < type.cost {
-            showNotificationHUD(message: "INSUFFICIENT FUNDS\nNeed $\(type.cost), you have $\(coins)!") // Replaced 🪙 with $
-            let generator = UINotificationFeedbackGenerator()
-            generator.notificationOccurred(.error)
+            showNotificationHUD(message: "INSUFFICIENT FUNDS\nNeed $\(type.cost), you have $\(coins)!")
+            UINotificationFeedbackGenerator().notificationOccurred(.error)
             return
         }
-        
+
         coins -= type.cost
         updateStatsBarLabels()
-        
+
         let newBuilding = BuildingItem(type: type, coordinate: tapCoordinate)
         placedBuildings.append(newBuilding)
-        
+
         let annotation = BuildingAnnotation(coordinate: tapCoordinate, buildingItem: newBuilding)
         mapView.addAnnotation(annotation)
-        
-        let generator = UINotificationFeedbackGenerator()
-        generator.notificationOccurred(.success)
-        
+
+        // Add exclusion overlay (square barrier)
+        let exclusion = BuildingExclusionOverlay(center: tapCoordinate,
+                                                  radiusMeters: BuildingType.exclusionRadius,
+                                                  buildingID: newBuilding.id)
+        exclusionOverlays[newBuilding.id] = exclusion
+        mapView.addOverlay(exclusion, level: .aboveRoads)
+
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
         showNotificationHUD(message: "CONSTRUCTION SUCCESSFUL 🏗\nPlaced \(type.rawValue)!")
         checkQuestsProgress()
         cancelPlacementMode()
@@ -1312,12 +1332,36 @@ public final class MainMapViewController: UIViewController {
         panel.addSubview(closeButton)
         
         let incomeLabel = UILabel()
-        incomeLabel.text = "INCOME: $\(building.totalIncome)/hr" // Replaced 🪙 with $
+        incomeLabel.text = "INCOME: $\(building.totalIncome)/hr"
         incomeLabel.textColor = UIColor.white.withAlphaComponent(0.7)
         incomeLabel.font = UIFont.systemFont(ofSize: 11, weight: .bold)
         incomeLabel.translatesAutoresizingMaskIntoConstraints = false
         panel.addSubview(incomeLabel)
-        
+
+        // COLLECT button — shows pending income, tapping collects it
+        let pending = building.pendingIncome
+        let collectBtn = UIButton(type: .custom)
+        let canCollect = pending >= building.totalIncome
+        let collectTitle = canCollect
+            ? "COLLECT $\(pending) ⬆️"
+            : "PENDING $\(pending)"
+        collectBtn.setTitle(collectTitle, for: .normal)
+        collectBtn.titleLabel?.font = UIFont.systemFont(ofSize: 10, weight: .black)
+        collectBtn.titleLabel?.numberOfLines = 1
+        collectBtn.setTitleColor(canCollect ? UIColor(white: 0.08, alpha: 1) : .white, for: .normal)
+        collectBtn.backgroundColor = canCollect
+            ? UIColor(red: 0.25, green: 0.85, blue: 0.45, alpha: 1.0)
+            : UIColor.white.withAlphaComponent(0.10)
+        collectBtn.layer.cornerRadius = 12
+        collectBtn.layer.borderWidth = 1.0
+        collectBtn.layer.borderColor = UIColor.white.withAlphaComponent(canCollect ? 0.0 : 0.12).cgColor
+        collectBtn.contentEdgeInsets = UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 12)
+        collectBtn.isEnabled = canCollect
+        collectBtn.translatesAutoresizingMaskIntoConstraints = false
+        collectBtn.addTarget(self, action: #selector(collectIncomeTapped), for: .touchUpInside)
+        panel.addSubview(collectBtn)
+        self.collectButton = collectBtn
+
         let capacityLabel = UILabel()
         capacityLabel.text = "CAPACITY: \(building.capacity) SLOT\(building.capacity > 1 ? "S" : "")"
         capacityLabel.textColor = UIColor.white.withAlphaComponent(0.7)
@@ -1636,7 +1680,10 @@ public final class MainMapViewController: UIViewController {
             
             incomeLabel.topAnchor.constraint(equalTo: emojiLabel.bottomAnchor, constant: 16),
             incomeLabel.leadingAnchor.constraint(equalTo: panel.leadingAnchor, constant: 20),
-            
+
+            collectBtn.leadingAnchor.constraint(equalTo: incomeLabel.trailingAnchor, constant: 10),
+            collectBtn.centerYAnchor.constraint(equalTo: incomeLabel.centerYAnchor),
+
             capacityLabel.topAnchor.constraint(equalTo: incomeLabel.bottomAnchor, constant: 6),
             capacityLabel.leadingAnchor.constraint(equalTo: panel.leadingAnchor, constant: 20),
             
@@ -1861,6 +1908,44 @@ public final class MainMapViewController: UIViewController {
         showBuildingInspectionPanel(for: annotation)
         transitionInspectionPanel(to: prevState)
     }
+
+    // MARK: - Income Collection
+
+    /// Called from map delegate when user taps a building with enough pending income
+    public func collectIncomeFromAnnotation(_ annotation: BuildingAnnotation) {
+        let amount = annotation.buildingItem.collectIncome()
+        guard amount > 0 else { return }
+
+        // Sync back into placedBuildings array
+        if let idx = placedBuildings.firstIndex(where: { $0.id == annotation.buildingItem.id }) {
+            placedBuildings[idx] = annotation.buildingItem
+        }
+
+        coins += amount
+        updateStatsBarLabels()
+
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
+        showNotificationHUD(message: "COLLECTED $\(amount) 💰\nFrom \(annotation.buildingItem.name)!")
+    }
+
+    @objc private func collectIncomeTapped() {
+        guard let annotation = selectedBuildingAnnotation else { return }
+
+        // Animate button
+        UIView.animate(withDuration: 0.08) {
+            self.collectButton?.transform = CGAffineTransform(scaleX: 0.92, y: 0.92)
+        } completion: { _ in
+            UIView.animate(withDuration: 0.10) { self.collectButton?.transform = .identity }
+        }
+
+        collectIncomeFromAnnotation(annotation)
+
+        // Refresh panel to update button state
+        let state = activeSheetState
+        showBuildingInspectionPanel(for: annotation)
+        transitionInspectionPanel(to: state)
+    }
+
     
     // MARK: - Premium Dynamic Notification Toast & Stats
     public func updateStatsBarLabels() {

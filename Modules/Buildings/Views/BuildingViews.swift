@@ -99,15 +99,25 @@ public final class BuildingAnnotationView: MKAnnotationView {
         ])
     }
     
+    private var isAnimated = false
+    
     public func configure(with building: BuildingItem) {
         emojiLabel.text = building.emoji
         badgeLabel.text = "L\(building.level)"
         
-        // Premium bounce animation on first load
-        transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
-        UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
-            self.transform = .identity
-        }, completion: nil)
+        if !isAnimated {
+            isAnimated = true
+            // Premium bounce animation on first load
+            transform = CGAffineTransform(scaleX: 0.1, y: 0.1)
+            UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
+                self.transform = .identity
+            }, completion: nil)
+        }
+    }
+    
+    override public func prepareForReuse() {
+        super.prepareForReuse()
+        isAnimated = false
     }
 }
 
