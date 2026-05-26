@@ -50,14 +50,14 @@ extension MainMapViewController: MKMapViewDelegate {
 
         if let circle = overlay as? MKCircle {
             let renderer = MKCircleRenderer(circle: circle)
-            if circle.radius > 500 {
-                // 800m attack-wave ring
+            if circle.radius >= 500 {
+                // 500m attack-wave ring
                 renderer.fillColor   = UIColor.white.withAlphaComponent(0.01)
                 renderer.strokeColor = UIColor.white.withAlphaComponent(0.12)
                 renderer.lineWidth   = 1.2
                 renderer.lineDashPattern = [4, 6]
             } else {
-                // 350m build-range ring
+                // 150m build-range ring
                 renderer.fillColor   = UIColor(red: 0.05, green: 0.40, blue: 0.95, alpha: 0.06)
                 renderer.strokeColor = UIColor(red: 0.05, green: 0.40, blue: 0.95, alpha: 0.28)
                 renderer.lineWidth   = 1.5

@@ -17,10 +17,10 @@ public final class MainMapViewController: UIViewController {
     public var hasCenteredOnHighAccuracy = false
     public var hasShownWelcomeBanner = false
     
-    // Interactive 500m build range overlay
+    // Interactive 150m build range overlay
     public var interactionCircle: MKCircle?
     
-    // Interactive 1500m attack range wave overlay
+    // Interactive 500m attack range wave overlay
     public var attackCircle: MKCircle?
     
     // Bottom bar height adjustment state
@@ -328,7 +328,13 @@ public final class MainMapViewController: UIViewController {
         let strictFilter = MKPointOfInterestFilter(including: [.museum, .nationalPark])
         mapView.pointOfInterestFilter = strictFilter
         
-        let zoomRange = MKMapView.CameraZoomRange(maxCenterCoordinateDistance: 8000)
+        let limitRegion = MKCoordinateRegion(
+            center: CLLocationCoordinate2D(latitude: 0, longitude: 0),
+            latitudinalMeters: 3000,
+            longitudinalMeters: 1500
+        )
+        let camera = mapView.cameraThatFits(limitRegion)
+        let zoomRange = MKMapView.CameraZoomRange(maxCenterCoordinateDistance: camera.centerCoordinateDistance)
         mapView.setCameraZoomRange(zoomRange, animated: false)
         
         if #available(iOS 16.0, *) {
@@ -1098,7 +1104,7 @@ public final class MainMapViewController: UIViewController {
         ]
         
         let attrString = NSMutableAttributedString(string: "PLACING \(type.rawValue.uppercased())\n", attributes: titleAttr)
-        attrString.append(NSAttributedString(string: "Tap inside 350m blue range | Cost: $\(formattedCost)", attributes: subAttr)) // Replaced 🪙 with $
+        attrString.append(NSAttributedString(string: "Tap inside 150m blue range | Cost: $\(formattedCost)", attributes: subAttr)) // Replaced 🪙 with $
         textLabel.attributedText = attrString
         textLabel.translatesAutoresizingMaskIntoConstraints = false
         hud.addSubview(textLabel)
@@ -1214,8 +1220,8 @@ public final class MainMapViewController: UIViewController {
         let tapLoc  = CLLocation(latitude: tapCoordinate.latitude, longitude: tapCoordinate.longitude)
         let distanceFromUser = tapLoc.distance(from: userLoc)
 
-        if distanceFromUser > 350.0 {
-            showNotificationHUD(message: "OUT OF RANGE 📡\nDistance \(Int(distanceFromUser))m — must be inside 350m zone!")
+        if distanceFromUser > 150.0 {
+            showNotificationHUD(message: "OUT OF RANGE 📡\nDistance \(Int(distanceFromUser))m — must be inside 150m zone!")
             UINotificationFeedbackGenerator().notificationOccurred(.error)
             return
         }
@@ -2173,19 +2179,19 @@ public final class MainMapViewController: UIViewController {
         if let oldCircle = interactionCircle {
             mapView.removeOverlay(oldCircle)
         }
-        let newCircle = MKCircle(center: coordinate, radius: 350)
+        let newCircle = MKCircle(center: coordinate, radius: 150)
         interactionCircle = newCircle
         mapView.addOverlay(newCircle)
         
         if let oldAttack = attackCircle {
             mapView.removeOverlay(oldAttack)
         }
-        let newAttack = MKCircle(center: coordinate, radius: 800)
+        let newAttack = MKCircle(center: coordinate, radius: 500)
         attackCircle = newAttack
         mapView.addOverlay(newAttack)
         
         if !hasInitiallyCentered {
-            let region = MKCoordinateRegion(center: coordinate, latitudinalMeters: 350, longitudinalMeters: 350)
+            let region = MKCoordinateRegion(center: coordinate, latitudinalMeters: 800, longitudinalMeters: 400)
             mapView.setRegion(region, animated: true)
             hasInitiallyCentered = true
         }
