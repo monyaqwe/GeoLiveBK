@@ -1718,7 +1718,8 @@ final class MainMapViewController: UIViewController {
         if !hasShownWelcomeBanner {
             hasShownWelcomeBanner = true
             let geocoder = CLGeocoder()
-            geocoder.reverseGeocodeLocation(location) { [weak self] placemarks, error in
+            let locale = Locale(identifier: "en_US")
+            geocoder.reverseGeocodeLocation(location, preferredLocale: locale) { [weak self] placemarks, error in
                 guard let self = self else { return }
                 let cityName = placemarks?.first?.locality ?? placemarks?.first?.subAdministrativeArea ?? "GeoLive"
                 self.showWelcomeBanner(for: cityName)
