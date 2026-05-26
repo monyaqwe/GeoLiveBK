@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2420F2605268854171BE9DFF /* BuildingModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFD8A154564CFEF71CD1B40 /* BuildingModels.swift */; };
+		26B69B683032CD40AD4C3677 /* BuildingViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = C244D8C05B4DC5F99C3D3C15 /* BuildingViews.swift */; };
+		2EBB1B4FE312DDAACCBEFC83 /* MainMapViewController+Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A116A0374A2175EC2362AFD /* MainMapViewController+Map.swift */; };
+		723E73A3B9CC86AA1168EF58 /* AuthCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA7C2B5178A7542514F8430 /* AuthCoordinator.swift */; };
+		98057B0BEEE4AE65A11398CC /* MainMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10689815C8AED65261F9DE6B /* MainMapViewController.swift */; };
 		9826C1DEFE3B50036914B000 /* avatar_female.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C4650A000 /* avatar_female.png */; };
 		9826C1DEFE3B50036914B001 /* avatar_male.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C4650A001 /* avatar_male.png */; };
 		9826C1DEFE3B50036914B002 /* female_cloth_polo.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C4650A002 /* female_cloth_polo.png */; };
@@ -27,24 +32,36 @@
 		9826C1DEFE3B50036914B011 /* male_hair_short.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C4650A011 /* male_hair_short.png */; };
 		9826C1DEFE3B50036914B012 /* male_hat_cap.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C4650A012 /* male_hat_cap.png */; };
 		9826C1DEFE3B50036914B013 /* male_hat_crown.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C4650A013 /* male_hat_crown.png */; };
-		723E73A3B9CC86AA1168EF58 /* Coordinator/AuthCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA7C2B5178A7542514F8430 /* Coordinator/AuthCoordinator.swift */; };
-		9826C1DEFE3B50036914D04E /* Controllers/CharacterSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C46504B4E /* Controllers/CharacterSelectionViewController.swift */; };
-		9826C1DEFE3B50036914D04F /* Controllers/CreateAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C46504B4D /* Controllers/CreateAccountViewController.swift */; };
-		9826C1DEFE3B50036914D06D /* Controllers/MainDashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C46504B6D /* Controllers/MainDashboardViewController.swift */; };
-		9826C1DEFE3B50036914D06E /* Common/UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C46504B6E /* Common/UIImage+Extensions.swift */; };
-		9826C1DEFE3B50036914D06F /* Controllers/NicknameEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C46504B6F /* Controllers/NicknameEntryViewController.swift */; };
-		9826C1DEFE3B50036914D07F /* Controllers/CharacterCustomizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C46504B7F /* Controllers/CharacterCustomizationViewController.swift */; };
-		9826C1DEFE3B50036914D08A /* Common/CharacterAssets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C46504B8A /* Common/CharacterAssets.swift */; };
-		9A77794BE437D1F1682CADF6 /* Controllers/CreateAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933F0BA28446EC38FFA11667 /* Controllers/CreateAccountViewModel.swift */; };
-		9A77794BE437D1F1682CADF7 /* Controllers/CharacterSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933F0BA28446EC38FFA11668 /* Controllers/CharacterSelectionViewModel.swift */; };
+		9826C1DEFE3B50036914D04E /* CharacterSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C46504B4E /* CharacterSelectionViewController.swift */; };
+		9826C1DEFE3B50036914D04F /* CreateAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C46504B4D /* CreateAccountViewController.swift */; };
+		9826C1DEFE3B50036914D06D /* MainDashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C46504B6D /* MainDashboardViewController.swift */; };
+		9826C1DEFE3B50036914D06E /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C46504B6E /* UIImage+Extensions.swift */; };
+		9826C1DEFE3B50036914D06F /* NicknameEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C46504B6F /* NicknameEntryViewController.swift */; };
+		9826C1DEFE3B50036914D07F /* CharacterCustomizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C46504B7F /* CharacterCustomizationViewController.swift */; };
+		9826C1DEFE3B50036914D08A /* CharacterAssets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C46504B8A /* CharacterAssets.swift */; };
+		9A77794BE437D1F1682CADF6 /* CreateAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933F0BA28446EC38FFA11667 /* CreateAccountViewModel.swift */; };
+		9A77794BE437D1F1682CADF7 /* CharacterSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933F0BA28446EC38FFA11668 /* CharacterSelectionViewModel.swift */; };
+		9E21898119A8EB9FD731D08E /* ShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE01C3A2FBEA007748A67BAA /* ShopViewController.swift */; };
 		A3A8DBFE60DC630CC401BF80 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0B6442E107C13477014669F /* Foundation.framework */; };
-		AB12CD34EF56789012345678 /* MainMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB12CD34EF56789012345679 /* MainMapViewController.swift */; };
-		CD34EF56789012345678AB12 /* Controllers/LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD34EF56789012345678AB13 /* Controllers/LoadingViewController.swift */; };
+		A6E1C4B8303B32B886E2BD1A /* MainModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = C683B404F171C271518E7BEC /* MainModels.swift */; };
+		C123A1CFA482A482BA9BAD99 /* AvatarAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2479D24F8F17BAAC969C9632 /* AvatarAnnotationView.swift */; };
+		CD34EF56789012345678AB12 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD34EF56789012345678AB13 /* LoadingViewController.swift */; };
 		CE7C5594EDBF3DD6CF055CE4 /* Pods_GeoLive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FCB7ED6375084B4CB79408C /* Pods_GeoLive.framework */; };
 		E28A01D1E4D778F56C36ACA2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE81046035B79D7DD35427DB /* AppDelegate.swift */; };
+		F1338CF8C0F2A8440999C7F2 /* MainMapViewController+Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F51FB4B6AB8F206938F2EF8 /* MainMapViewController+Location.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		10689815C8AED65261F9DE6B /* MainMapViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MainMapViewController.swift; path = Modules/Main/Controllers/MainMapViewController.swift; sourceTree = "<group>"; };
+		1F51FB4B6AB8F206938F2EF8 /* MainMapViewController+Location.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "MainMapViewController+Location.swift"; path = "Modules/Main/Extensions/MainMapViewController+Location.swift"; sourceTree = "<group>"; };
+		2479D24F8F17BAAC969C9632 /* AvatarAnnotationView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AvatarAnnotationView.swift; path = Modules/Main/Views/AvatarAnnotationView.swift; sourceTree = "<group>"; };
+		4CBA9F617340F01C46504B4D /* CreateAccountViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Controllers/CreateAccountViewController.swift; sourceTree = "<group>"; };
+		4CBA9F617340F01C46504B4E /* CharacterSelectionViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Controllers/CharacterSelectionViewController.swift; sourceTree = "<group>"; };
+		4CBA9F617340F01C46504B6D /* MainDashboardViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Controllers/MainDashboardViewController.swift; sourceTree = "<group>"; };
+		4CBA9F617340F01C46504B6E /* UIImage+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "Common/UIImage+Extensions.swift"; sourceTree = "<group>"; };
+		4CBA9F617340F01C46504B6F /* NicknameEntryViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Controllers/NicknameEntryViewController.swift; sourceTree = "<group>"; };
+		4CBA9F617340F01C46504B7F /* CharacterCustomizationViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Controllers/CharacterCustomizationViewController.swift; sourceTree = "<group>"; };
+		4CBA9F617340F01C46504B8A /* CharacterAssets.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Common/CharacterAssets.swift; sourceTree = "<group>"; };
 		4CBA9F617340F01C4650A000 /* avatar_female.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = avatar_female.png; path = Assets/avatar_female.png; sourceTree = "<group>"; };
 		4CBA9F617340F01C4650A001 /* avatar_male.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = avatar_male.png; path = Assets/avatar_male.png; sourceTree = "<group>"; };
 		4CBA9F617340F01C4650A002 /* female_cloth_polo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = female_cloth_polo.png; path = Assets/female_cloth_polo.png; sourceTree = "<group>"; };
@@ -65,21 +82,18 @@
 		4CBA9F617340F01C4650A011 /* male_hair_short.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = male_hair_short.png; path = Assets/male_hair_short.png; sourceTree = "<group>"; };
 		4CBA9F617340F01C4650A012 /* male_hat_cap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = male_hat_cap.png; path = Assets/male_hat_cap.png; sourceTree = "<group>"; };
 		4CBA9F617340F01C4650A013 /* male_hat_crown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = male_hat_crown.png; path = Assets/male_hat_crown.png; sourceTree = "<group>"; };
-		4CBA9F617340F01C46504B4D /* Controllers/CreateAccountViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Controllers/CreateAccountViewController.swift; sourceTree = "<group>"; };
-		4CBA9F617340F01C46504B4E /* Controllers/CharacterSelectionViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Controllers/CharacterSelectionViewController.swift; sourceTree = "<group>"; };
-		4CBA9F617340F01C46504B6D /* Controllers/MainDashboardViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Controllers/MainDashboardViewController.swift; sourceTree = "<group>"; };
-		4CBA9F617340F01C46504B6E /* Common/UIImage+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "Common/UIImage+Extensions.swift"; sourceTree = "<group>"; };
-		4CBA9F617340F01C46504B6F /* Controllers/NicknameEntryViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Controllers/NicknameEntryViewController.swift; sourceTree = "<group>"; };
-		4CBA9F617340F01C46504B7F /* Controllers/CharacterCustomizationViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Controllers/CharacterCustomizationViewController.swift; sourceTree = "<group>"; };
-		4CBA9F617340F01C46504B8A /* Common/CharacterAssets.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Common/CharacterAssets.swift; sourceTree = "<group>"; };
+		7A116A0374A2175EC2362AFD /* MainMapViewController+Map.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "MainMapViewController+Map.swift"; path = "Modules/Main/Extensions/MainMapViewController+Map.swift"; sourceTree = "<group>"; };
 		7CA39214ED954FBD478D8983 /* Pods-GeoLive.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GeoLive.debug.xcconfig"; path = "Target Support Files/Pods-GeoLive/Pods-GeoLive.debug.xcconfig"; sourceTree = "<group>"; };
-		7EA7C2B5178A7542514F8430 /* Coordinator/AuthCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Coordinator/AuthCoordinator.swift; sourceTree = "<group>"; };
-		933F0BA28446EC38FFA11667 /* Controllers/CreateAccountViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Controllers/CreateAccountViewModel.swift; sourceTree = "<group>"; };
-		933F0BA28446EC38FFA11668 /* Controllers/CharacterSelectionViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Controllers/CharacterSelectionViewModel.swift; sourceTree = "<group>"; };
+		7EA7C2B5178A7542514F8430 /* AuthCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Coordinator/AuthCoordinator.swift; sourceTree = "<group>"; };
+		933F0BA28446EC38FFA11667 /* CreateAccountViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Controllers/CreateAccountViewModel.swift; sourceTree = "<group>"; };
+		933F0BA28446EC38FFA11668 /* CharacterSelectionViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Controllers/CharacterSelectionViewModel.swift; sourceTree = "<group>"; };
 		9FCB7ED6375084B4CB79408C /* Pods_GeoLive.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GeoLive.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		AB12CD34EF56789012345679 /* MainMapViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MainMapViewController.swift; sourceTree = "<group>"; };
+		ACFD8A154564CFEF71CD1B40 /* BuildingModels.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BuildingModels.swift; path = Modules/Buildings/Models/BuildingModels.swift; sourceTree = "<group>"; };
 		C0B6442E107C13477014669F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		CD34EF56789012345678AB13 /* Controllers/LoadingViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Controllers/LoadingViewController.swift; sourceTree = "<group>"; };
+		C244D8C05B4DC5F99C3D3C15 /* BuildingViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BuildingViews.swift; path = Modules/Buildings/Views/BuildingViews.swift; sourceTree = "<group>"; };
+		C683B404F171C271518E7BEC /* MainModels.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MainModels.swift; path = Modules/Main/Models/MainModels.swift; sourceTree = "<group>"; };
+		CD34EF56789012345678AB13 /* LoadingViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Controllers/LoadingViewController.swift; sourceTree = "<group>"; };
+		CE01C3A2FBEA007748A67BAA /* ShopViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ShopViewController.swift; sourceTree = "<group>"; };
 		DE5B4BC4BC528D9C8B55C936 /* GeoLive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GeoLive.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE81046035B79D7DD35427DB /* AppDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F7BE2AE54D466C810AC54354 /* Pods-GeoLive.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GeoLive.release.xcconfig"; path = "Target Support Files/Pods-GeoLive/Pods-GeoLive.release.xcconfig"; sourceTree = "<group>"; };
@@ -98,6 +112,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		09D9861D8CF7B441ED284361 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				C683B404F171C271518E7BEC /* MainModels.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
 		0DB27D56C6EFD1C562D257B7 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -130,19 +152,43 @@
 				4CBA9F617340F01C4650A011 /* male_hair_short.png */,
 				4CBA9F617340F01C4650A012 /* male_hat_cap.png */,
 				4CBA9F617340F01C4650A013 /* male_hat_crown.png */,
-				4CBA9F617340F01C46504B8A /* Common/CharacterAssets.swift */,
-				7EA7C2B5178A7542514F8430 /* Coordinator/AuthCoordinator.swift */,
-				4CBA9F617340F01C46504B4E /* Controllers/CharacterSelectionViewController.swift */,
-				4CBA9F617340F01C46504B7F /* Controllers/CharacterCustomizationViewController.swift */,
-				4CBA9F617340F01C46504B4D /* Controllers/CreateAccountViewController.swift */,
-				933F0BA28446EC38FFA11668 /* Controllers/CharacterSelectionViewModel.swift */,
-				933F0BA28446EC38FFA11667 /* Controllers/CreateAccountViewModel.swift */,
-				4CBA9F617340F01C46504B6D /* Controllers/MainDashboardViewController.swift */,
-				4CBA9F617340F01C46504B6F /* Controllers/NicknameEntryViewController.swift */,
-				4CBA9F617340F01C46504B6E /* Common/UIImage+Extensions.swift */,
-				CD34EF56789012345678AB13 /* Controllers/LoadingViewController.swift */,
+				4CBA9F617340F01C46504B8A /* CharacterAssets.swift */,
+				7EA7C2B5178A7542514F8430 /* AuthCoordinator.swift */,
+				4CBA9F617340F01C46504B4E /* CharacterSelectionViewController.swift */,
+				4CBA9F617340F01C46504B7F /* CharacterCustomizationViewController.swift */,
+				4CBA9F617340F01C46504B4D /* CreateAccountViewController.swift */,
+				933F0BA28446EC38FFA11668 /* CharacterSelectionViewModel.swift */,
+				933F0BA28446EC38FFA11667 /* CreateAccountViewModel.swift */,
+				4CBA9F617340F01C46504B6D /* MainDashboardViewController.swift */,
+				4CBA9F617340F01C46504B6F /* NicknameEntryViewController.swift */,
+				4CBA9F617340F01C46504B6E /* UIImage+Extensions.swift */,
+				CD34EF56789012345678AB13 /* LoadingViewController.swift */,
 			);
 			path = Auth;
+			sourceTree = "<group>";
+		};
+		33C4F4EB13D4FF2BCA000DFC /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				C244D8C05B4DC5F99C3D3C15 /* BuildingViews.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		48F39B33760ADDB951CD299B /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				10689815C8AED65261F9DE6B /* MainMapViewController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		4E1C50D36489D47B04C42459 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				ACFD8A154564CFEF71CD1B40 /* BuildingModels.swift */,
+			);
+			name = Models;
 			sourceTree = "<group>";
 		};
 		6CAFADDF4A28F67BF50202E2 /* Frameworks */ = {
@@ -152,6 +198,23 @@
 				9FCB7ED6375084B4CB79408C /* Pods_GeoLive.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		88FDADABC4B0CCBF8F4D766F /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				1F51FB4B6AB8F206938F2EF8 /* MainMapViewController+Location.swift */,
+				7A116A0374A2175EC2362AFD /* MainMapViewController+Map.swift */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
+		9EC71AE540AEF9E7CC87C998 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				2479D24F8F17BAAC969C9632 /* AvatarAnnotationView.swift */,
+			);
+			name = Views;
 			sourceTree = "<group>";
 		};
 		A77F7B68D107BB3B313C38F9 /* iOS */ = {
@@ -165,7 +228,10 @@
 		AB12CD34EF5678901234567A /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				AB12CD34EF56789012345679 /* MainMapViewController.swift */,
+				09D9861D8CF7B441ED284361 /* Models */,
+				9EC71AE540AEF9E7CC87C998 /* Views */,
+				48F39B33760ADDB951CD299B /* Controllers */,
+				88FDADABC4B0CCBF8F4D766F /* Extensions */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -178,6 +244,13 @@
 				EE81046035B79D7DD35427DB /* AppDelegate.swift */,
 				F5C057BD346893D1D282F180 /* Modules */,
 				0DB27D56C6EFD1C562D257B7 /* Pods */,
+				ACFD8A154564CFEF71CD1B40 /* BuildingModels.swift */,
+				C244D8C05B4DC5F99C3D3C15 /* BuildingViews.swift */,
+				C683B404F171C271518E7BEC /* MainModels.swift */,
+				2479D24F8F17BAAC969C9632 /* AvatarAnnotationView.swift */,
+				10689815C8AED65261F9DE6B /* MainMapViewController.swift */,
+				1F51FB4B6AB8F206938F2EF8 /* MainMapViewController+Location.swift */,
+				7A116A0374A2175EC2362AFD /* MainMapViewController+Map.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -189,13 +262,33 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		F334DDDACBB63B18C7F10F61 /* Buildings */ = {
+			isa = PBXGroup;
+			children = (
+				4E1C50D36489D47B04C42459 /* Models */,
+				33C4F4EB13D4FF2BCA000DFC /* Views */,
+			);
+			path = Buildings;
+			sourceTree = "<group>";
+		};
 		F5C057BD346893D1D282F180 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
 				22B540AFBFD09B8765F1CB67 /* Auth */,
 				AB12CD34EF5678901234567A /* Main */,
+				F334DDDACBB63B18C7F10F61 /* Buildings */,
+				F7BC105468542C320334B8CC /* Shop */,
 			);
 			path = Modules;
+			sourceTree = "<group>";
+		};
+		F7BC105468542C320334B8CC /* Shop */ = {
+			isa = PBXGroup;
+			children = (
+				CE01C3A2FBEA007748A67BAA /* ShopViewController.swift */,
+			);
+			name = Shop;
+			path = Shop;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -366,18 +459,25 @@
 			buildActionMask = 2147483647;
 			files = (
 				E28A01D1E4D778F56C36ACA2 /* AppDelegate.swift in Sources */,
-				723E73A3B9CC86AA1168EF58 /* Coordinator/AuthCoordinator.swift in Sources */,
-				9826C1DEFE3B50036914D04E /* Controllers/CharacterSelectionViewController.swift in Sources */,
-				9826C1DEFE3B50036914D07F /* Controllers/CharacterCustomizationViewController.swift in Sources */,
-				9826C1DEFE3B50036914D04F /* Controllers/CreateAccountViewController.swift in Sources */,
-				9A77794BE437D1F1682CADF7 /* Controllers/CharacterSelectionViewModel.swift in Sources */,
-				9A77794BE437D1F1682CADF6 /* Controllers/CreateAccountViewModel.swift in Sources */,
-				9826C1DEFE3B50036914D06D /* Controllers/MainDashboardViewController.swift in Sources */,
-				9826C1DEFE3B50036914D06F /* Controllers/NicknameEntryViewController.swift in Sources */,
-				9826C1DEFE3B50036914D06E /* Common/UIImage+Extensions.swift in Sources */,
-				9826C1DEFE3B50036914D08A /* Common/CharacterAssets.swift in Sources */,
-				AB12CD34EF56789012345678 /* MainMapViewController.swift in Sources */,
-				CD34EF56789012345678AB12 /* Controllers/LoadingViewController.swift in Sources */,
+				723E73A3B9CC86AA1168EF58 /* AuthCoordinator.swift in Sources */,
+				9826C1DEFE3B50036914D04E /* CharacterSelectionViewController.swift in Sources */,
+				9826C1DEFE3B50036914D07F /* CharacterCustomizationViewController.swift in Sources */,
+				9826C1DEFE3B50036914D04F /* CreateAccountViewController.swift in Sources */,
+				9A77794BE437D1F1682CADF7 /* CharacterSelectionViewModel.swift in Sources */,
+				9A77794BE437D1F1682CADF6 /* CreateAccountViewModel.swift in Sources */,
+				9826C1DEFE3B50036914D06D /* MainDashboardViewController.swift in Sources */,
+				9826C1DEFE3B50036914D06F /* NicknameEntryViewController.swift in Sources */,
+				9826C1DEFE3B50036914D06E /* UIImage+Extensions.swift in Sources */,
+				9826C1DEFE3B50036914D08A /* CharacterAssets.swift in Sources */,
+				CD34EF56789012345678AB12 /* LoadingViewController.swift in Sources */,
+				2420F2605268854171BE9DFF /* BuildingModels.swift in Sources */,
+				26B69B683032CD40AD4C3677 /* BuildingViews.swift in Sources */,
+				A6E1C4B8303B32B886E2BD1A /* MainModels.swift in Sources */,
+				C123A1CFA482A482BA9BAD99 /* AvatarAnnotationView.swift in Sources */,
+				98057B0BEEE4AE65A11398CC /* MainMapViewController.swift in Sources */,
+				F1338CF8C0F2A8440999C7F2 /* MainMapViewController+Location.swift in Sources */,
+				2EBB1B4FE312DDAACCBEFC83 /* MainMapViewController+Map.swift in Sources */,
+				9E21898119A8EB9FD731D08E /* ShopViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
