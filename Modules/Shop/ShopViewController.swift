@@ -1,6 +1,6 @@
 import UIKit
 
-// MARK: - Shop Item Model
+// MARK: - Expanded Shop Item Model
 struct ShopItem {
     let id: String
     let icon: String
@@ -12,13 +12,13 @@ struct ShopItem {
 }
 
 enum ShopItemTag {
-    case gems, coins, boost, premium
+    case gems, gacha, defender, economyBoost
 }
 
 // MARK: - ShopViewController
 final class ShopViewController: UIViewController {
 
-    // MARK: - UI
+    // MARK: - UI Outlets
     private let containerView: UIView = {
         let v = UIView()
         v.backgroundColor = UIColor(white: 0.08, alpha: 0.98)
@@ -37,7 +37,7 @@ final class ShopViewController: UIViewController {
 
     private let dragHandle: UIView = {
         let v = UIView()
-        v.backgroundColor = UIColor.white.withAlphaComponent(0.25)
+        v.backgroundColor = UIColor(red: 0.00, green: 0.94, blue: 1.00, alpha: 0.40)
         v.layer.cornerRadius = 2.5
         v.translatesAutoresizingMaskIntoConstraints = false
         return v
@@ -45,17 +45,17 @@ final class ShopViewController: UIViewController {
 
     private let titleLabel: UILabel = {
         let l = UILabel()
-        l.text = "SHOP 🛒"
+        l.text = "BLACK MARKET 🛒"
         l.font = UIFont.systemFont(ofSize: 22, weight: .black)
-        l.textColor = .white
+        l.textColor = UIColor(red: 0.00, green: 0.94, blue: 1.00, alpha: 1.0)
         l.translatesAutoresizingMaskIntoConstraints = false
         return l
     }()
 
     private let subtitleLabel: UILabel = {
         let l = UILabel()
-        l.text = "Buy gems, coins and power-ups"
-        l.font = UIFont.systemFont(ofSize: 12, weight: .medium)
+        l.text = "Acquire military-grade gacha cases, sentinel guards, and business boosters."
+        l.font = UIFont.systemFont(ofSize: 11, weight: .medium)
         l.textColor = UIColor.white.withAlphaComponent(0.45)
         l.translatesAutoresizingMaskIntoConstraints = false
         return l
@@ -80,40 +80,59 @@ final class ShopViewController: UIViewController {
     private let contentStack: UIStackView = {
         let s = UIStackView()
         s.axis = .vertical
-        s.spacing = 20
+        s.spacing = 18
         s.translatesAutoresizingMaskIntoConstraints = false
         return s
     }()
 
-    // MARK: - Data
-    private let gemPacks: [ShopItem] = [
-        ShopItem(id: "gems_50",   icon: "💎", title: "50 Gems",    subtitle: "Starter Pack",       price: "$0.99",  accentColor: UIColor(red: 0.20, green: 0.80, blue: 1.00, alpha: 1.0), tag: .gems),
-        ShopItem(id: "gems_200",  icon: "💎", title: "200 Gems",   subtitle: "Most Popular",        price: "$2.99",  accentColor: UIColor(red: 0.45, green: 0.65, blue: 1.00, alpha: 1.0), tag: .gems),
-        ShopItem(id: "gems_600",  icon: "💎", title: "600 Gems",   subtitle: "Best Value +20%",     price: "$6.99",  accentColor: UIColor(red: 0.60, green: 0.40, blue: 1.00, alpha: 1.0), tag: .gems),
-        ShopItem(id: "gems_1500", icon: "💎", title: "1,500 Gems", subtitle: "VIP Bundle +35%",     price: "$14.99", accentColor: UIColor(red: 0.95, green: 0.40, blue: 0.70, alpha: 1.0), tag: .premium),
+    // MARK: - Extended High-Tech Store Inventory
+    private let casesList: [ShopItem] = [
+        ShopItem(id: "case_standard", icon: "📦", title: "Standard Tactical Case", subtitle: "Guaranteed Common or Uncommon firearm", price: "$5,000", accentColor: UIColor(red: 0.25, green: 0.85, blue: 0.45, alpha: 1.0), tag: .gacha),
+        ShopItem(id: "case_premium",  icon: "🎒", title: "Premium Operations Case",  subtitle: "High probability of Epic & Legendary drops", price: "15 💎",  accentColor: UIColor(red: 0.00, green: 0.94, blue: 1.00, alpha: 1.0), tag: .gacha),
     ]
 
-    private let boostPacks: [ShopItem] = [
-        ShopItem(id: "boost_income", icon: "⚡️", title: "2× Income Boost",   subtitle: "Active for 24 hours",    price: "50 💎",  accentColor: UIColor(red: 0.95, green: 0.75, blue: 0.15, alpha: 1.0), tag: .boost),
-        ShopItem(id: "boost_shield", icon: "🛡️", title: "Territory Shield",  subtitle: "Protected for 12 hours", price: "30 💎",  accentColor: UIColor(red: 0.25, green: 0.85, blue: 0.55, alpha: 1.0), tag: .boost),
-        ShopItem(id: "boost_xp",     icon: "🚀", title: "Double XP",         subtitle: "Active for 6 hours",     price: "20 💎",  accentColor: UIColor(red: 1.00, green: 0.50, blue: 0.25, alpha: 1.0), tag: .boost),
+    private let defendersList: [ShopItem] = [
+        ShopItem(id: "def_scout",    icon: "🤖", title: "Scout Guard",       subtitle: "Mobile visual reconnaissance sentry",      price: "$3,000", accentColor: UIColor(red: 0.45, green: 0.65, blue: 1.00, alpha: 1.0), tag: .defender),
+        ShopItem(id: "def_enforcer", icon: "🛡️", title: "Enforcer Sentry",   subtitle: "Fires localized shockwaves at Necro-Rats",   price: "5 💎",   accentColor: UIColor(red: 0.95, green: 0.75, blue: 0.15, alpha: 1.0), tag: .defender),
+        ShopItem(id: "def_heavy",    icon: "🌋", title: "Heavy Sentinel",    subtitle: "Ultimate high-armor neighborhood defender", price: "12 💎",  accentColor: UIColor(red: 1.00, green: 0.35, blue: 0.35, alpha: 1.0), tag: .defender),
     ]
+
+    private let boostersList: [ShopItem] = [
+        ShopItem(id: "boost_chef",      icon: "👨‍🍳", title: "Recruit Professional Chef", subtitle: "Multiplies building income generation x1.5", price: "50 💎", accentColor: UIColor(red: 0.00, green: 0.94, blue: 1.00, alpha: 1.0), tag: .economyBoost),
+        ShopItem(id: "boost_equipment", icon: "⚙️", title: "Install Advanced Equipment", subtitle: "Multiplies building income generation x1.8", price: "80 💎", accentColor: UIColor(red: 0.95, green: 0.40, blue: 0.70, alpha: 1.0), tag: .economyBoost),
+    ]
+
+    private let gemsList: [ShopItem] = [
+        ShopItem(id: "gems_50",   icon: "💎", title: "50 Gems Pack",  subtitle: "Starter operative pack", price: "$0.99", accentColor: UIColor(red: 0.20, green: 0.80, blue: 1.00, alpha: 1.0), tag: .gems),
+        ShopItem(id: "gems_200",  icon: "💎", title: "200 Gems Pack", subtitle: "Most popular choice",    price: "$2.99", accentColor: UIColor(red: 0.60, green: 0.40, blue: 1.00, alpha: 1.0), tag: .gems),
+    ]
+
+    // MARK: - Integration properties
+    public var coins: Int = 0
+    public var gems: Int = 0
+    public var onPurchaseSuccess: ((String, Int, Int, String) -> Void)? // message, newCoins, newGems, itemId
 
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .clear
         setupView()
-        setupSections()
         setupGestures()
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        // Refresh cards list on viewWillAppear to ensure correct bindings
+        for view in contentStack.arrangedSubviews {
+            view.removeFromSuperview()
+        }
+        setupSections()
+        
         animateIn()
     }
 
-    // MARK: - Setup
+    // MARK: - Setup UI
     private func setupView() {
         view.addSubview(containerView)
         containerView.addSubview(blurView)
@@ -130,7 +149,7 @@ final class ShopViewController: UIViewController {
             containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            containerView.topAnchor.constraint(equalTo: view.topAnchor, constant: 80),
+            containerView.topAnchor.constraint(equalTo: view.topAnchor, constant: 100),
 
             blurView.topAnchor.constraint(equalTo: containerView.topAnchor),
             blurView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
@@ -145,8 +164,9 @@ final class ShopViewController: UIViewController {
             titleLabel.topAnchor.constraint(equalTo: dragHandle.bottomAnchor, constant: 18),
             titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 22),
 
-            subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 3),
+            subtitleLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
             subtitleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 22),
+            subtitleLabel.trailingAnchor.constraint(equalTo: closeButton.leadingAnchor, constant: -12),
 
             closeButton.centerYAnchor.constraint(equalTo: titleLabel.centerYAnchor),
             closeButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -20),
@@ -167,25 +187,43 @@ final class ShopViewController: UIViewController {
     }
 
     private func setupSections() {
-        contentStack.addArrangedSubview(makeSectionHeader(title: "💎  GEM PACKS", badge: "HOT"))
-        for item in gemPacks {
+        // 1. Loot boxes / cases Section
+        contentStack.addArrangedSubview(makeSectionHeader(title: "📦  MILITARY GACHA CASES", badge: "NEW"))
+        for item in casesList {
             contentStack.addArrangedSubview(makeItemCard(item))
         }
 
         contentStack.addArrangedSubview(makeDivider())
 
-        contentStack.addArrangedSubview(makeSectionHeader(title: "⚡️  POWER-UPS", badge: nil))
-        for item in boostPacks {
+        // 2. Defenders Section
+        contentStack.addArrangedSubview(makeSectionHeader(title: "🛡️  SENTINEL DEFENDERS (AI GUARD)", badge: "CO-OP"))
+        for item in defendersList {
             contentStack.addArrangedSubview(makeItemCard(item))
         }
 
-        let legalLabel = UILabel()
-        legalLabel.text = "In-app purchases are final. Prices include applicable local taxes."
-        legalLabel.font = UIFont.systemFont(ofSize: 10, weight: .regular)
-        legalLabel.textColor = UIColor.white.withAlphaComponent(0.25)
-        legalLabel.numberOfLines = 0
-        legalLabel.textAlignment = .center
-        contentStack.addArrangedSubview(legalLabel)
+        contentStack.addArrangedSubview(makeDivider())
+
+        // 3. Economy upgrades section
+        contentStack.addArrangedSubview(makeSectionHeader(title: "⚡  ECONOMY BOOSTERS (BUILDINGS)", badge: "UPGRADE"))
+        for item in boostersList {
+            contentStack.addArrangedSubview(makeItemCard(item))
+        }
+
+        contentStack.addArrangedSubview(makeDivider())
+
+        // 4. Currency section
+        contentStack.addArrangedSubview(makeSectionHeader(title: "💎  OPERATIVE GEMS PACKS", badge: "HOT"))
+        for item in gemsList {
+            contentStack.addArrangedSubview(makeItemCard(item))
+        }
+
+        let disclaimer = UILabel()
+        disclaimer.text = "Operative supply transactions are verified on Firebase securely."
+        disclaimer.font = UIFont.systemFont(ofSize: 10, weight: .semibold)
+        disclaimer.textColor = UIColor.white.withAlphaComponent(0.20)
+        disclaimer.textAlignment = .center
+        disclaimer.numberOfLines = 0
+        contentStack.addArrangedSubview(disclaimer)
     }
 
     // MARK: - Builders
@@ -195,8 +233,8 @@ final class ShopViewController: UIViewController {
 
         let label = UILabel()
         label.text = title
-        label.font = UIFont.systemFont(ofSize: 13, weight: .black)
-        label.textColor = UIColor.white.withAlphaComponent(0.55)
+        label.font = UIFont.systemFont(ofSize: 12, weight: .black)
+        label.textColor = UIColor.white.withAlphaComponent(0.60)
         label.translatesAutoresizingMaskIntoConstraints = false
         container.addSubview(label)
 
@@ -209,10 +247,10 @@ final class ShopViewController: UIViewController {
         if let badge = badge {
             let badgeView = UILabel()
             badgeView.text = badge
-            badgeView.font = UIFont.systemFont(ofSize: 9, weight: .black)
+            badgeView.font = UIFont.systemFont(ofSize: 8, weight: .black)
             badgeView.textColor = UIColor(white: 0.08, alpha: 1.0)
-            badgeView.backgroundColor = UIColor(red: 1.0, green: 0.60, blue: 0.10, alpha: 1.0)
-            badgeView.layer.cornerRadius = 7
+            badgeView.backgroundColor = UIColor(red: 0.00, green: 0.94, blue: 1.00, alpha: 1.0)
+            badgeView.layer.cornerRadius = 6
             badgeView.clipsToBounds = true
             badgeView.textAlignment = .center
             badgeView.translatesAutoresizingMaskIntoConstraints = false
@@ -221,8 +259,8 @@ final class ShopViewController: UIViewController {
             NSLayoutConstraint.activate([
                 badgeView.leadingAnchor.constraint(equalTo: label.trailingAnchor, constant: 8),
                 badgeView.centerYAnchor.constraint(equalTo: label.centerYAnchor),
-                badgeView.widthAnchor.constraint(equalToConstant: 36),
-                badgeView.heightAnchor.constraint(equalToConstant: 18),
+                badgeView.widthAnchor.constraint(equalToConstant: 48),
+                badgeView.heightAnchor.constraint(equalToConstant: 16),
             ])
         }
 
@@ -231,7 +269,7 @@ final class ShopViewController: UIViewController {
 
     private func makeDivider() -> UIView {
         let v = UIView()
-        v.backgroundColor = UIColor.white.withAlphaComponent(0.07)
+        v.backgroundColor = UIColor.white.withAlphaComponent(0.06)
         v.translatesAutoresizingMaskIntoConstraints = false
         v.heightAnchor.constraint(equalToConstant: 1).isActive = true
         return v
@@ -239,10 +277,10 @@ final class ShopViewController: UIViewController {
 
     private func makeItemCard(_ item: ShopItem) -> UIView {
         let card = UIView()
-        card.backgroundColor = UIColor.white.withAlphaComponent(0.05)
-        card.layer.cornerRadius = 18
+        card.backgroundColor = UIColor.white.withAlphaComponent(0.03)
+        card.layer.cornerRadius = 16
         card.layer.borderWidth = 1.0
-        card.layer.borderColor = item.accentColor.withAlphaComponent(0.25).cgColor
+        card.layer.borderColor = item.accentColor.withAlphaComponent(0.20).cgColor
         card.clipsToBounds = true
         card.translatesAutoresizingMaskIntoConstraints = false
 
@@ -253,31 +291,32 @@ final class ShopViewController: UIViewController {
 
         let iconLabel = UILabel()
         iconLabel.text = item.icon
-        iconLabel.font = .systemFont(ofSize: 28)
+        iconLabel.font = .systemFont(ofSize: 26)
         iconLabel.translatesAutoresizingMaskIntoConstraints = false
         card.addSubview(iconLabel)
 
         let titleL = UILabel()
         titleL.text = item.title
-        titleL.font = UIFont.systemFont(ofSize: 15, weight: .bold)
+        titleL.font = UIFont.systemFont(ofSize: 13, weight: .bold)
         titleL.textColor = .white
         titleL.translatesAutoresizingMaskIntoConstraints = false
         card.addSubview(titleL)
 
         let subL = UILabel()
         subL.text = item.subtitle
-        subL.font = UIFont.systemFont(ofSize: 11, weight: .medium)
-        subL.textColor = UIColor.white.withAlphaComponent(0.45)
+        subL.font = UIFont.systemFont(ofSize: 10, weight: .medium)
+        subL.textColor = UIColor.white.withAlphaComponent(0.40)
+        subL.numberOfLines = 2
         subL.translatesAutoresizingMaskIntoConstraints = false
         card.addSubview(subL)
 
         let priceBtn = UIButton(type: .custom)
-        priceBtn.setTitle(item.price, for: .normal)
-        priceBtn.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .black)
+        priceBtn.setTitle(item.price.uppercased(), for: .normal)
+        priceBtn.titleLabel?.font = UIFont.systemFont(ofSize: 10, weight: .black)
         priceBtn.setTitleColor(UIColor(white: 0.08, alpha: 1.0), for: .normal)
         priceBtn.backgroundColor = item.accentColor
         priceBtn.layer.cornerRadius = 14
-        priceBtn.contentEdgeInsets = UIEdgeInsets(top: 8, left: 14, bottom: 8, right: 14)
+        priceBtn.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
         priceBtn.translatesAutoresizingMaskIntoConstraints = false
         priceBtn.addTarget(self, action: #selector(purchaseTapped(_:)), for: .touchUpInside)
         card.addSubview(priceBtn)
@@ -290,16 +329,18 @@ final class ShopViewController: UIViewController {
             stripe.bottomAnchor.constraint(equalTo: card.bottomAnchor),
             stripe.widthAnchor.constraint(equalToConstant: 4),
 
-            iconLabel.leadingAnchor.constraint(equalTo: stripe.trailingAnchor, constant: 16),
+            iconLabel.leadingAnchor.constraint(equalTo: stripe.trailingAnchor, constant: 14),
             iconLabel.centerYAnchor.constraint(equalTo: card.centerYAnchor),
 
-            titleL.leadingAnchor.constraint(equalTo: iconLabel.trailingAnchor, constant: 14),
-            titleL.topAnchor.constraint(equalTo: card.topAnchor, constant: 16),
+            titleL.leadingAnchor.constraint(equalTo: iconLabel.trailingAnchor, constant: 12),
+            titleL.topAnchor.constraint(equalTo: card.topAnchor, constant: 14),
+            titleL.trailingAnchor.constraint(lessThanOrEqualTo: priceBtn.leadingAnchor, constant: -8),
 
             subL.leadingAnchor.constraint(equalTo: titleL.leadingAnchor),
-            subL.topAnchor.constraint(equalTo: titleL.bottomAnchor, constant: 3),
+            subL.topAnchor.constraint(equalTo: titleL.bottomAnchor, constant: 2),
+            subL.trailingAnchor.constraint(lessThanOrEqualTo: priceBtn.leadingAnchor, constant: -8),
 
-            priceBtn.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -16),
+            priceBtn.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -14),
             priceBtn.centerYAnchor.constraint(equalTo: card.centerYAnchor),
         ])
 
@@ -360,6 +401,49 @@ final class ShopViewController: UIViewController {
     }
 
     @objc private func purchaseTapped(_ sender: UIButton) {
+        guard let card = sender.superview else { return }
+        let itemId = card.accessibilityIdentifier ?? ""
+        
+        let allItems = casesList + defendersList + boostersList + gemsList
+        guard let item = allItems.first(where: { $0.id == itemId }) else { return }
+        
+        // Parse cost from item.price
+        let isGemCost = item.price.contains("Gems") || item.price.contains("💎")
+        var cost = 0
+        
+        // Extract numbers from price string
+        let numbers = item.price.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
+        if let val = Int(numbers) {
+            cost = val
+        } else if item.price.contains("0.99") {
+            cost = 1 // Mock 1 Gem / 1 Dollar
+        } else if item.price.contains("2.99") {
+            cost = 3
+        }
+        
+        if isGemCost {
+            if gems < cost {
+                let alert = UIAlertController(title: "INSUFFICIENT GEMS", message: "You need \(cost) Gems to buy this item!", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default))
+                present(alert, animated: true)
+                let generator = UINotificationFeedbackGenerator()
+                generator.notificationOccurred(.error)
+                return
+            }
+            gems -= cost
+        } else {
+            // Cash Cost
+            if coins < cost {
+                let alert = UIAlertController(title: "INSUFFICIENT CASH", message: "You need $\(cost) to buy this item!", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default))
+                present(alert, animated: true)
+                let generator = UINotificationFeedbackGenerator()
+                generator.notificationOccurred(.error)
+                return
+            }
+            coins -= cost
+        }
+        
         UIView.animate(withDuration: 0.08) {
             sender.transform = CGAffineTransform(scaleX: 0.90, y: 0.90)
         } completion: { _ in
@@ -368,11 +452,15 @@ final class ShopViewController: UIViewController {
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
 
         let alert = UIAlertController(
-            title: "Purchase Unavailable",
-            message: "In-app purchases will be available in the next version of GeoLive.",
+            title: "SUPPLIES CONFIRMED",
+            message: "Successfully purchased \(item.title) for \(item.price)!",
             preferredStyle: .alert
         )
-        alert.addAction(UIAlertAction(title: "OK", style: .cancel))
+        alert.addAction(UIAlertAction(title: "OK", style: .default) { [weak self] _ in
+            guard let self = self else { return }
+            self.onPurchaseSuccess?("PURCHASED: \(item.title)!", self.coins, self.gems, item.id)
+            self.closeTapped()
+        })
         present(alert, animated: true)
     }
 }

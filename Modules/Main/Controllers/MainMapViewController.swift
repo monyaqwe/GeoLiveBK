@@ -23,6 +23,113 @@ public final class MainMapViewController: UIViewController {
     // Interactive 500m attack range wave overlay
     public var attackCircle: MKCircle?
     
+    // Dynamic Player Combat & Respawn State
+    private var playerLevel: Int = 1
+    private var playerXP: Int = 0
+    private var playerCurrentHP: Int = 100
+    private var playerMaxHP: Int = 100
+    private var isPlayerDead: Bool = false
+    private var respawnTimer: Timer?
+    private var combatTimer: Timer?
+    private var mobMovementTimer: Timer?
+    private weak var activeToastView: UIView?
+
+    // Mobs Targeting & Combat state
+    public var targetedMobAnnotation: MobAnnotation?
+    public var activeMobAnnotations: [MobAnnotation] = []
+    
+    public let combatControlBar: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(white: 0.08, alpha: 0.95)
+        view.layer.cornerRadius = 20
+        view.layer.borderWidth = 1.0
+        view.layer.borderColor = UIColor(red: 1.0, green: 0.25, blue: 0.25, alpha: 0.5).cgColor
+        view.clipsToBounds = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.alpha = 0.0
+        
+        let blur = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+        blur.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(blur)
+        NSLayoutConstraint.activate([
+            blur.topAnchor.constraint(equalTo: view.topAnchor),
+            blur.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            blur.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            blur.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        return view
+    }()
+    
+    public let targetNameLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .white
+        label.font = .systemFont(ofSize: 14, weight: .bold)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    public let targetHPLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor.white.withAlphaComponent(0.6)
+        label.font = .systemFont(ofSize: 11, weight: .medium)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    public let attackBtn: UIButton = {
+        let btn = UIButton(type: .custom)
+        btn.setTitle("ATTACK", for: .normal)
+        btn.titleLabel?.font = .systemFont(ofSize: 12, weight: .black)
+        btn.setTitleColor(.white, for: .normal)
+        btn.backgroundColor = UIColor(red: 0.85, green: 0.15, blue: 0.15, alpha: 1.0)
+        btn.layer.cornerRadius = 16
+        btn.layer.borderWidth = 1.0
+        btn.layer.borderColor = UIColor(red: 1.0, green: 0.4, blue: 0.4, alpha: 0.6).cgColor
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        return btn
+    }()
+
+    public let rewardsButton = UIButton(type: .custom)
+    
+    // High-tech respawn sheet overlay
+    private let respawnOverlay: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.85)
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.isHidden = true
+        
+        let blur = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+        blur.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(blur)
+        NSLayoutConstraint.activate([
+            blur.topAnchor.constraint(equalTo: view.topAnchor),
+            blur.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            blur.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            blur.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        return view
+    }()
+    
+    private let respawnTitleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "⚠️ OPERATIVE DEFEATED"
+        label.textColor = UIColor(red: 1.00, green: 0.25, blue: 0.25, alpha: 1.0)
+        label.font = UIFont.systemFont(ofSize: 22, weight: .black)
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private let respawnSubtitleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "RESPAWNING..."
+        label.textColor = .white
+        label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     // Custom Building Exclusion Zones Overlay
     public let buildingExclusionOverlay = BuildingExclusionZonesOverlay()
     
@@ -299,6 +406,7 @@ public final class MainMapViewController: UIViewController {
     // UI Outlets for stats
     private var coinsLabel: UILabel?
     private var gemsLabel: UILabel?
+    private var bagLabel: UILabel?
 
     // Construction and Upgrade states
     public var placedBuildings: [BuildingItem] = []
@@ -339,6 +447,23 @@ public final class MainMapViewController: UIViewController {
         setupUI()
         setupActions()
         setupLocationManager()
+        startCombatSimulation()
+        
+        // Initial stats bar labels sync
+        updateStatsBarLabels()
+        startMobMovementTimer()
+        
+        // 1 HP per second health regeneration
+        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
+            guard let self = self, !self.isPlayerDead else { return }
+            if self.playerCurrentHP < self.playerMaxHP {
+                self.playerCurrentHP += 1
+                if let avatarAnn = self.avatarAnnotation,
+                   let annotationView = self.mapView.view(for: avatarAnn) as? AvatarAnnotationView {
+                    annotationView.updateHP(current: self.playerCurrentHP, max: self.playerMaxHP)
+                }
+            }
+        }
     }
     
     public override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
@@ -411,8 +536,19 @@ public final class MainMapViewController: UIViewController {
             questsBadge.heightAnchor.constraint(equalToConstant: 9)
         ])
         
-        // Quests Tab only (profile button removed)
-        let tabsStackView = UIStackView(arrangedSubviews: [questsButton])
+        // Setup rewards tab button
+        let rewardsConfig = UIImage.SymbolConfiguration(pointSize: 14, weight: .bold)
+        let rewardsIcon = UIImage(systemName: "trophy.fill", withConfiguration: rewardsConfig)
+        rewardsButton.setImage(rewardsIcon, for: .normal)
+        rewardsButton.tintColor = .white
+        rewardsButton.backgroundColor = UIColor.white.withAlphaComponent(0.12)
+        rewardsButton.layer.cornerRadius = 19
+        rewardsButton.layer.borderWidth = 1.0
+        rewardsButton.layer.borderColor = UIColor.white.withAlphaComponent(0.20).cgColor
+        rewardsButton.translatesAutoresizingMaskIntoConstraints = false
+        rewardsButton.addTarget(self, action: #selector(rewardsTapped), for: .touchUpInside)
+
+        let tabsStackView = UIStackView(arrangedSubviews: [questsButton, rewardsButton])
         tabsStackView.axis = .horizontal
         tabsStackView.spacing = 10
         tabsStackView.distribution = .fillEqually
@@ -432,6 +568,7 @@ public final class MainMapViewController: UIViewController {
         
         self.coinsLabel = coinsResult.1
         self.gemsLabel = gemsResult.1
+        self.bagLabel = bagResult.1
         
         let statsStack = UIStackView(arrangedSubviews: [coinsResult.0, gemsResult.0, bagResult.0])
         statsStack.axis = .horizontal
@@ -529,6 +666,56 @@ public final class MainMapViewController: UIViewController {
             storeButton.widthAnchor.constraint(equalToConstant: 52),
             storeButton.heightAnchor.constraint(equalToConstant: 52),
         ])
+        
+        // Add rewardsButton constraint width
+        NSLayoutConstraint.activate([
+            rewardsButton.widthAnchor.constraint(equalToConstant: 38)
+        ])
+
+        // Add Combat Control Bar & hierarchy
+        view.addSubview(combatControlBar)
+        combatControlBar.addSubview(targetNameLabel)
+        combatControlBar.addSubview(targetHPLabel)
+        combatControlBar.addSubview(attackBtn)
+        
+        NSLayoutConstraint.activate([
+            // Combat bar: left-anchored to avoid overlapping the right-side floating buttons
+            combatControlBar.bottomAnchor.constraint(equalTo: bottomBar.topAnchor, constant: -16),
+            combatControlBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            combatControlBar.trailingAnchor.constraint(equalTo: centerButton.leadingAnchor, constant: -12),
+            combatControlBar.heightAnchor.constraint(equalToConstant: 64),
+            
+            targetNameLabel.leadingAnchor.constraint(equalTo: combatControlBar.leadingAnchor, constant: 16),
+            targetNameLabel.topAnchor.constraint(equalTo: combatControlBar.topAnchor, constant: 14),
+            targetNameLabel.trailingAnchor.constraint(lessThanOrEqualTo: attackBtn.leadingAnchor, constant: -8),
+            
+            targetHPLabel.leadingAnchor.constraint(equalTo: targetNameLabel.leadingAnchor),
+            targetHPLabel.topAnchor.constraint(equalTo: targetNameLabel.bottomAnchor, constant: 2),
+            targetHPLabel.trailingAnchor.constraint(lessThanOrEqualTo: attackBtn.leadingAnchor, constant: -8),
+            
+            attackBtn.trailingAnchor.constraint(equalTo: combatControlBar.trailingAnchor, constant: -12),
+            attackBtn.centerYAnchor.constraint(equalTo: combatControlBar.centerYAnchor),
+            attackBtn.widthAnchor.constraint(equalToConstant: 100),
+            attackBtn.heightAnchor.constraint(equalToConstant: 34)
+        ])
+        
+        // Mount respawn overlay constraints
+        view.addSubview(respawnOverlay)
+        respawnOverlay.addSubview(respawnTitleLabel)
+        respawnOverlay.addSubview(respawnSubtitleLabel)
+        
+        NSLayoutConstraint.activate([
+            respawnOverlay.topAnchor.constraint(equalTo: view.topAnchor),
+            respawnOverlay.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            respawnOverlay.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            respawnOverlay.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            
+            respawnTitleLabel.centerYAnchor.constraint(equalTo: respawnOverlay.centerYAnchor, constant: -20),
+            respawnTitleLabel.centerXAnchor.constraint(equalTo: respawnOverlay.centerXAnchor),
+            
+            respawnSubtitleLabel.topAnchor.constraint(equalTo: respawnTitleLabel.bottomAnchor, constant: 12),
+            respawnSubtitleLabel.centerXAnchor.constraint(equalTo: respawnOverlay.centerXAnchor)
+        ])
     }
     
     // MARK: - Premium Segment Builder
@@ -625,17 +812,19 @@ public final class MainMapViewController: UIViewController {
         ])
     }
     
-    // MARK: - Actions
     private func setupActions() {
         centerButton.addTarget(self, action: #selector(centerOnUserTapped), for: .touchUpInside)
         shopButton.addTarget(self, action: #selector(shopButtonTapped), for: .touchUpInside)
         storeButton.addTarget(self, action: #selector(storeButtonTapped), for: .touchUpInside)
         
         questsButton.addTarget(self, action: #selector(questsTapped), for: .touchUpInside)
+        rewardsButton.addTarget(self, action: #selector(rewardsTapped), for: .touchUpInside)
+        attackBtn.addTarget(self, action: #selector(attackBtnTapped), for: .touchUpInside)
         
-        let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGesture(_:)))
-        swipeUp.direction = .up
-        bottomBar.addGestureRecognizer(swipeUp)
+        headerContainerView.isUserInteractionEnabled = true
+        let swipeUpHeader = UISwipeGestureRecognizer(target: self, action: #selector(statsTapped))
+        swipeUpHeader.direction = .up
+        headerContainerView.addGestureRecognizer(swipeUpHeader)
         
         let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGesture(_:)))
         swipeDown.direction = .down
@@ -643,9 +832,7 @@ public final class MainMapViewController: UIViewController {
     }
     
     @objc private func handleSwipeGesture(_ gesture: UISwipeGestureRecognizer) {
-        if gesture.direction == .up {
-            expandBottomBar()
-        } else if gesture.direction == .down {
+        if gesture.direction == .down {
             collapseBottomBar()
         }
     }
@@ -895,9 +1082,197 @@ public final class MainMapViewController: UIViewController {
     
     private func openShopViewController() {
         let shopVC = ShopViewController()
+        shopVC.coins = coins
+        shopVC.gems = gems
+        shopVC.onPurchaseSuccess = { [weak self] message, newCoins, newGems, itemId in
+            guard let self = self else { return }
+            
+            // Map the purchased item ID to an ItemProtocol object
+            var purchasedItem: ItemProtocol?
+            if itemId == "case_standard" {
+                purchasedItem = WeaponDTO(type: .pistol, tier: .uncommon)
+            } else if itemId == "case_premium" {
+                purchasedItem = WeaponDTO(type: .smg, tier: .epic)
+            } else if itemId == "def_scout" {
+                purchasedItem = ModDTO(name: "Scout Guard Core", description: "Recon sentinel core", statAffected: "HP", multiplierBoost: 1.2)
+            } else if itemId == "def_enforcer" {
+                purchasedItem = ModDTO(name: "Enforcer Sentry Core", description: "Localized shockwave mod", statAffected: "Damage", multiplierBoost: 1.5)
+            } else if itemId == "def_heavy" {
+                purchasedItem = ModDTO(name: "Heavy Sentinel Core", description: "Ultimate defense sentinel mod", statAffected: "HP", multiplierBoost: 1.8)
+            } else if itemId == "boost_chef" {
+                purchasedItem = ModDTO(name: "Chef Booster", description: "Income x1.5 modifier", statAffected: "Damage", multiplierBoost: 1.5)
+            } else if itemId == "boost_equipment" {
+                purchasedItem = ModDTO(name: "Advanced Equip Core", description: "Income x1.8 modifier", statAffected: "Damage", multiplierBoost: 1.8)
+            }
+            
+            if let item = purchasedItem {
+                if InventoryManager.shared.canAddItem(item) {
+                    self.coins = newCoins
+                    self.gems = newGems
+                    InventoryManager.shared.addItem(item) { _ in }
+                    self.updateStatsBarLabels()
+                    self.showNotificationHUD(message: "\(message)\n🎒 Item added to your inventory!")
+                } else {
+                    // Do NOT update coins/gems (Keep old coins/gems -> Full Refund!)
+                    self.updateStatsBarLabels()
+                    self.showNotificationHUD(message: "⚠️ INVENTORY FULL!\nCould not add \(item.name). Transaction refunded!")
+                }
+            } else {
+                // If it is standard Gems pack (which doesn't occupy inventory space, just boosts gems count!)
+                self.coins = newCoins
+                self.gems = newGems
+                self.updateStatsBarLabels()
+                self.showNotificationHUD(message: message)
+            }
+        }
         shopVC.modalPresentationStyle = .overFullScreen
         shopVC.modalTransitionStyle = .crossDissolve
         present(shopVC, animated: false)
+    }
+    
+    @objc private func statsTapped() {
+        let statsVC = StatsInventoryViewController()
+        statsVC.coins = coins
+        statsVC.gems = gems
+        statsVC.level = playerLevel
+        statsVC.xp = playerXP
+        statsVC.maxXP = 100
+        statsVC.hp = playerCurrentHP
+        statsVC.maxHP = playerMaxHP
+        statsVC.modalPresentationStyle = .overFullScreen
+        statsVC.modalTransitionStyle = .crossDissolve
+        present(statsVC, animated: false)
+    }
+    
+    @objc private func rewardsTapped() {
+        // Reset rewards button visual glow state
+        rewardsButton.layer.removeAllAnimations()
+        rewardsButton.transform = .identity
+        rewardsButton.backgroundColor = UIColor.white.withAlphaComponent(0.12)
+        rewardsButton.tintColor = .white
+        rewardsButton.layer.borderColor = UIColor.white.withAlphaComponent(0.20).cgColor
+        
+        let rewardsVC = LevelRewardsViewController()
+        rewardsVC.currentLevel = playerLevel
+        rewardsVC.coins = coins
+        rewardsVC.gems = gems
+        rewardsVC.onRewardClaimed = { [weak self] message, cash, gemBonus in
+            guard let self = self else { return }
+            self.coins += cash
+            self.gems += gemBonus
+            self.updateStatsBarLabels()
+            self.showNotificationHUD(message: "\(message)\nReceived $\(cash) & \(gemBonus) Gems!")
+        }
+        rewardsVC.modalPresentationStyle = .overFullScreen
+        rewardsVC.modalTransitionStyle = .crossDissolve
+        present(rewardsVC, animated: false)
+    }
+    
+
+    
+    public func targetMob(_ annotation: MobAnnotation) {
+        self.targetedMobAnnotation = annotation
+        
+        targetNameLabel.text = annotation.mobDTO.type.rawValue.uppercased()
+        targetHPLabel.text = "HP: \(annotation.mobDTO.currentHP)/\(annotation.mobDTO.maxHP)"
+        
+        // Show combat control bar
+        UIView.animate(withDuration: 0.3) {
+            self.combatControlBar.alpha = 1.0
+        }
+    }
+    
+    @objc private func attackBtnTapped() {
+        guard let mobAnn = targetedMobAnnotation else { return }
+        
+        // --- Range check: must be within attack circle (500m) ---
+        guard let playerCoord = avatarAnnotation?.coordinate else { return }
+        let playerCL  = CLLocation(latitude: playerCoord.latitude, longitude: playerCoord.longitude)
+        let mobCL     = CLLocation(latitude: mobAnn.coordinate.latitude, longitude: mobAnn.coordinate.longitude)
+        let distanceM = playerCL.distance(from: mobCL)
+        let attackRadius: Double = 500
+        
+        if distanceM > attackRadius {
+            showNotificationHUD(message: "OUT OF RANGE — target is outside the attack circle")
+            UINotificationFeedbackGenerator().notificationOccurred(.error)
+            return
+        }
+        
+        // --- Distance-based damage multiplier (100% at 0m → 20% at 500m) ---
+        // Linear: multiplier = 1.0 - 0.8 * (distance / radius)
+        let t = distanceM / attackRadius                        // 0…1
+        let multiplier = 1.0 - 0.80 * t                        // 1.0 … 0.20
+        let baseDamage: Double = 20
+        let scaledDamage = Int(max(1, (baseDamage * multiplier).rounded()))
+        
+        // Muzzle flash / haptic feedback
+        UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+        
+        // Deduct HP
+        var mob = mobAnn.mobDTO
+        mob.currentHP -= scaledDamage
+        mobAnn.mobDTO = mob
+        
+        // Update HP in view
+        if let annView = mapView.view(for: mobAnn) as? MobAnnotationView {
+            annView.updateHP(current: mob.currentHP, max: mob.maxHP)
+        }
+        
+        targetHPLabel.text = "HP: \(mob.currentHP)/\(mob.maxHP)"
+        
+        let distStr = distanceM < 1000 ? "\(Int(distanceM))m" : String(format: "%.1fkm", distanceM / 1000)
+        let pctStr  = "\(Int(multiplier * 100))%"
+        showNotificationHUD(message: "💥 Hit for \(scaledDamage) dmg (\(pctStr) power @ \(distStr))")
+        
+        // Death check
+        if mob.currentHP <= 0 {
+            let xpReward = mob.type.baseXP
+            playerXP += xpReward
+            coins += xpReward * 10
+            
+            DangerLevelManager.shared.registerMobKilled()
+            let newDanger = DangerLevelManager.shared.currentDangerLevel
+            
+            var message = "DEFEATED \(mob.type.rawValue.uppercased())! Earned $\(xpReward * 10) & +\(xpReward) XP"
+            if playerXP >= 100 {
+                playerXP -= 100
+                playerLevel += 1
+                message += " — LEVEL UP! Now Lv.\(playerLevel)"
+            }
+            message += " | Danger Lv.\(newDanger)"
+            
+            updateStatsBarLabels()
+            showNotificationHUD(message: message)
+            
+            mapView.removeAnnotation(mobAnn)
+            if let idx = activeMobAnnotations.firstIndex(of: mobAnn) {
+                activeMobAnnotations.remove(at: idx)
+            }
+            
+            UIView.animate(withDuration: 0.3) {
+                self.combatControlBar.alpha = 0.0
+            }
+            targetedMobAnnotation = nil
+        } else {
+            // Mob counter-attacks after short delay
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
+                guard let self = self else { return }
+                self.takeDamage(amount: mob.damage)
+            }
+        }
+    }
+    
+    private func handleNewMobsSpawned(_ mobs: [MobDTO]) {
+        // Clear old mob annotations
+        mapView.removeAnnotations(activeMobAnnotations)
+        activeMobAnnotations.removeAll()
+        
+        // Add new annotations
+        for mob in mobs {
+            let ann = MobAnnotation(coordinate: mob.coordinate, mobDTO: mob)
+            activeMobAnnotations.append(ann)
+            mapView.addAnnotation(ann)
+        }
     }
     
     // MARK: - Build Store & Dynamic Placement Engine
@@ -1377,10 +1752,10 @@ public final class MainMapViewController: UIViewController {
         // COLLECT button — shows pending income, tapping collects it
         let pending = building.pendingIncome
         let collectBtn = UIButton(type: .custom)
-        let canCollect = pending >= building.totalIncome
+        let canCollect = pending > 0
         let collectTitle = canCollect
             ? "COLLECT $\(pending) ⬆️"
-            : "PENDING $\(pending)"
+            : "EMPTY 📭"
         collectBtn.setTitle(collectTitle, for: .normal)
         collectBtn.titleLabel?.font = UIFont.systemFont(ofSize: 10, weight: .black)
         collectBtn.titleLabel?.numberOfLines = 1
@@ -1440,12 +1815,14 @@ public final class MainMapViewController: UIViewController {
         upgradeButton.setTitle("UPGRADE - $\(formattedCost)\n(+$\(nextBaseIncomeBoost)/hr, +1 Slot)", for: .normal)
         upgradeButton.titleLabel?.font = UIFont.systemFont(ofSize: 10, weight: .black)
         upgradeButton.titleLabel?.numberOfLines = 2
-        upgradeButton.titleLabel?.textAlignment = .center
-        upgradeButton.setTitleColor(.white, for: .normal)
-        upgradeButton.backgroundColor = UIColor(red: 0.15, green: 0.55, blue: 0.95, alpha: 1.0)
+        if self.coins < upgradeCost {
+            upgradeButton.backgroundColor = UIColor(red: 1.00, green: 0.25, blue: 0.25, alpha: 1.0)
+            upgradeButton.layer.borderColor = UIColor(red: 1.00, green: 0.25, blue: 0.25, alpha: 0.60).cgColor
+        } else {
+            upgradeButton.backgroundColor = UIColor(red: 0.15, green: 0.55, blue: 0.95, alpha: 1.0)
+            upgradeButton.layer.borderColor = UIColor.white.withAlphaComponent(0.20).cgColor
+        }
         upgradeButton.layer.cornerRadius = 14
-        upgradeButton.layer.borderWidth = 1.0
-        upgradeButton.layer.borderColor = UIColor.white.withAlphaComponent(0.20).cgColor
         upgradeButton.translatesAutoresizingMaskIntoConstraints = false
         upgradeButton.addTarget(self, action: #selector(upgradeBuildingTapped), for: .touchUpInside)
         panel.addSubview(upgradeButton)
@@ -1514,10 +1891,12 @@ public final class MainMapViewController: UIViewController {
             let formattedStaffCost = formatter.string(from: NSNumber(value: (building.staffLevel + 1) * 3000)) ?? "\((building.staffLevel + 1) * 3000)"
             staffUpgradeBtn.setTitle("UPGRADE - $\(formattedStaffCost)\n(+$150/hr, +20 HP)", for: .normal) // Replaced 🪙 with $
             staffUpgradeBtn.titleLabel?.font = UIFont.systemFont(ofSize: 8, weight: .black)
-            staffUpgradeBtn.titleLabel?.numberOfLines = 2
-            staffUpgradeBtn.titleLabel?.textAlignment = .center
-            staffUpgradeBtn.setTitleColor(.white, for: .normal)
-            staffUpgradeBtn.backgroundColor = UIColor(red: 0.15, green: 0.85, blue: 0.45, alpha: 1.0)
+            let staffCostValue = (building.staffLevel + 1) * 3000
+            if self.coins < staffCostValue {
+                staffUpgradeBtn.backgroundColor = UIColor(red: 1.00, green: 0.25, blue: 0.25, alpha: 1.0)
+            } else {
+                staffUpgradeBtn.backgroundColor = UIColor(red: 0.15, green: 0.85, blue: 0.45, alpha: 1.0)
+            }
             staffUpgradeBtn.layer.cornerRadius = 10
             staffUpgradeBtn.translatesAutoresizingMaskIntoConstraints = false
             staffUpgradeBtn.addTarget(self, action: #selector(upgradeStaffTapped), for: .touchUpInside)
@@ -1556,10 +1935,12 @@ public final class MainMapViewController: UIViewController {
             let formattedEquipCost = formatter.string(from: NSNumber(value: (building.equipLevel + 1) * 4000)) ?? "\((building.equipLevel + 1) * 4000)"
             equipUpgradeBtn.setTitle("UPGRADE - $\(formattedEquipCost)\n(+$250/hr, +30 HP)", for: .normal) // Replaced 🪙 with $
             equipUpgradeBtn.titleLabel?.font = UIFont.systemFont(ofSize: 8, weight: .black)
-            equipUpgradeBtn.titleLabel?.numberOfLines = 2
-            equipUpgradeBtn.titleLabel?.textAlignment = .center
-            equipUpgradeBtn.setTitleColor(.white, for: .normal)
-            equipUpgradeBtn.backgroundColor = UIColor(red: 0.15, green: 0.55, blue: 0.95, alpha: 1.0)
+            let equipCostValue = (building.equipLevel + 1) * 4000
+            if self.coins < equipCostValue {
+                equipUpgradeBtn.backgroundColor = UIColor(red: 1.00, green: 0.25, blue: 0.25, alpha: 1.0)
+            } else {
+                equipUpgradeBtn.backgroundColor = UIColor(red: 0.15, green: 0.55, blue: 0.95, alpha: 1.0)
+            }
             equipUpgradeBtn.layer.cornerRadius = 10
             equipUpgradeBtn.translatesAutoresizingMaskIntoConstraints = false
             equipUpgradeBtn.addTarget(self, action: #selector(upgradeEquipTapped), for: .touchUpInside)
@@ -1983,7 +2364,6 @@ public final class MainMapViewController: UIViewController {
     }
 
     
-    // MARK: - Premium Dynamic Notification Toast & Stats
     public func updateStatsBarLabels() {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
@@ -1996,6 +2376,16 @@ public final class MainMapViewController: UIViewController {
         
         gemsLabel?.text = "\(gems)"
         
+        // Sync player level to scale inventory slot capacity
+        InventoryManager.shared.updatePlayerLevel(playerLevel)
+        let occupied = InventoryManager.shared.currentOccupiedSlots
+        let maxSlots = InventoryManager.shared.maxSlots
+        bagLabel?.text = "\(occupied)/\(maxSlots)"
+        
+        // Update level label with XP remaining progression next to level callsign
+        let xpToNext = 100 - playerXP
+        levelLabel.text = "LEVEL \(playerLevel) (XP TO NEXT: \(xpToNext))"
+        
         UIView.animate(withDuration: 0.1, animations: {
             self.coinsLabel?.transform = CGAffineTransform(scaleX: 1.15, y: 1.15)
         }) { _ in
@@ -2006,11 +2396,16 @@ public final class MainMapViewController: UIViewController {
     }
     
     public func showNotificationHUD(message: String) {
+        // Dismiss previous toast immediately to prevent overlapping
+        if let oldToast = activeToastView {
+            oldToast.removeFromSuperview()
+        }
+        
         let toast = UIView()
-        toast.backgroundColor = UIColor(white: 0.12, alpha: 0.92)
+        toast.backgroundColor = UIColor(white: 0.08, alpha: 0.95)
         toast.layer.cornerRadius = 20
         toast.layer.borderWidth = 1.0
-        toast.layer.borderColor = UIColor.white.withAlphaComponent(0.20).cgColor
+        toast.layer.borderColor = UIColor(red: 0.00, green: 0.94, blue: 1.00, alpha: 0.40).cgColor
         toast.clipsToBounds = true
         toast.translatesAutoresizingMaskIntoConstraints = false
         
@@ -2018,12 +2413,6 @@ public final class MainMapViewController: UIViewController {
         let blurView = UIVisualEffectView(effect: blurEffect)
         blurView.translatesAutoresizingMaskIntoConstraints = false
         toast.addSubview(blurView)
-        NSLayoutConstraint.activate([
-            blurView.topAnchor.constraint(equalTo: toast.topAnchor),
-            blurView.leadingAnchor.constraint(equalTo: toast.leadingAnchor),
-            blurView.trailingAnchor.constraint(equalTo: toast.trailingAnchor),
-            blurView.bottomAnchor.constraint(equalTo: toast.bottomAnchor)
-        ])
         
         let label = UILabel()
         label.text = message
@@ -2035,32 +2424,44 @@ public final class MainMapViewController: UIViewController {
         toast.addSubview(label)
         
         view.addSubview(toast)
+        activeToastView = toast
         
         NSLayoutConstraint.activate([
-            toast.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            toast.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -100),
-            toast.widthAnchor.constraint(greaterThanOrEqualToConstant: 180),
-            toast.widthAnchor.constraint(lessThanOrEqualToConstant: 300),
-            toast.heightAnchor.constraint(greaterThanOrEqualToConstant: 40),
+            blurView.topAnchor.constraint(equalTo: toast.topAnchor),
+            blurView.leadingAnchor.constraint(equalTo: toast.leadingAnchor),
+            blurView.trailingAnchor.constraint(equalTo: toast.trailingAnchor),
+            blurView.bottomAnchor.constraint(equalTo: toast.bottomAnchor),
             
             label.topAnchor.constraint(equalTo: toast.topAnchor, constant: 10),
-            label.leadingAnchor.constraint(equalTo: toast.leadingAnchor, constant: 16),
-            label.trailingAnchor.constraint(equalTo: toast.trailingAnchor, constant: -16),
-            label.bottomAnchor.constraint(equalTo: toast.bottomAnchor, constant: -10)
+            label.leadingAnchor.constraint(equalTo: toast.leadingAnchor, constant: 20),
+            label.trailingAnchor.constraint(equalTo: toast.trailingAnchor, constant: -20),
+            label.bottomAnchor.constraint(equalTo: toast.bottomAnchor, constant: -10),
+            
+            toast.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 70),
+            toast.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            toast.widthAnchor.constraint(lessThanOrEqualTo: view.widthAnchor, multiplier: 0.85)
         ])
         
-        toast.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+        // Animate in
+        toast.transform = CGAffineTransform(translationX: 0, y: -40)
         toast.alpha = 0.0
         
-        UIView.animate(withDuration: 0.45, delay: 0.0, usingSpringWithDamping: 0.72, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
+        UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseOut, animations: {
             toast.transform = .identity
             toast.alpha = 1.0
-        }) { _ in
-            UIView.animate(withDuration: 0.35, delay: 1.8, options: .curveEaseIn, animations: {
-                toast.transform = CGAffineTransform(scaleX: 0.85, y: 0.85)
+        })
+        
+        // Fade out after 2.5 seconds
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.5) { [weak toast, weak self] in
+            guard let toast = toast else { return }
+            UIView.animate(withDuration: 0.3, animations: {
                 toast.alpha = 0.0
+                toast.transform = CGAffineTransform(translationX: 0, y: -20)
             }) { _ in
                 toast.removeFromSuperview()
+                if self?.activeToastView == toast {
+                    self?.activeToastView = nil
+                }
             }
         }
     }
@@ -2125,6 +2526,18 @@ public final class MainMapViewController: UIViewController {
     private func setupLocationManager() {
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        
+        // Connect Mob Spawner Service callback
+        MapSpawnerService.shared.onNewMobsSpawned = { [weak self] mobs in
+            DispatchQueue.main.async {
+                self?.handleNewMobsSpawned(mobs)
+            }
+        }
+        
+        // Start proximity spawn timer to keep mobs refreshed around user location
+        MapSpawnerService.shared.startProximitySpawnTimer(intervalSeconds: 20.0) { [weak self] in
+            return self?.avatarAnnotation?.coordinate ?? CLLocationCoordinate2D(latitude: 37.3382, longitude: -121.8863)
+        }
         
         let status: CLAuthorizationStatus
         if #available(iOS 14.0, *) {
@@ -2297,6 +2710,189 @@ public final class MainMapViewController: UIViewController {
                 welcomeView.removeFromSuperview()
             }
         }
+    }
+    
+    // MARK: - Combat Simulation & Dynamic Respawning
+    private func startCombatSimulation() {
+        // Disabled unfair random damage. Damage is now only received intentionally during visible mob battles.
+    }
+    
+    public func takeDamage(amount: Int) {
+        guard !isPlayerDead else { return }
+        
+        playerCurrentHP -= amount
+        if playerCurrentHP < 0 { playerCurrentHP = 0 }
+        
+        // Update floating HP progress bar and red damage flashes on map avatar view!
+        if let avatarAnn = avatarAnnotation,
+           let annotationView = mapView.view(for: avatarAnn) as? AvatarAnnotationView {
+            annotationView.triggerDamageFlash()
+            annotationView.updateHP(current: playerCurrentHP, max: playerMaxHP)
+        }
+        
+        showNotificationHUD(message: "⚡ INCOMING DAMAGE\nReceived \(amount) damage! HP: \(playerCurrentHP)/\(playerMaxHP)")
+        
+        if playerCurrentHP <= 0 {
+            triggerPlayerDeath()
+        }
+    }
+    
+    private func triggerPlayerDeath() {
+        isPlayerDead = true
+        respawnTimer?.invalidate()
+        
+        // Respawn cooldown rises with level: base 3s + level * 1.5s
+        var secondsRemaining = 3.0 + Double(playerLevel) * 1.5
+        
+        respawnOverlay.isHidden = false
+        respawnOverlay.alpha = 0.0
+        respawnSubtitleLabel.text = String(format: "RESTABLISHING MATRIX IN %.1fS...", secondsRemaining)
+        
+        UINotificationFeedbackGenerator().notificationOccurred(.error)
+        
+        UIView.animate(withDuration: 0.35) {
+            self.respawnOverlay.alpha = 1.0
+        }
+        
+        respawnTimer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] timer in
+            guard let self = self else { return }
+            secondsRemaining -= 0.1
+            if secondsRemaining <= 0 {
+                timer.invalidate()
+                self.triggerRespawn()
+            } else {
+                self.respawnSubtitleLabel.text = String(format: "RESTABLISHING MATRIX IN %.1fS...", secondsRemaining)
+            }
+        }
+    }
+    
+    private func triggerRespawn() {
+        isPlayerDead = false
+        playerCurrentHP = playerMaxHP
+        
+        UIView.animate(withDuration: 0.30, animations: {
+            self.respawnOverlay.alpha = 0.0
+        }) { _ in
+            self.respawnOverlay.isHidden = true
+            
+            if let avatarAnn = self.avatarAnnotation,
+               let annotationView = self.mapView.view(for: avatarAnn) as? AvatarAnnotationView {
+                annotationView.updateHP(current: self.playerCurrentHP, max: self.playerMaxHP)
+            }
+            
+            self.showNotificationHUD(message: "⚡ CONNECTION RESTORED\nOperative successfully resurrected!")
+            UINotificationFeedbackGenerator().notificationOccurred(.success)
+        }
+    }
+    
+    // MARK: - Skull Collection & Level Up Congratulations
+    @objc public func collectSkull(_ annotation: SkullAnnotation) {
+        // Haptic feedback
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        
+        // Award 1 XP and update labels
+        playerXP += 1
+        
+        var levelUpOccurred = false
+        if playerXP >= 100 {
+            playerXP -= 100
+            playerLevel += 1
+            levelUpOccurred = true
+        }
+        
+        updateStatsBarLabels()
+        showNotificationHUD(message: "💀 Remains collected! +1 XP! \(levelUpOccurred ? "\n⚡ LEVEL UP! NOW LEVEL \(playerLevel)!" : "")")
+        
+        if levelUpOccurred {
+            showLevelUpCongratulationAlert()
+            lightUpRewardsButton()
+        }
+        
+        // Remove annotation from map
+        mapView.removeAnnotation(annotation)
+    }
+    
+    private func showLevelUpCongratulationAlert() {
+        let alert = UIAlertController(
+            title: "⚡ LEVEL UP! ⚡",
+            message: "Congratulations! You have advanced to Level \(playerLevel)!\n\nNew milestone rewards are now available in your Rewards tab! 🏆",
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "TACTICAL EXCELLENCE!", style: .default, handler: nil))
+        present(alert, animated: true)
+    }
+    
+    private func lightUpRewardsButton() {
+        rewardsButton.layer.removeAllAnimations()
+        rewardsButton.backgroundColor = UIColor(red: 1.0, green: 0.85, blue: 0.0, alpha: 1.0)
+        rewardsButton.tintColor = .black
+        rewardsButton.layer.borderColor = UIColor(red: 1.0, green: 0.95, blue: 0.2, alpha: 1.0).cgColor
+        
+        // Pulsate animation
+        UIView.animate(withDuration: 0.6, delay: 0, options: [.repeat, .autoreverse, .allowUserInteraction]) {
+            self.rewardsButton.transform = CGAffineTransform(scaleX: 1.25, y: 1.25)
+        }
+    }
+    
+    private func startMobMovementTimer() {
+        mobMovementTimer?.invalidate()
+        mobMovementTimer = Timer.scheduledTimer(withTimeInterval: 1.5, repeats: true) { [weak self] _ in
+            guard let self = self, !self.isPlayerDead else { return }
+            let userCoord = self.avatarAnnotation?.coordinate ?? CLLocationCoordinate2D(latitude: 37.3382, longitude: -121.8863)
+            
+            for (idx, mobAnn) in self.activeMobAnnotations.enumerated() {
+                var mob = mobAnn.mobDTO
+                let latDiff = userCoord.latitude - mobAnn.coordinate.latitude
+                let lonDiff = userCoord.longitude - mobAnn.coordinate.longitude
+                
+                let dist = sqrt(latDiff*latDiff + lonDiff*lonDiff)
+                guard dist > 0.0002 else { continue } // Stop when very close
+                
+                // Glide step speed step: 0.00015 (~15 meters per 1.5s)
+                let step: Double = 0.00015
+                let moveLat = (latDiff / dist) * step
+                let moveLon = (lonDiff / dist) * step
+                
+                let newCoord = CLLocationCoordinate2D(
+                    latitude: mobAnn.coordinate.latitude + moveLat,
+                    longitude: mobAnn.coordinate.longitude + moveLon
+                )
+                
+                // Smooth interpolation instead of teleportation
+                self.animateAnnotation(mobAnn, toCoordinate: newCoord, duration: 1.3)
+                
+                mob.latitude = newCoord.latitude
+                mob.longitude = newCoord.longitude
+                self.activeMobAnnotations[idx].mobDTO = mob
+            }
+        }
+    }
+    
+    // Smooth 33 FPS sliding coordinate interpolation animation
+    private func animateAnnotation(_ annotation: MKAnnotation, toCoordinate newCoordinate: CLLocationCoordinate2D, duration: Double) {
+        let start = annotation.coordinate
+        let end = newCoordinate
+        let startTime = CACurrentMediaTime()
+        
+        let timer = Timer.scheduledTimer(withTimeInterval: 0.03, repeats: true) { timer in
+            let elapsed = CACurrentMediaTime() - startTime
+            let percent = min(elapsed / duration, 1.0)
+            
+            let lat = start.latitude + (end.latitude - start.latitude) * percent
+            let lon = start.longitude + (end.longitude - start.longitude) * percent
+            
+            let currentCoord = CLLocationCoordinate2D(latitude: lat, longitude: lon)
+            if let mob = annotation as? MobAnnotation {
+                mob.coordinate = currentCoord
+            } else if let skull = annotation as? SkullAnnotation {
+                skull.coordinate = currentCoord
+            }
+            
+            if percent >= 1.0 {
+                timer.invalidate()
+            }
+        }
+        RunLoop.main.add(timer, forMode: .common)
     }
 }
 

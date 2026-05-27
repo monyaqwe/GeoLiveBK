@@ -3,100 +3,190 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2420F2605268854171BE9DFF /* BuildingModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACFD8A154564CFEF71CD1B40 /* BuildingModels.swift */; };
-		26B69B683032CD40AD4C3677 /* BuildingViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = C244D8C05B4DC5F99C3D3C15 /* BuildingViews.swift */; };
-		2EBB1B4FE312DDAACCBEFC83 /* MainMapViewController+Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A116A0374A2175EC2362AFD /* MainMapViewController+Map.swift */; };
-		723E73A3B9CC86AA1168EF58 /* AuthCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EA7C2B5178A7542514F8430 /* AuthCoordinator.swift */; };
-		98057B0BEEE4AE65A11398CC /* MainMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10689815C8AED65261F9DE6B /* MainMapViewController.swift */; };
-		9826C1DEFE3B50036914B000 /* avatar_female.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C4650A000 /* avatar_female.png */; };
-		9826C1DEFE3B50036914B001 /* avatar_male.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C4650A001 /* avatar_male.png */; };
-		9826C1DEFE3B50036914B002 /* female_cloth_polo.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C4650A002 /* female_cloth_polo.png */; };
-		9826C1DEFE3B50036914B003 /* female_cloth_red_polo.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C4650A003 /* female_cloth_red_polo.png */; };
-		9826C1DEFE3B50036914B004 /* female_glass_classic.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C4650A004 /* female_glass_classic.png */; };
-		9826C1DEFE3B50036914B005 /* female_glass_retro.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C4650A005 /* female_glass_retro.png */; };
-		9826C1DEFE3B50036914B006 /* female_hair_curly.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C4650A006 /* female_hair_curly.png */; };
-		9826C1DEFE3B50036914B007 /* female_hair_short.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C4650A007 /* female_hair_short.png */; };
-		9826C1DEFE3B50036914B008 /* female_hat_cap.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C4650A008 /* female_hat_cap.png */; };
-		9826C1DEFE3B50036914B009 /* female_hat_crown.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C4650A009 /* female_hat_crown.png */; };
-		9826C1DEFE3B50036914B00A /* male_beard_full.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C4650A00A /* male_beard_full.png */; };
-		9826C1DEFE3B50036914B00B /* male_beard_mustache.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C4650A00B /* male_beard_mustache.png */; };
-		9826C1DEFE3B50036914B00C /* male_cloth_polo.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C4650A00C /* male_cloth_polo.png */; };
-		9826C1DEFE3B50036914B00D /* male_cloth_red_polo.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C4650A00D /* male_cloth_red_polo.png */; };
-		9826C1DEFE3B50036914B00E /* male_glass_classic.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C4650A00E /* male_glass_classic.png */; };
-		9826C1DEFE3B50036914B00F /* male_glass_retro.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C4650A00F /* male_glass_retro.png */; };
-		9826C1DEFE3B50036914B010 /* male_hair_curly.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C4650A010 /* male_hair_curly.png */; };
-		9826C1DEFE3B50036914B011 /* male_hair_short.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C4650A011 /* male_hair_short.png */; };
-		9826C1DEFE3B50036914B012 /* male_hat_cap.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C4650A012 /* male_hat_cap.png */; };
-		9826C1DEFE3B50036914B013 /* male_hat_crown.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C4650A013 /* male_hat_crown.png */; };
-		9826C1DEFE3B50036914D04E /* CharacterSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C46504B4E /* CharacterSelectionViewController.swift */; };
-		9826C1DEFE3B50036914D04F /* CreateAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C46504B4D /* CreateAccountViewController.swift */; };
-		9826C1DEFE3B50036914D06D /* MainDashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C46504B6D /* MainDashboardViewController.swift */; };
-		9826C1DEFE3B50036914D06E /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C46504B6E /* UIImage+Extensions.swift */; };
-		9826C1DEFE3B50036914D06F /* NicknameEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C46504B6F /* NicknameEntryViewController.swift */; };
-		9826C1DEFE3B50036914D07F /* CharacterCustomizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C46504B7F /* CharacterCustomizationViewController.swift */; };
-		9826C1DEFE3B50036914D08A /* CharacterAssets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4CBA9F617340F01C46504B8A /* CharacterAssets.swift */; };
-		9A77794BE437D1F1682CADF6 /* CreateAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933F0BA28446EC38FFA11667 /* CreateAccountViewModel.swift */; };
-		9A77794BE437D1F1682CADF7 /* CharacterSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 933F0BA28446EC38FFA11668 /* CharacterSelectionViewModel.swift */; };
-		9E21898119A8EB9FD731D08E /* ShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE01C3A2FBEA007748A67BAA /* ShopViewController.swift */; };
-		A3A8DBFE60DC630CC401BF80 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0B6442E107C13477014669F /* Foundation.framework */; };
-		A6E1C4B8303B32B886E2BD1A /* MainModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = C683B404F171C271518E7BEC /* MainModels.swift */; };
-		C123A1CFA482A482BA9BAD99 /* AvatarAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2479D24F8F17BAAC969C9632 /* AvatarAnnotationView.swift */; };
-		CD34EF56789012345678AB12 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD34EF56789012345678AB13 /* LoadingViewController.swift */; };
-		CE7C5594EDBF3DD6CF055CE4 /* Pods_GeoLive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FCB7ED6375084B4CB79408C /* Pods_GeoLive.framework */; };
+		07ED013723EEA4B836BFD9C8 /* CharacterCustomizationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65C3F3C96FD00990EC2D60BC /* CharacterCustomizationViewController.swift */; };
+		089BB79BC844DF55398FD1EE /* InventoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34049DCB8B05070B074730D4 /* InventoryManager.swift */; };
+		0BDD3B46AB2C498419CBC13E /* male_glass_classic.png in Resources */ = {isa = PBXBuildFile; fileRef = D0AB257A064CA96E6A8AE7D6 /* male_glass_classic.png */; };
+		142302AEEA5AFD1CAC72E6ED /* StatsInventoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054522127BD9BC05329B72E5 /* StatsInventoryViewController.swift */; };
+		1666CD9673AE0CA9B89B5AC9 /* female_hat_crown.png in Resources */ = {isa = PBXBuildFile; fileRef = 12739D80E67D9280A7C88487 /* female_hat_crown.png */; };
+		198801FBF6B2DCD1736A9031 /* female_hair_short.png in Resources */ = {isa = PBXBuildFile; fileRef = FB7A76C6A83DB02AD04EC9E0 /* female_hair_short.png */; };
+		1BC9FEA5A5C26197F99A796E /* CharacterSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB2750F9DE5F618239F4C7D /* CharacterSelectionViewModel.swift */; };
+		1C4383CD80EE6EF65FA09356 /* StoreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC9A424A670EF1D31FB9F478 /* StoreViewModel.swift */; };
+		26771580D70604950A75680B /* LootAlertNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60FCCBCC1989C52BC5B7BAAB /* LootAlertNotification.swift */; };
+		2D5F409B3506FE80382C0719 /* MobAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 67237E90EE3530020400102B /* MobAnnotationView.swift */; };
+		37838BB9CC566A1609495F09 /* male_cloth_polo.png in Resources */ = {isa = PBXBuildFile; fileRef = 6F8ACB5D3117DE3460BA435B /* male_cloth_polo.png */; };
+		406C09F5D72EB5578BDC97FE /* Weapon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 175593B95E4B01C696F45147 /* Weapon.swift */; };
+		44C953F1C7574229FAC4511B /* Mob.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5EA6B5201809C6AE4225CE3C /* Mob.swift */; };
+		4C9B270A43CA15E0FC1857E8 /* CharacterSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C15E2BFD9252E9B582B230C /* CharacterSelectionViewController.swift */; };
+		4EA330CE44302D10F9687D8B /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF7A8713B73992DB87306D9E /* UIImage+Extensions.swift */; };
+		5666C4806F2BF8A7636FEC65 /* StatCalculationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AFA55D94F051A6493937AA44 /* StatCalculationService.swift */; };
+		58FC8B0643A1156B3EFC408B /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 12C28556176C5118580035A5 /* Player.swift */; };
+		5921597648019402C4EC8342 /* DangerAlertNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86CA9B82C5CC62F4C86D56CC /* DangerAlertNotification.swift */; };
+		5E6DC74AF27929E3B80BFE00 /* female_glass_classic.png in Resources */ = {isa = PBXBuildFile; fileRef = 4644A917285F324FA2FC5861 /* female_glass_classic.png */; };
+		5EB8159989EC29EF9A89B6B5 /* MainDashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BBFD516841051C7033012A2A /* MainDashboardViewController.swift */; };
+		615251326A7AFE587012FD71 /* BuildingViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = EFE884F41F412C1AFAB18B29 /* BuildingViews.swift */; };
+		653B3E48129DE11F0AC1D015 /* GoogleMapStyleService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD9B2FC916E082223488FC69 /* GoogleMapStyleService.swift */; };
+		69B4A6A5C627EB1AF5336792 /* avatar_male.png in Resources */ = {isa = PBXBuildFile; fileRef = 539B1CDB9ED878CF7E1BF6BF /* avatar_male.png */; };
+		6BB88E3E1E78FFB6EE8CD211 /* avatar_female.png in Resources */ = {isa = PBXBuildFile; fileRef = 40C5A9E8FFA2F45119D42AD5 /* avatar_female.png */; };
+		6F28E6554AEE4720D57E930E /* MainMapViewController+Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 20E60C3F87794335C714E9F1 /* MainMapViewController+Location.swift */; };
+		7112254E87015E2DF09088E4 /* DefenderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6402F9C981454D66E448BA /* DefenderManager.swift */; };
+		718586EB5DEDF649F3547D95 /* male_hat_crown.png in Resources */ = {isa = PBXBuildFile; fileRef = 2049D9C284660F876B2E72D1 /* male_hat_crown.png */; };
+		71D655B01CC70C592A8F2415 /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FEDC9BF329017C782201B1 /* MapViewModel.swift */; };
+		77058FB66C77E7D4EE113E51 /* male_hat_cap.png in Resources */ = {isa = PBXBuildFile; fileRef = E32D42D614D9409255C0F9F1 /* male_hat_cap.png */; };
+		7A8CEC527CEF523463BFF136 /* MainModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D20332568822060BF2CDBA /* MainModels.swift */; };
+		7EBB45F2E5D1539D0652B9D0 /* FusionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1694BFA5C5B388AEAA1C6783 /* FusionService.swift */; };
+		7FD1DB619CBE8A94A61E46A9 /* MobAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51F8DACF0035DBFFAEC94D38 /* MobAnnotation.swift */; };
+		88B03E1D1101E683C12E4083 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33494D4921BBA3CCC4BF95E3 /* MapViewController.swift */; };
+		88EFC3C12E7A7A69945AF6B9 /* male_hair_curly.png in Resources */ = {isa = PBXBuildFile; fileRef = B2A63034547D47F84487C569 /* male_hair_curly.png */; };
+		893D1CE3D17D0D4C0DAC974A /* AuthCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26A819D34BBF674FB612E41 /* AuthCoordinator.swift */; };
+		8A297E18AEB2449558CE9663 /* LevelRewardsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B15703230E45942B3A5BB85 /* LevelRewardsViewController.swift */; };
+		8AB5FA73385FE4DEA79DBBA2 /* NicknameEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32BC213D57F9D83590BDFEE /* NicknameEntryViewController.swift */; };
+		9576282E13D3C951CAFFC7AA /* male_cloth_red_polo.png in Resources */ = {isa = PBXBuildFile; fileRef = 728A6DDDB08FAA6333EF9FAB /* male_cloth_red_polo.png */; };
+		9576DC17EB1CFB729A73B04F /* female_hat_cap.png in Resources */ = {isa = PBXBuildFile; fileRef = F9E846F8D91F7724F8E07192 /* female_hat_cap.png */; };
+		99B97C956885DBCEDCF5C86B /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE21CEB8C6F8A2DE5430E7C /* NetworkManager.swift */; };
+		9AE878D705ABAB82D0A3C84F /* LootManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FDF629AC68AE77E392E5C220 /* LootManager.swift */; };
+		A1A8913EA657F12E28266F9C /* female_cloth_polo.png in Resources */ = {isa = PBXBuildFile; fileRef = 1DA9E3C453E80D8FE1802690 /* female_cloth_polo.png */; };
+		A32F420A8763512DE9F057BD /* female_glass_retro.png in Resources */ = {isa = PBXBuildFile; fileRef = A67ECDCC74788E37875D6902 /* female_glass_retro.png */; };
+		A553A3D2836B00B00EBD2766 /* male_hair_short.png in Resources */ = {isa = PBXBuildFile; fileRef = 5333F608128C813F21648F5D /* male_hair_short.png */; };
+		AB4405B1F4B1ECE152FB4840 /* CharacterAssets.swift in Sources */ = {isa = PBXBuildFile; fileRef = F719F4D2DBBB93B3C0EC7481 /* CharacterAssets.swift */; };
+		B8A9F6703D74BC074A5D5514 /* InventoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16AF9876AE91AA0E4F22B0FB /* InventoryViewController.swift */; };
+		BE4C070DA18BF627507BAC87 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DF03311735ECBACCEB8A5A90 /* LoadingViewController.swift */; };
+		BFD78C1242F9BA1ED0F430C5 /* MapSpawnerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 246DAEFCDBC0F3B9467ADE55 /* MapSpawnerService.swift */; };
+		C09D51135F14C147E5366C56 /* ShopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D05D96DE8496EE4C04955D74 /* ShopViewController.swift */; };
+		C163F792498CC5A2157AC5D5 /* female_cloth_red_polo.png in Resources */ = {isa = PBXBuildFile; fileRef = 1E550B75A40C70A44156B869 /* female_cloth_red_polo.png */; };
+		C3D9F58EEA6786CB5B5A3BDA /* female_hair_curly.png in Resources */ = {isa = PBXBuildFile; fileRef = C45725A65A5DBCD461104DFF /* female_hair_curly.png */; };
+		C4CA7A6BA4F2330EBD448ECE /* StoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3111306021D4860ED056AAD4 /* StoreViewController.swift */; };
+		C69375F0D03BBCAA333BFC69 /* MainMapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F240241C33D04F0C053CCDE /* MainMapViewController.swift */; };
+		C7238D299349A7C68531F1BC /* CreateAccountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73AA4AFB5062EF38E2B415BC /* CreateAccountViewModel.swift */; };
+		C9186BE47B27A96D873AE8B4 /* BuildingModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABD30A4AFBA4B90945CF2604 /* BuildingModels.swift */; };
+		CDCA6152A0C17242BAA8435A /* GachaPack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75D386E25A8E40030CD6EAC6 /* GachaPack.swift */; };
+		DAD10B84037902F79B6B8757 /* DangerLevelManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA0D0C3224D94A31C5B77285 /* DangerLevelManager.swift */; };
+		DADDCC94AEF88890E27A4626 /* male_glass_retro.png in Resources */ = {isa = PBXBuildFile; fileRef = E44AEE56BE83535C72328EE5 /* male_glass_retro.png */; };
 		E28A01D1E4D778F56C36ACA2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE81046035B79D7DD35427DB /* AppDelegate.swift */; };
-		F1338CF8C0F2A8440999C7F2 /* MainMapViewController+Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F51FB4B6AB8F206938F2EF8 /* MainMapViewController+Location.swift */; };
+		E51753837C4591CBB80D9FD2 /* male_beard_mustache.png in Resources */ = {isa = PBXBuildFile; fileRef = 4CD573A7C4710296C237231A /* male_beard_mustache.png */; };
+		EA496ACB379276A93ABD3AFE /* Defender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 355F334918833F4EF0BDE394 /* Defender.swift */; };
+		EB739E6F6DC28BDEC5DE4A00 /* InventoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 250CAB81631999BA8267355E /* InventoryViewModel.swift */; };
+		EEF7B9F979A0DAFE68521A51 /* FirebaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E798E5D29DA076181761BDDC /* FirebaseManager.swift */; };
+		F27E3D1F12F9F1473E8939D2 /* CreateAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA196B731CBAA3E2AC2DC97 /* CreateAccountViewController.swift */; };
+		F2B629DAB94147932172123C /* MainMapViewController+Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFE68592AC12A349B5117A9 /* MainMapViewController+Map.swift */; };
+		F2E0369E4803D9DE11C7A7A6 /* MapBuildingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5EC4EA9E9E6885E0EF5876 /* MapBuildingView.swift */; };
+		F724AF1A448841A30F600F14 /* GachaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 641B8B343925BF59A28FBB23 /* GachaService.swift */; };
+		FEE00A6EF0B35E0EEB36C448 /* male_beard_full.png in Resources */ = {isa = PBXBuildFile; fileRef = 6323CDCA614B094412CAD85E /* male_beard_full.png */; };
+		FF7B17E8CDD890D0A6FCE7A4 /* AvatarAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4E2163D00CBA1F0A93CFB0 /* AvatarAnnotationView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		10689815C8AED65261F9DE6B /* MainMapViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MainMapViewController.swift; path = Modules/Main/Controllers/MainMapViewController.swift; sourceTree = "<group>"; };
-		1F51FB4B6AB8F206938F2EF8 /* MainMapViewController+Location.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "MainMapViewController+Location.swift"; path = "Modules/Main/Extensions/MainMapViewController+Location.swift"; sourceTree = "<group>"; };
-		2479D24F8F17BAAC969C9632 /* AvatarAnnotationView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AvatarAnnotationView.swift; path = Modules/Main/Views/AvatarAnnotationView.swift; sourceTree = "<group>"; };
-		4CBA9F617340F01C46504B4D /* CreateAccountViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Controllers/CreateAccountViewController.swift; sourceTree = "<group>"; };
-		4CBA9F617340F01C46504B4E /* CharacterSelectionViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Controllers/CharacterSelectionViewController.swift; sourceTree = "<group>"; };
-		4CBA9F617340F01C46504B6D /* MainDashboardViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Controllers/MainDashboardViewController.swift; sourceTree = "<group>"; };
-		4CBA9F617340F01C46504B6E /* UIImage+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = "Common/UIImage+Extensions.swift"; sourceTree = "<group>"; };
-		4CBA9F617340F01C46504B6F /* NicknameEntryViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Controllers/NicknameEntryViewController.swift; sourceTree = "<group>"; };
-		4CBA9F617340F01C46504B7F /* CharacterCustomizationViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Controllers/CharacterCustomizationViewController.swift; sourceTree = "<group>"; };
-		4CBA9F617340F01C46504B8A /* CharacterAssets.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Common/CharacterAssets.swift; sourceTree = "<group>"; };
-		4CBA9F617340F01C4650A000 /* avatar_female.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = avatar_female.png; path = Assets/avatar_female.png; sourceTree = "<group>"; };
-		4CBA9F617340F01C4650A001 /* avatar_male.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = avatar_male.png; path = Assets/avatar_male.png; sourceTree = "<group>"; };
-		4CBA9F617340F01C4650A002 /* female_cloth_polo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = female_cloth_polo.png; path = Assets/female_cloth_polo.png; sourceTree = "<group>"; };
-		4CBA9F617340F01C4650A003 /* female_cloth_red_polo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = female_cloth_red_polo.png; path = Assets/female_cloth_red_polo.png; sourceTree = "<group>"; };
-		4CBA9F617340F01C4650A004 /* female_glass_classic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = female_glass_classic.png; path = Assets/female_glass_classic.png; sourceTree = "<group>"; };
-		4CBA9F617340F01C4650A005 /* female_glass_retro.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = female_glass_retro.png; path = Assets/female_glass_retro.png; sourceTree = "<group>"; };
-		4CBA9F617340F01C4650A006 /* female_hair_curly.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = female_hair_curly.png; path = Assets/female_hair_curly.png; sourceTree = "<group>"; };
-		4CBA9F617340F01C4650A007 /* female_hair_short.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = female_hair_short.png; path = Assets/female_hair_short.png; sourceTree = "<group>"; };
-		4CBA9F617340F01C4650A008 /* female_hat_cap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = female_hat_cap.png; path = Assets/female_hat_cap.png; sourceTree = "<group>"; };
-		4CBA9F617340F01C4650A009 /* female_hat_crown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = female_hat_crown.png; path = Assets/female_hat_crown.png; sourceTree = "<group>"; };
-		4CBA9F617340F01C4650A00A /* male_beard_full.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = male_beard_full.png; path = Assets/male_beard_full.png; sourceTree = "<group>"; };
-		4CBA9F617340F01C4650A00B /* male_beard_mustache.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = male_beard_mustache.png; path = Assets/male_beard_mustache.png; sourceTree = "<group>"; };
-		4CBA9F617340F01C4650A00C /* male_cloth_polo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = male_cloth_polo.png; path = Assets/male_cloth_polo.png; sourceTree = "<group>"; };
-		4CBA9F617340F01C4650A00D /* male_cloth_red_polo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = male_cloth_red_polo.png; path = Assets/male_cloth_red_polo.png; sourceTree = "<group>"; };
-		4CBA9F617340F01C4650A00E /* male_glass_classic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = male_glass_classic.png; path = Assets/male_glass_classic.png; sourceTree = "<group>"; };
-		4CBA9F617340F01C4650A00F /* male_glass_retro.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = male_glass_retro.png; path = Assets/male_glass_retro.png; sourceTree = "<group>"; };
-		4CBA9F617340F01C4650A010 /* male_hair_curly.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = male_hair_curly.png; path = Assets/male_hair_curly.png; sourceTree = "<group>"; };
-		4CBA9F617340F01C4650A011 /* male_hair_short.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = male_hair_short.png; path = Assets/male_hair_short.png; sourceTree = "<group>"; };
-		4CBA9F617340F01C4650A012 /* male_hat_cap.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = male_hat_cap.png; path = Assets/male_hat_cap.png; sourceTree = "<group>"; };
-		4CBA9F617340F01C4650A013 /* male_hat_crown.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = male_hat_crown.png; path = Assets/male_hat_crown.png; sourceTree = "<group>"; };
-		7A116A0374A2175EC2362AFD /* MainMapViewController+Map.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "MainMapViewController+Map.swift"; path = "Modules/Main/Extensions/MainMapViewController+Map.swift"; sourceTree = "<group>"; };
-		7CA39214ED954FBD478D8983 /* Pods-GeoLive.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GeoLive.debug.xcconfig"; path = "Target Support Files/Pods-GeoLive/Pods-GeoLive.debug.xcconfig"; sourceTree = "<group>"; };
-		7EA7C2B5178A7542514F8430 /* AuthCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Coordinator/AuthCoordinator.swift; sourceTree = "<group>"; };
-		933F0BA28446EC38FFA11667 /* CreateAccountViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Controllers/CreateAccountViewModel.swift; sourceTree = "<group>"; };
-		933F0BA28446EC38FFA11668 /* CharacterSelectionViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Controllers/CharacterSelectionViewModel.swift; sourceTree = "<group>"; };
-		9FCB7ED6375084B4CB79408C /* Pods_GeoLive.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_GeoLive.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		ACFD8A154564CFEF71CD1B40 /* BuildingModels.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BuildingModels.swift; path = Modules/Buildings/Models/BuildingModels.swift; sourceTree = "<group>"; };
-		C0B6442E107C13477014669F /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		C244D8C05B4DC5F99C3D3C15 /* BuildingViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BuildingViews.swift; path = Modules/Buildings/Views/BuildingViews.swift; sourceTree = "<group>"; };
-		C683B404F171C271518E7BEC /* MainModels.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MainModels.swift; path = Modules/Main/Models/MainModels.swift; sourceTree = "<group>"; };
-		CD34EF56789012345678AB13 /* LoadingViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = Controllers/LoadingViewController.swift; sourceTree = "<group>"; };
-		CE01C3A2FBEA007748A67BAA /* ShopViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ShopViewController.swift; sourceTree = "<group>"; };
-		DE5B4BC4BC528D9C8B55C936 /* GeoLive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GeoLive.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		046BAAB115A53B7129AB395C /* DefenderManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DefenderManager.swift; path = Modules/Store/DefenderManager.swift; sourceTree = "<group>"; };
+		04D20332568822060BF2CDBA /* MainModels.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MainModels.swift; path = Modules/Main/Models/MainModels.swift; sourceTree = "<group>"; };
+		054522127BD9BC05329B72E5 /* StatsInventoryViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StatsInventoryViewController.swift; path = Modules/Main/Controllers/StatsInventoryViewController.swift; sourceTree = "<group>"; };
+		05A8FEB1E720BF4B9E5FD0AF /* CharacterSelectionViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CharacterSelectionViewModel.swift; path = Modules/Auth/Controllers/CharacterSelectionViewModel.swift; sourceTree = "<group>"; };
+		0A9A0C637F4C46F2AB8485E1 /* Mob.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Mob.swift; path = Core/DataModels/Mob.swift; sourceTree = "<group>"; };
+		0B8BD0FDB5F18C786DDC6A71 /* StatCalculationService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StatCalculationService.swift; path = Core/Managers/StatCalculationService.swift; sourceTree = "<group>"; };
+		0FB2750F9DE5F618239F4C7D /* CharacterSelectionViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CharacterSelectionViewModel.swift; path = Modules/Auth/Controllers/CharacterSelectionViewModel.swift; sourceTree = "<group>"; };
+		12739D80E67D9280A7C88487 /* female_hat_crown.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = female_hat_crown.png; path = Modules/Auth/Assets/female_hat_crown.png; sourceTree = "<group>"; };
+		12C28556176C5118580035A5 /* Player.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Player.swift; path = Core/DataModels/Player.swift; sourceTree = "<group>"; };
+		1694BFA5C5B388AEAA1C6783 /* FusionService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FusionService.swift; path = Modules/Inventory/FusionService.swift; sourceTree = "<group>"; };
+		16AF9876AE91AA0E4F22B0FB /* InventoryViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = InventoryViewController.swift; path = Modules/Inventory/InventoryViewController.swift; sourceTree = "<group>"; };
+		175593B95E4B01C696F45147 /* Weapon.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Weapon.swift; path = Core/DataModels/Weapon.swift; sourceTree = "<group>"; };
+		1AE21CEB8C6F8A2DE5430E7C /* NetworkManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NetworkManager.swift; path = Core/Managers/NetworkManager.swift; sourceTree = "<group>"; };
+		1CC8F0BFF6B083DD8D214456 /* UIImage+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UIImage+Extensions.swift"; path = "Modules/Auth/Common/UIImage+Extensions.swift"; sourceTree = "<group>"; };
+		1DA9E3C453E80D8FE1802690 /* female_cloth_polo.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = female_cloth_polo.png; path = Modules/Auth/Assets/female_cloth_polo.png; sourceTree = "<group>"; };
+		1E550B75A40C70A44156B869 /* female_cloth_red_polo.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = female_cloth_red_polo.png; path = Modules/Auth/Assets/female_cloth_red_polo.png; sourceTree = "<group>"; };
+		1F240241C33D04F0C053CCDE /* MainMapViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MainMapViewController.swift; path = Modules/Main/Controllers/MainMapViewController.swift; sourceTree = "<group>"; };
+		2049D9C284660F876B2E72D1 /* male_hat_crown.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = male_hat_crown.png; path = Modules/Auth/Assets/male_hat_crown.png; sourceTree = "<group>"; };
+		20E60C3F87794335C714E9F1 /* MainMapViewController+Location.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "MainMapViewController+Location.swift"; path = "Modules/Main/Extensions/MainMapViewController+Location.swift"; sourceTree = "<group>"; };
+		246DAEFCDBC0F3B9467ADE55 /* MapSpawnerService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MapSpawnerService.swift; path = Modules/Map/MapSpawnerService.swift; sourceTree = "<group>"; };
+		250CAB81631999BA8267355E /* InventoryViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = InventoryViewModel.swift; path = Modules/Inventory/InventoryViewModel.swift; sourceTree = "<group>"; };
+		2CEEC5731CFBAEEFB4CFE427 /* DangerLevelManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DangerLevelManager.swift; path = Modules/Map/DangerLevelManager.swift; sourceTree = "<group>"; };
+		30FEDC9BF329017C782201B1 /* MapViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MapViewModel.swift; path = Modules/Map/MapViewModel.swift; sourceTree = "<group>"; };
+		3111306021D4860ED056AAD4 /* StoreViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StoreViewController.swift; path = Modules/Store/StoreViewController.swift; sourceTree = "<group>"; };
+		33494D4921BBA3CCC4BF95E3 /* MapViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MapViewController.swift; path = Modules/Map/MapViewController.swift; sourceTree = "<group>"; };
+		33AD301162B2C53EE3A75AB2 /* FirebaseManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FirebaseManager.swift; path = Core/Managers/FirebaseManager.swift; sourceTree = "<group>"; };
+		34049DCB8B05070B074730D4 /* InventoryManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = InventoryManager.swift; path = Modules/Inventory/InventoryManager.swift; sourceTree = "<group>"; };
+		355F334918833F4EF0BDE394 /* Defender.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Defender.swift; path = Core/DataModels/Defender.swift; sourceTree = "<group>"; };
+		3B15703230E45942B3A5BB85 /* LevelRewardsViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LevelRewardsViewController.swift; path = Modules/Main/Controllers/LevelRewardsViewController.swift; sourceTree = "<group>"; };
+		3DFE68592AC12A349B5117A9 /* MainMapViewController+Map.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "MainMapViewController+Map.swift"; path = "Modules/Main/Extensions/MainMapViewController+Map.swift"; sourceTree = "<group>"; };
+		40C5A9E8FFA2F45119D42AD5 /* avatar_female.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = avatar_female.png; path = Modules/Auth/Assets/avatar_female.png; sourceTree = "<group>"; };
+		420F9BBBC5E258E31ECE310A /* MainDashboardViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MainDashboardViewController.swift; path = Modules/Auth/Controllers/MainDashboardViewController.swift; sourceTree = "<group>"; };
+		4582F196E97FB662D0F0E623 /* Defender.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Defender.swift; path = Core/DataModels/Defender.swift; sourceTree = "<group>"; };
+		4644A917285F324FA2FC5861 /* female_glass_classic.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = female_glass_classic.png; path = Modules/Auth/Assets/female_glass_classic.png; sourceTree = "<group>"; };
+		4A54FDE4C425D1E608E31C4F /* MapBuildingView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MapBuildingView.swift; path = Modules/Map/MapBuildingView.swift; sourceTree = "<group>"; };
+		4CD573A7C4710296C237231A /* male_beard_mustache.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = male_beard_mustache.png; path = Modules/Auth/Assets/male_beard_mustache.png; sourceTree = "<group>"; };
+		51F8DACF0035DBFFAEC94D38 /* MobAnnotation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MobAnnotation.swift; path = Modules/Map/MobAnnotation.swift; sourceTree = "<group>"; };
+		52403FA49AE5714EE376CF6B /* StoreViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StoreViewModel.swift; path = Modules/Store/StoreViewModel.swift; sourceTree = "<group>"; };
+		5333F608128C813F21648F5D /* male_hair_short.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = male_hair_short.png; path = Modules/Auth/Assets/male_hair_short.png; sourceTree = "<group>"; };
+		539B1CDB9ED878CF7E1BF6BF /* avatar_male.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = avatar_male.png; path = Modules/Auth/Assets/avatar_male.png; sourceTree = "<group>"; };
+		5487D77CBF4430FB0BEB7CB0 /* InventoryManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = InventoryManager.swift; path = Modules/Inventory/InventoryManager.swift; sourceTree = "<group>"; };
+		560FA1D448719AB6FBBA422A /* DangerAlertNotification.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DangerAlertNotification.swift; path = UIComponents/Notifications/DangerAlertNotification.swift; sourceTree = "<group>"; };
+		5B6402F9C981454D66E448BA /* DefenderManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DefenderManager.swift; path = Modules/Store/DefenderManager.swift; sourceTree = "<group>"; };
+		5EA6B5201809C6AE4225CE3C /* Mob.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Mob.swift; path = Core/DataModels/Mob.swift; sourceTree = "<group>"; };
+		5F0714F798CBE6308A01C0B8 /* MapViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MapViewController.swift; path = Modules/Map/MapViewController.swift; sourceTree = "<group>"; };
+		5FB25B9C1976D75B5E31EA91 /* CharacterAssets.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CharacterAssets.swift; path = Modules/Auth/Common/CharacterAssets.swift; sourceTree = "<group>"; };
+		60FCCBCC1989C52BC5B7BAAB /* LootAlertNotification.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LootAlertNotification.swift; path = UIComponents/Notifications/LootAlertNotification.swift; sourceTree = "<group>"; };
+		6323CDCA614B094412CAD85E /* male_beard_full.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = male_beard_full.png; path = Modules/Auth/Assets/male_beard_full.png; sourceTree = "<group>"; };
+		641B8B343925BF59A28FBB23 /* GachaService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GachaService.swift; path = Modules/Store/GachaService.swift; sourceTree = "<group>"; };
+		65C3F3C96FD00990EC2D60BC /* CharacterCustomizationViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CharacterCustomizationViewController.swift; path = Modules/Auth/Controllers/CharacterCustomizationViewController.swift; sourceTree = "<group>"; };
+		65F93BE7FE1F424C9FA5EC22 /* Pods-GeoLive.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GeoLive.release.xcconfig"; path = "Target Support Files/Pods-GeoLive/Pods-GeoLive.release.xcconfig"; sourceTree = "<group>"; };
+		664B122262A24C284015832E /* LootAlertNotification.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LootAlertNotification.swift; path = UIComponents/Notifications/LootAlertNotification.swift; sourceTree = "<group>"; };
+		67237E90EE3530020400102B /* MobAnnotationView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MobAnnotationView.swift; path = Modules/Map/MobAnnotationView.swift; sourceTree = "<group>"; };
+		6F8ACB5D3117DE3460BA435B /* male_cloth_polo.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = male_cloth_polo.png; path = Modules/Auth/Assets/male_cloth_polo.png; sourceTree = "<group>"; };
+		6FB5B32D3B0A1D9E94D3226E /* MapViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MapViewModel.swift; path = Modules/Map/MapViewModel.swift; sourceTree = "<group>"; };
+		728A6DDDB08FAA6333EF9FAB /* male_cloth_red_polo.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = male_cloth_red_polo.png; path = Modules/Auth/Assets/male_cloth_red_polo.png; sourceTree = "<group>"; };
+		73AA4AFB5062EF38E2B415BC /* CreateAccountViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CreateAccountViewModel.swift; path = Modules/Auth/Controllers/CreateAccountViewModel.swift; sourceTree = "<group>"; };
+		75D386E25A8E40030CD6EAC6 /* GachaPack.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GachaPack.swift; path = Core/DataModels/GachaPack.swift; sourceTree = "<group>"; };
+		79BCB9AA75E2241512D64D28 /* FusionService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FusionService.swift; path = Modules/Inventory/FusionService.swift; sourceTree = "<group>"; };
+		7C15E2BFD9252E9B582B230C /* CharacterSelectionViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CharacterSelectionViewController.swift; path = Modules/Auth/Controllers/CharacterSelectionViewController.swift; sourceTree = "<group>"; };
+		7C7EEC4B644BA8E8E5E78F75 /* CharacterSelectionViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CharacterSelectionViewController.swift; path = Modules/Auth/Controllers/CharacterSelectionViewController.swift; sourceTree = "<group>"; };
+		86CA9B82C5CC62F4C86D56CC /* DangerAlertNotification.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DangerAlertNotification.swift; path = UIComponents/Notifications/DangerAlertNotification.swift; sourceTree = "<group>"; };
+		96A7C56AE2D17E302B350B4D /* GachaService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GachaService.swift; path = Modules/Store/GachaService.swift; sourceTree = "<group>"; };
+		9980C2974603376B93DC823A /* LootManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LootManager.swift; path = Modules/Map/LootManager.swift; sourceTree = "<group>"; };
+		9B5EC4EA9E9E6885E0EF5876 /* MapBuildingView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MapBuildingView.swift; path = Modules/Map/MapBuildingView.swift; sourceTree = "<group>"; };
+		9CFE029FE258DFA8DD6AA2AC /* Weapon.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Weapon.swift; path = Core/DataModels/Weapon.swift; sourceTree = "<group>"; };
+		9DD53B2A02ECB5C63EECFFA7 /* ShopViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ShopViewController.swift; path = Modules/Shop/ShopViewController.swift; sourceTree = "<group>"; };
+		A0FB1FD52626F7D1ECBA2593 /* InventoryViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = InventoryViewController.swift; path = Modules/Inventory/InventoryViewController.swift; sourceTree = "<group>"; };
+		A4C05A49389A86BD3CF894A3 /* MapSpawnerService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MapSpawnerService.swift; path = Modules/Map/MapSpawnerService.swift; sourceTree = "<group>"; };
+		A67ECDCC74788E37875D6902 /* female_glass_retro.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = female_glass_retro.png; path = Modules/Auth/Assets/female_glass_retro.png; sourceTree = "<group>"; };
+		AA6833CD027226D2E9AD6D6E /* CreateAccountViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CreateAccountViewModel.swift; path = Modules/Auth/Controllers/CreateAccountViewModel.swift; sourceTree = "<group>"; };
+		ABD30A4AFBA4B90945CF2604 /* BuildingModels.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BuildingModels.swift; path = Modules/Buildings/Models/BuildingModels.swift; sourceTree = "<group>"; };
+		AFA55D94F051A6493937AA44 /* StatCalculationService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StatCalculationService.swift; path = Core/Managers/StatCalculationService.swift; sourceTree = "<group>"; };
+		B26DB5B9554E8F70AC37ED5F /* AuthCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AuthCoordinator.swift; path = Modules/Auth/Coordinator/AuthCoordinator.swift; sourceTree = "<group>"; };
+		B2A63034547D47F84487C569 /* male_hair_curly.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = male_hair_curly.png; path = Modules/Auth/Assets/male_hair_curly.png; sourceTree = "<group>"; };
+		B8B3A791A721AF9B4A0306B6 /* GoogleMapStyleService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GoogleMapStyleService.swift; path = Core/Managers/GoogleMapStyleService.swift; sourceTree = "<group>"; };
+		BBFD516841051C7033012A2A /* MainDashboardViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MainDashboardViewController.swift; path = Modules/Auth/Controllers/MainDashboardViewController.swift; sourceTree = "<group>"; };
+		BDAB11BC85B6C295C46E8E01 /* StoreViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StoreViewController.swift; path = Modules/Store/StoreViewController.swift; sourceTree = "<group>"; };
+		C40B09774FB793DCF94B16A8 /* NicknameEntryViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NicknameEntryViewController.swift; path = Modules/Auth/Controllers/NicknameEntryViewController.swift; sourceTree = "<group>"; };
+		C45725A65A5DBCD461104DFF /* female_hair_curly.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = female_hair_curly.png; path = Modules/Auth/Assets/female_hair_curly.png; sourceTree = "<group>"; };
+		CA0D0C3224D94A31C5B77285 /* DangerLevelManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DangerLevelManager.swift; path = Modules/Map/DangerLevelManager.swift; sourceTree = "<group>"; };
+		CC1207B50D564BFFF8F2C395 /* CharacterCustomizationViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CharacterCustomizationViewController.swift; path = Modules/Auth/Controllers/CharacterCustomizationViewController.swift; sourceTree = "<group>"; };
+		CD9B2FC916E082223488FC69 /* GoogleMapStyleService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GoogleMapStyleService.swift; path = Core/Managers/GoogleMapStyleService.swift; sourceTree = "<group>"; };
+		D05D96DE8496EE4C04955D74 /* ShopViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ShopViewController.swift; path = Modules/Shop/ShopViewController.swift; sourceTree = "<group>"; };
+		D0AB257A064CA96E6A8AE7D6 /* male_glass_classic.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = male_glass_classic.png; path = Modules/Auth/Assets/male_glass_classic.png; sourceTree = "<group>"; };
+		D11EB3E0A264A0649129D586 /* NetworkManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NetworkManager.swift; path = Core/Managers/NetworkManager.swift; sourceTree = "<group>"; };
+		D6EDB98A22B62EFEE02C8AAB /* InventoryViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = InventoryViewModel.swift; path = Modules/Inventory/InventoryViewModel.swift; sourceTree = "<group>"; };
+		DDA196B731CBAA3E2AC2DC97 /* CreateAccountViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CreateAccountViewController.swift; path = Modules/Auth/Controllers/CreateAccountViewController.swift; sourceTree = "<group>"; };
+		DF03311735ECBACCEB8A5A90 /* LoadingViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LoadingViewController.swift; path = Modules/Auth/Controllers/LoadingViewController.swift; sourceTree = "<group>"; };
+		E17CAB86CBB457BE65F125D9 /* GachaPack.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GachaPack.swift; path = Core/DataModels/GachaPack.swift; sourceTree = "<group>"; };
+		E26A819D34BBF674FB612E41 /* AuthCoordinator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AuthCoordinator.swift; path = Modules/Auth/Coordinator/AuthCoordinator.swift; sourceTree = "<group>"; };
+		E32BC213D57F9D83590BDFEE /* NicknameEntryViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NicknameEntryViewController.swift; path = Modules/Auth/Controllers/NicknameEntryViewController.swift; sourceTree = "<group>"; };
+		E32D42D614D9409255C0F9F1 /* male_hat_cap.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = male_hat_cap.png; path = Modules/Auth/Assets/male_hat_cap.png; sourceTree = "<group>"; };
+		E44AEE56BE83535C72328EE5 /* male_glass_retro.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = male_glass_retro.png; path = Modules/Auth/Assets/male_glass_retro.png; sourceTree = "<group>"; };
+		E798E5D29DA076181761BDDC /* FirebaseManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = FirebaseManager.swift; path = Core/Managers/FirebaseManager.swift; sourceTree = "<group>"; };
+		EC9A424A670EF1D31FB9F478 /* StoreViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StoreViewModel.swift; path = Modules/Store/StoreViewModel.swift; sourceTree = "<group>"; };
 		EE81046035B79D7DD35427DB /* AppDelegate.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		F7BE2AE54D466C810AC54354 /* Pods-GeoLive.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GeoLive.release.xcconfig"; path = "Target Support Files/Pods-GeoLive/Pods-GeoLive.release.xcconfig"; sourceTree = "<group>"; };
+		EFE884F41F412C1AFAB18B29 /* BuildingViews.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = BuildingViews.swift; path = Modules/Buildings/Views/BuildingViews.swift; sourceTree = "<group>"; };
+		F24E9B758EEF655DFCB84E85 /* Player.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Player.swift; path = Core/DataModels/Player.swift; sourceTree = "<group>"; };
+		F277042B66742A8835F26665 /* LoadingViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LoadingViewController.swift; path = Modules/Auth/Controllers/LoadingViewController.swift; sourceTree = "<group>"; };
+		F4F6683E99B83ECDF8CFEAA4 /* CreateAccountViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CreateAccountViewController.swift; path = Modules/Auth/Controllers/CreateAccountViewController.swift; sourceTree = "<group>"; };
+		F719F4D2DBBB93B3C0EC7481 /* CharacterAssets.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CharacterAssets.swift; path = Modules/Auth/Common/CharacterAssets.swift; sourceTree = "<group>"; };
+		F9E846F8D91F7724F8E07192 /* female_hat_cap.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = female_hat_cap.png; path = Modules/Auth/Assets/female_hat_cap.png; sourceTree = "<group>"; };
+		FB7A76C6A83DB02AD04EC9E0 /* female_hair_short.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = female_hair_short.png; path = Modules/Auth/Assets/female_hair_short.png; sourceTree = "<group>"; };
+		FDCAEFB874A0AFF540993326 /* Pods-GeoLive.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-GeoLive.debug.xcconfig"; path = "Target Support Files/Pods-GeoLive/Pods-GeoLive.debug.xcconfig"; sourceTree = "<group>"; };
+		FDF629AC68AE77E392E5C220 /* LootManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = LootManager.swift; path = Modules/Map/LootManager.swift; sourceTree = "<group>"; };
+		FF4E2163D00CBA1F0A93CFB0 /* AvatarAnnotationView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = AvatarAnnotationView.swift; path = Modules/Main/Views/AvatarAnnotationView.swift; sourceTree = "<group>"; };
+		FF7A8713B73992DB87306D9E /* UIImage+Extensions.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "UIImage+Extensions.swift"; path = "Modules/Auth/Common/UIImage+Extensions.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,81 +194,202 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A3A8DBFE60DC630CC401BF80 /* Foundation.framework in Frameworks */,
-				CE7C5594EDBF3DD6CF055CE4 /* Pods_GeoLive.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0883D66C06B59BC7256ECC61 /* Notifications */ = {
+			isa = PBXGroup;
+			children = (
+				60FCCBCC1989C52BC5B7BAAB /* LootAlertNotification.swift */,
+				86CA9B82C5CC62F4C86D56CC /* DangerAlertNotification.swift */,
+			);
+			name = Notifications;
+			sourceTree = "<group>";
+		};
+		09963DFB209FB6915D4D0F59 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				67AA11F8E1D4F6DF56314F82 /* Coordinator */,
+				C79C558EE2490F08016F0466 /* Common */,
+				3E593765B05D2E9143074F3E /* Controllers */,
+				09A0245264CC359DE42E26C8 /* Assets */,
+			);
+			name = Auth;
+			sourceTree = "<group>";
+		};
+		09A0245264CC359DE42E26C8 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Assets;
+			sourceTree = "<group>";
+		};
 		09D9861D8CF7B441ED284361 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				C683B404F171C271518E7BEC /* MainModels.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
 		};
-		0DB27D56C6EFD1C562D257B7 /* Pods */ = {
+		0CD7C2AA1399B6E20499C9E3 /* Store */ = {
 			isa = PBXGroup;
 			children = (
-				F7BE2AE54D466C810AC54354 /* Pods-GeoLive.release.xcconfig */,
-				7CA39214ED954FBD478D8983 /* Pods-GeoLive.debug.xcconfig */,
+				EC9A424A670EF1D31FB9F478 /* StoreViewModel.swift */,
+				3111306021D4860ED056AAD4 /* StoreViewController.swift */,
+				5B6402F9C981454D66E448BA /* DefenderManager.swift */,
+				641B8B343925BF59A28FBB23 /* GachaService.swift */,
 			);
-			path = Pods;
+			name = Store;
 			sourceTree = "<group>";
 		};
-		22B540AFBFD09B8765F1CB67 /* Auth */ = {
+		0DB27D56C6EFD1C562D257B7 /*  */ = {
 			isa = PBXGroup;
 			children = (
-				4CBA9F617340F01C4650A000 /* avatar_female.png */,
-				4CBA9F617340F01C4650A001 /* avatar_male.png */,
-				4CBA9F617340F01C4650A002 /* female_cloth_polo.png */,
-				4CBA9F617340F01C4650A003 /* female_cloth_red_polo.png */,
-				4CBA9F617340F01C4650A004 /* female_glass_classic.png */,
-				4CBA9F617340F01C4650A005 /* female_glass_retro.png */,
-				4CBA9F617340F01C4650A006 /* female_hair_curly.png */,
-				4CBA9F617340F01C4650A007 /* female_hair_short.png */,
-				4CBA9F617340F01C4650A008 /* female_hat_cap.png */,
-				4CBA9F617340F01C4650A009 /* female_hat_crown.png */,
-				4CBA9F617340F01C4650A00A /* male_beard_full.png */,
-				4CBA9F617340F01C4650A00B /* male_beard_mustache.png */,
-				4CBA9F617340F01C4650A00C /* male_cloth_polo.png */,
-				4CBA9F617340F01C4650A00D /* male_cloth_red_polo.png */,
-				4CBA9F617340F01C4650A00E /* male_glass_classic.png */,
-				4CBA9F617340F01C4650A00F /* male_glass_retro.png */,
-				4CBA9F617340F01C4650A010 /* male_hair_curly.png */,
-				4CBA9F617340F01C4650A011 /* male_hair_short.png */,
-				4CBA9F617340F01C4650A012 /* male_hat_cap.png */,
-				4CBA9F617340F01C4650A013 /* male_hat_crown.png */,
-				4CBA9F617340F01C46504B8A /* CharacterAssets.swift */,
-				7EA7C2B5178A7542514F8430 /* AuthCoordinator.swift */,
-				4CBA9F617340F01C46504B4E /* CharacterSelectionViewController.swift */,
-				4CBA9F617340F01C46504B7F /* CharacterCustomizationViewController.swift */,
-				4CBA9F617340F01C46504B4D /* CreateAccountViewController.swift */,
-				933F0BA28446EC38FFA11668 /* CharacterSelectionViewModel.swift */,
-				933F0BA28446EC38FFA11667 /* CreateAccountViewModel.swift */,
-				4CBA9F617340F01C46504B6D /* MainDashboardViewController.swift */,
-				4CBA9F617340F01C46504B6F /* NicknameEntryViewController.swift */,
-				4CBA9F617340F01C46504B6E /* UIImage+Extensions.swift */,
-				CD34EF56789012345678AB13 /* LoadingViewController.swift */,
 			);
-			path = Auth;
+			sourceTree = "<group>";
+		};
+		103F37C9FA77356A9D035CBE /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				1F240241C33D04F0C053CCDE /* MainMapViewController.swift */,
+				054522127BD9BC05329B72E5 /* StatsInventoryViewController.swift */,
+				3B15703230E45942B3A5BB85 /* LevelRewardsViewController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		22B540AFBFD09B8765F1CB67 /*  */ = {
+			isa = PBXGroup;
+			children = (
+				AF88137275928200E4C50239 /* Coordinator */,
+				36CD28A2945C388D05312BED /* Common */,
+				6F8227202F880472B8224F64 /* Controllers */,
+				3E9560BF1A82B68C90E0FFE1 /* Assets */,
+			);
+			sourceTree = "<group>";
+		};
+		2704E5F6D26156D49709E258 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				2AB3D9C21118C7455EE688F8 /* Models */,
+				4888D3CE7BD9AD0652DD6244 /* Extensions */,
+				3BE769A3212FABF50D20C423 /* Controllers */,
+				D30CAF3A701897A150507076 /* Views */,
+			);
+			name = Main;
+			sourceTree = "<group>";
+		};
+		2AB3D9C21118C7455EE688F8 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		331BF2E156BE78F6A65D6440 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				3AB2EE5E95F52EC55CF69FF4 /* DataModels */,
+				AA5FFEE1A3618F440EB68FF4 /* Managers */,
+			);
+			name = Core;
 			sourceTree = "<group>";
 		};
 		33C4F4EB13D4FF2BCA000DFC /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				C244D8C05B4DC5F99C3D3C15 /* BuildingViews.swift */,
 			);
 			name = Views;
+			sourceTree = "<group>";
+		};
+		36CD28A2945C388D05312BED /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				1CC8F0BFF6B083DD8D214456 /* UIImage+Extensions.swift */,
+				5FB25B9C1976D75B5E31EA91 /* CharacterAssets.swift */,
+			);
+			name = Common;
+			sourceTree = "<group>";
+		};
+		39A69B69C6CFB0A2C86A8634 /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				9980C2974603376B93DC823A /* LootManager.swift */,
+				5F0714F798CBE6308A01C0B8 /* MapViewController.swift */,
+				A4C05A49389A86BD3CF894A3 /* MapSpawnerService.swift */,
+				4A54FDE4C425D1E608E31C4F /* MapBuildingView.swift */,
+				6FB5B32D3B0A1D9E94D3226E /* MapViewModel.swift */,
+				2CEEC5731CFBAEEFB4CFE427 /* DangerLevelManager.swift */,
+			);
+			name = Map;
+			sourceTree = "<group>";
+		};
+		3AB2EE5E95F52EC55CF69FF4 /* DataModels */ = {
+			isa = PBXGroup;
+			children = (
+				175593B95E4B01C696F45147 /* Weapon.swift */,
+				5EA6B5201809C6AE4225CE3C /* Mob.swift */,
+				355F334918833F4EF0BDE394 /* Defender.swift */,
+				75D386E25A8E40030CD6EAC6 /* GachaPack.swift */,
+				12C28556176C5118580035A5 /* Player.swift */,
+			);
+			name = DataModels;
+			sourceTree = "<group>";
+		};
+		3BE769A3212FABF50D20C423 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		3E593765B05D2E9143074F3E /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		3E9560BF1A82B68C90E0FFE1 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Assets;
+			sourceTree = "<group>";
+		};
+		4163E6432785F2D274C815FC /* Buildings */ = {
+			isa = PBXGroup;
+			children = (
+				EB56047B7EDBDD17FE4D8F83 /* Models */,
+				8FAE7792E0BF1997B254FE07 /* Views */,
+			);
+			name = Buildings;
+			sourceTree = "<group>";
+		};
+		477B9C4D59B7ACF4762F47FF /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				A5A316A97C2CA3F4199AFE1D /* Models */,
+				EE60C4C0271E89ECBF6153BC /* Extensions */,
+				103F37C9FA77356A9D035CBE /* Controllers */,
+				6D74918D3702BE7E503EECC7 /* Views */,
+			);
+			name = Main;
+			sourceTree = "<group>";
+		};
+		4888D3CE7BD9AD0652DD6244 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Extensions;
 			sourceTree = "<group>";
 		};
 		48F39B33760ADDB951CD299B /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				10689815C8AED65261F9DE6B /* MainMapViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -186,46 +397,205 @@
 		4E1C50D36489D47B04C42459 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				ACFD8A154564CFEF71CD1B40 /* BuildingModels.swift */,
 			);
 			name = Models;
+			sourceTree = "<group>";
+		};
+		56C94CB3ADC061D98FCEF9AF /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				FF7A8713B73992DB87306D9E /* UIImage+Extensions.swift */,
+				F719F4D2DBBB93B3C0EC7481 /* CharacterAssets.swift */,
+			);
+			name = Common;
+			sourceTree = "<group>";
+		};
+		67AA11F8E1D4F6DF56314F82 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Coordinator;
 			sourceTree = "<group>";
 		};
 		6CAFADDF4A28F67BF50202E2 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				A77F7B68D107BB3B313C38F9 /* iOS */,
-				9FCB7ED6375084B4CB79408C /* Pods_GeoLive.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6D74918D3702BE7E503EECC7 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				FF4E2163D00CBA1F0A93CFB0 /* AvatarAnnotationView.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		6F8227202F880472B8224F64 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				05A8FEB1E720BF4B9E5FD0AF /* CharacterSelectionViewModel.swift */,
+				AA6833CD027226D2E9AD6D6E /* CreateAccountViewModel.swift */,
+				CC1207B50D564BFFF8F2C395 /* CharacterCustomizationViewController.swift */,
+				7C7EEC4B644BA8E8E5E78F75 /* CharacterSelectionViewController.swift */,
+				F4F6683E99B83ECDF8CFEAA4 /* CreateAccountViewController.swift */,
+				C40B09774FB793DCF94B16A8 /* NicknameEntryViewController.swift */,
+				F277042B66742A8835F26665 /* LoadingViewController.swift */,
+				420F9BBBC5E258E31ECE310A /* MainDashboardViewController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		7CA725883BB90F2E840323BC /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		7FD96D355BD53ECABFAA17DE /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				4CD573A7C4710296C237231A /* male_beard_mustache.png */,
+				6F8ACB5D3117DE3460BA435B /* male_cloth_polo.png */,
+				1DA9E3C453E80D8FE1802690 /* female_cloth_polo.png */,
+				5333F608128C813F21648F5D /* male_hair_short.png */,
+				FB7A76C6A83DB02AD04EC9E0 /* female_hair_short.png */,
+				E32D42D614D9409255C0F9F1 /* male_hat_cap.png */,
+				1E550B75A40C70A44156B869 /* female_cloth_red_polo.png */,
+				40C5A9E8FFA2F45119D42AD5 /* avatar_female.png */,
+				2049D9C284660F876B2E72D1 /* male_hat_crown.png */,
+				D0AB257A064CA96E6A8AE7D6 /* male_glass_classic.png */,
+				F9E846F8D91F7724F8E07192 /* female_hat_cap.png */,
+				12739D80E67D9280A7C88487 /* female_hat_crown.png */,
+				728A6DDDB08FAA6333EF9FAB /* male_cloth_red_polo.png */,
+				E44AEE56BE83535C72328EE5 /* male_glass_retro.png */,
+				6323CDCA614B094412CAD85E /* male_beard_full.png */,
+				4644A917285F324FA2FC5861 /* female_glass_classic.png */,
+				539B1CDB9ED878CF7E1BF6BF /* avatar_male.png */,
+				C45725A65A5DBCD461104DFF /* female_hair_curly.png */,
+				B2A63034547D47F84487C569 /* male_hair_curly.png */,
+				A67ECDCC74788E37875D6902 /* female_glass_retro.png */,
+			);
+			name = Assets;
 			sourceTree = "<group>";
 		};
 		88FDADABC4B0CCBF8F4D766F /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				1F51FB4B6AB8F206938F2EF8 /* MainMapViewController+Location.swift */,
-				7A116A0374A2175EC2362AFD /* MainMapViewController+Map.swift */,
 			);
 			name = Extensions;
+			sourceTree = "<group>";
+		};
+		8E0A881075B5D9910B8E3320 /* Shop */ = {
+			isa = PBXGroup;
+			children = (
+				D05D96DE8496EE4C04955D74 /* ShopViewController.swift */,
+			);
+			name = Shop;
+			sourceTree = "<group>";
+		};
+		8FAE7792E0BF1997B254FE07 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				EFE884F41F412C1AFAB18B29 /* BuildingViews.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		908812F5F9561618819D56A0 /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				52403FA49AE5714EE376CF6B /* StoreViewModel.swift */,
+				BDAB11BC85B6C295C46E8E01 /* StoreViewController.swift */,
+				046BAAB115A53B7129AB395C /* DefenderManager.swift */,
+				96A7C56AE2D17E302B350B4D /* GachaService.swift */,
+			);
+			name = Store;
+			sourceTree = "<group>";
+		};
+		98DDFDB5E8F2FE2695FE3873 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		9DB86CC709A9DCE5F8B8E930 /* Inventory */ = {
+			isa = PBXGroup;
+			children = (
+				79BCB9AA75E2241512D64D28 /* FusionService.swift */,
+				5487D77CBF4430FB0BEB7CB0 /* InventoryManager.swift */,
+				D6EDB98A22B62EFEE02C8AAB /* InventoryViewModel.swift */,
+				A0FB1FD52626F7D1ECBA2593 /* InventoryViewController.swift */,
+			);
+			name = Inventory;
 			sourceTree = "<group>";
 		};
 		9EC71AE540AEF9E7CC87C998 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				2479D24F8F17BAAC969C9632 /* AvatarAnnotationView.swift */,
 			);
 			name = Views;
+			sourceTree = "<group>";
+		};
+		9F9818BDFB8AC88EE0E89768 /* Buildings */ = {
+			isa = PBXGroup;
+			children = (
+				7CA725883BB90F2E840323BC /* Models */,
+				98DDFDB5E8F2FE2695FE3873 /* Views */,
+			);
+			name = Buildings;
+			sourceTree = "<group>";
+		};
+		A5A316A97C2CA3F4199AFE1D /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				04D20332568822060BF2CDBA /* MainModels.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		A73F59124287BFE34B5B220A /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				BEF2622223752C5710842359 /* Coordinator */,
+				56C94CB3ADC061D98FCEF9AF /* Common */,
+				CAA6DD2DB4A1A80B242677B0 /* Controllers */,
+				7FD96D355BD53ECABFAA17DE /* Assets */,
+			);
+			name = Auth;
 			sourceTree = "<group>";
 		};
 		A77F7B68D107BB3B313C38F9 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				C0B6442E107C13477014669F /* Foundation.framework */,
 			);
 			name = iOS;
 			sourceTree = "<group>";
 		};
-		AB12CD34EF5678901234567A /* Main */ = {
+		A983730642FEF5AF25C9259A /* UIComponents */ = {
+			isa = PBXGroup;
+			children = (
+				0883D66C06B59BC7256ECC61 /* Notifications */,
+			);
+			name = UIComponents;
+			sourceTree = "<group>";
+		};
+		AA5FFEE1A3618F440EB68FF4 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				1AE21CEB8C6F8A2DE5430E7C /* NetworkManager.swift */,
+				AFA55D94F051A6493937AA44 /* StatCalculationService.swift */,
+				CD9B2FC916E082223488FC69 /* GoogleMapStyleService.swift */,
+				E798E5D29DA076181761BDDC /* FirebaseManager.swift */,
+			);
+			name = Managers;
+			sourceTree = "<group>";
+		};
+		AB12CD34EF5678901234567A /*  */ = {
 			isa = PBXGroup;
 			children = (
 				09D9861D8CF7B441ED284361 /* Models */,
@@ -233,7 +603,14 @@
 				48F39B33760ADDB951CD299B /* Controllers */,
 				88FDADABC4B0CCBF8F4D766F /* Extensions */,
 			);
-			path = Main;
+			sourceTree = "<group>";
+		};
+		AF88137275928200E4C50239 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				B26DB5B9554E8F70AC37ED5F /* AuthCoordinator.swift */,
+			);
+			name = Coordinator;
 			sourceTree = "<group>";
 		};
 		B7DCAC48BD6254453C841DA8 = {
@@ -242,53 +619,167 @@
 				E8B541F39F8D751F3A4BBE7F /* Products */,
 				6CAFADDF4A28F67BF50202E2 /* Frameworks */,
 				EE81046035B79D7DD35427DB /* AppDelegate.swift */,
-				F5C057BD346893D1D282F180 /* Modules */,
-				0DB27D56C6EFD1C562D257B7 /* Pods */,
-				ACFD8A154564CFEF71CD1B40 /* BuildingModels.swift */,
-				C244D8C05B4DC5F99C3D3C15 /* BuildingViews.swift */,
-				C683B404F171C271518E7BEC /* MainModels.swift */,
-				2479D24F8F17BAAC969C9632 /* AvatarAnnotationView.swift */,
-				10689815C8AED65261F9DE6B /* MainMapViewController.swift */,
-				1F51FB4B6AB8F206938F2EF8 /* MainMapViewController+Location.swift */,
-				7A116A0374A2175EC2362AFD /* MainMapViewController+Map.swift */,
+				F5C057BD346893D1D282F180 /*  */,
+				0DB27D56C6EFD1C562D257B7 /*  */,
+				331BF2E156BE78F6A65D6440 /* Core */,
+				A983730642FEF5AF25C9259A /* UIComponents */,
+				9CFE029FE258DFA8DD6AA2AC /* Weapon.swift */,
+				0A9A0C637F4C46F2AB8485E1 /* Mob.swift */,
+				4582F196E97FB662D0F0E623 /* Defender.swift */,
+				E17CAB86CBB457BE65F125D9 /* GachaPack.swift */,
+				F24E9B758EEF655DFCB84E85 /* Player.swift */,
+				D11EB3E0A264A0649129D586 /* NetworkManager.swift */,
+				0B8BD0FDB5F18C786DDC6A71 /* StatCalculationService.swift */,
+				B8B3A791A721AF9B4A0306B6 /* GoogleMapStyleService.swift */,
+				33AD301162B2C53EE3A75AB2 /* FirebaseManager.swift */,
+				664B122262A24C284015832E /* LootAlertNotification.swift */,
+				560FA1D448719AB6FBBA422A /* DangerAlertNotification.swift */,
+				C3D5E1DA5A36C4FB3EE4584B /* Modules */,
+				E11AA8622F6809F8B60E43A8 /* Pods */,
 			);
+			sourceTree = "<group>";
+		};
+		BEF2622223752C5710842359 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				E26A819D34BBF674FB612E41 /* AuthCoordinator.swift */,
+			);
+			name = Coordinator;
+			sourceTree = "<group>";
+		};
+		C3D5E1DA5A36C4FB3EE4584B /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				4163E6432785F2D274C815FC /* Buildings */,
+				A73F59124287BFE34B5B220A /* Auth */,
+				8E0A881075B5D9910B8E3320 /* Shop */,
+				E42643447DDD914C044EF63C /* Map */,
+				C677545FED3FBAE27DFFEA12 /* Inventory */,
+				477B9C4D59B7ACF4762F47FF /* Main */,
+				0CD7C2AA1399B6E20499C9E3 /* Store */,
+			);
+			name = Modules;
+			sourceTree = "<group>";
+		};
+		C677545FED3FBAE27DFFEA12 /* Inventory */ = {
+			isa = PBXGroup;
+			children = (
+				1694BFA5C5B388AEAA1C6783 /* FusionService.swift */,
+				34049DCB8B05070B074730D4 /* InventoryManager.swift */,
+				250CAB81631999BA8267355E /* InventoryViewModel.swift */,
+				16AF9876AE91AA0E4F22B0FB /* InventoryViewController.swift */,
+			);
+			name = Inventory;
+			sourceTree = "<group>";
+		};
+		C79C558EE2490F08016F0466 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Common;
+			sourceTree = "<group>";
+		};
+		CAA6DD2DB4A1A80B242677B0 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				0FB2750F9DE5F618239F4C7D /* CharacterSelectionViewModel.swift */,
+				73AA4AFB5062EF38E2B415BC /* CreateAccountViewModel.swift */,
+				65C3F3C96FD00990EC2D60BC /* CharacterCustomizationViewController.swift */,
+				7C15E2BFD9252E9B582B230C /* CharacterSelectionViewController.swift */,
+				DDA196B731CBAA3E2AC2DC97 /* CreateAccountViewController.swift */,
+				E32BC213D57F9D83590BDFEE /* NicknameEntryViewController.swift */,
+				DF03311735ECBACCEB8A5A90 /* LoadingViewController.swift */,
+				BBFD516841051C7033012A2A /* MainDashboardViewController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		D30CAF3A701897A150507076 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		E11AA8622F6809F8B60E43A8 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				65F93BE7FE1F424C9FA5EC22 /* Pods-GeoLive.release.xcconfig */,
+				FDCAEFB874A0AFF540993326 /* Pods-GeoLive.debug.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		E42643447DDD914C044EF63C /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				FDF629AC68AE77E392E5C220 /* LootManager.swift */,
+				33494D4921BBA3CCC4BF95E3 /* MapViewController.swift */,
+				246DAEFCDBC0F3B9467ADE55 /* MapSpawnerService.swift */,
+				9B5EC4EA9E9E6885E0EF5876 /* MapBuildingView.swift */,
+				30FEDC9BF329017C782201B1 /* MapViewModel.swift */,
+				CA0D0C3224D94A31C5B77285 /* DangerLevelManager.swift */,
+				51F8DACF0035DBFFAEC94D38 /* MobAnnotation.swift */,
+				67237E90EE3530020400102B /* MobAnnotationView.swift */,
+			);
+			name = Map;
 			sourceTree = "<group>";
 		};
 		E8B541F39F8D751F3A4BBE7F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				DE5B4BC4BC528D9C8B55C936 /* GeoLive.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		F334DDDACBB63B18C7F10F61 /* Buildings */ = {
+		EB56047B7EDBDD17FE4D8F83 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				ABD30A4AFBA4B90945CF2604 /* BuildingModels.swift */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
+		EE60C4C0271E89ECBF6153BC /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				20E60C3F87794335C714E9F1 /* MainMapViewController+Location.swift */,
+				3DFE68592AC12A349B5117A9 /* MainMapViewController+Map.swift */,
+			);
+			name = Extensions;
+			sourceTree = "<group>";
+		};
+		F334DDDACBB63B18C7F10F61 /*  */ = {
 			isa = PBXGroup;
 			children = (
 				4E1C50D36489D47B04C42459 /* Models */,
 				33C4F4EB13D4FF2BCA000DFC /* Views */,
 			);
-			path = Buildings;
 			sourceTree = "<group>";
 		};
-		F5C057BD346893D1D282F180 /* Modules */ = {
+		F5C057BD346893D1D282F180 /*  */ = {
 			isa = PBXGroup;
 			children = (
-				22B540AFBFD09B8765F1CB67 /* Auth */,
-				AB12CD34EF5678901234567A /* Main */,
-				F334DDDACBB63B18C7F10F61 /* Buildings */,
+				22B540AFBFD09B8765F1CB67 /*  */,
+				AB12CD34EF5678901234567A /*  */,
+				F334DDDACBB63B18C7F10F61 /*  */,
 				F7BC105468542C320334B8CC /* Shop */,
+				39A69B69C6CFB0A2C86A8634 /* Map */,
+				9DB86CC709A9DCE5F8B8E930 /* Inventory */,
+				908812F5F9561618819D56A0 /* Store */,
+				9F9818BDFB8AC88EE0E89768 /* Buildings */,
+				09963DFB209FB6915D4D0F59 /* Auth */,
+				2704E5F6D26156D49709E258 /* Main */,
 			);
-			path = Modules;
 			sourceTree = "<group>";
 		};
 		F7BC105468542C320334B8CC /* Shop */ = {
 			isa = PBXGroup;
 			children = (
-				CE01C3A2FBEA007748A67BAA /* ShopViewController.swift */,
+				9DD53B2A02ECB5C63EECFFA7 /* ShopViewController.swift */,
 			);
 			name = Shop;
-			path = Shop;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -298,11 +789,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 66EEA646D05904445DF69CEB /* Build configuration list for PBXNativeTarget "GeoLive" */;
 			buildPhases = (
-				45DC37BECE3F457D0B8B13C7 /* [CP] Check Pods Manifest.lock */,
+				3A6714D8A31E79959285F2D8 /* [CP] Check Pods Manifest.lock */,
 				9E80A81F44C2220CA4A03225 /* Sources */,
 				DFC8E2BB3A059439DE9FDCA8 /* Frameworks */,
 				5B8EEB77DA94BA36B23B1611 /* Resources */,
-				5227951B35800137915F00FE /* [CP] Embed Pods Frameworks */,
+				C9B7B51CA2D78C4D5557E31D /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -310,7 +801,6 @@
 			);
 			name = GeoLive;
 			productName = GeoLive;
-			productReference = DE5B4BC4BC528D9C8B55C936 /* GeoLive.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -319,11 +809,11 @@
 		A81EEF5877FB3BB39D82141E /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1600;
-				LastUpgradeCheck = 1600;
+				LastUpgradeCheck = 2600;
 				TargetAttributes = {
 					570AEB721A4ED0A2F9CEC110 = {
-						DevelopmentTeam = R6VTAQ7R5H;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -351,33 +841,33 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9826C1DEFE3B50036914B000 /* avatar_female.png in Resources */,
-				9826C1DEFE3B50036914B001 /* avatar_male.png in Resources */,
-				9826C1DEFE3B50036914B002 /* female_cloth_polo.png in Resources */,
-				9826C1DEFE3B50036914B003 /* female_cloth_red_polo.png in Resources */,
-				9826C1DEFE3B50036914B004 /* female_glass_classic.png in Resources */,
-				9826C1DEFE3B50036914B005 /* female_glass_retro.png in Resources */,
-				9826C1DEFE3B50036914B006 /* female_hair_curly.png in Resources */,
-				9826C1DEFE3B50036914B007 /* female_hair_short.png in Resources */,
-				9826C1DEFE3B50036914B008 /* female_hat_cap.png in Resources */,
-				9826C1DEFE3B50036914B009 /* female_hat_crown.png in Resources */,
-				9826C1DEFE3B50036914B00A /* male_beard_full.png in Resources */,
-				9826C1DEFE3B50036914B00B /* male_beard_mustache.png in Resources */,
-				9826C1DEFE3B50036914B00C /* male_cloth_polo.png in Resources */,
-				9826C1DEFE3B50036914B00D /* male_cloth_red_polo.png in Resources */,
-				9826C1DEFE3B50036914B00E /* male_glass_classic.png in Resources */,
-				9826C1DEFE3B50036914B00F /* male_glass_retro.png in Resources */,
-				9826C1DEFE3B50036914B010 /* male_hair_curly.png in Resources */,
-				9826C1DEFE3B50036914B011 /* male_hair_short.png in Resources */,
-				9826C1DEFE3B50036914B012 /* male_hat_cap.png in Resources */,
-				9826C1DEFE3B50036914B013 /* male_hat_crown.png in Resources */,
+				E51753837C4591CBB80D9FD2 /* male_beard_mustache.png in Resources */,
+				37838BB9CC566A1609495F09 /* male_cloth_polo.png in Resources */,
+				A1A8913EA657F12E28266F9C /* female_cloth_polo.png in Resources */,
+				A553A3D2836B00B00EBD2766 /* male_hair_short.png in Resources */,
+				198801FBF6B2DCD1736A9031 /* female_hair_short.png in Resources */,
+				77058FB66C77E7D4EE113E51 /* male_hat_cap.png in Resources */,
+				C163F792498CC5A2157AC5D5 /* female_cloth_red_polo.png in Resources */,
+				6BB88E3E1E78FFB6EE8CD211 /* avatar_female.png in Resources */,
+				718586EB5DEDF649F3547D95 /* male_hat_crown.png in Resources */,
+				0BDD3B46AB2C498419CBC13E /* male_glass_classic.png in Resources */,
+				9576DC17EB1CFB729A73B04F /* female_hat_cap.png in Resources */,
+				1666CD9673AE0CA9B89B5AC9 /* female_hat_crown.png in Resources */,
+				9576282E13D3C951CAFFC7AA /* male_cloth_red_polo.png in Resources */,
+				DADDCC94AEF88890E27A4626 /* male_glass_retro.png in Resources */,
+				FEE00A6EF0B35E0EEB36C448 /* male_beard_full.png in Resources */,
+				5E6DC74AF27929E3B80BFE00 /* female_glass_classic.png in Resources */,
+				69B4A6A5C627EB1AF5336792 /* avatar_male.png in Resources */,
+				C3D9F58EEA6786CB5B5A3BDA /* female_hair_curly.png in Resources */,
+				88EFC3C12E7A7A69945AF6B9 /* male_hair_curly.png in Resources */,
+				A32F420A8763512DE9F057BD /* female_glass_retro.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		45DC37BECE3F457D0B8B13C7 /* [CP] Check Pods Manifest.lock */ = {
+		3A6714D8A31E79959285F2D8 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -399,7 +889,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		5227951B35800137915F00FE /* [CP] Embed Pods Frameworks */ = {
+		C9B7B51CA2D78C4D5557E31D /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -459,25 +949,54 @@
 			buildActionMask = 2147483647;
 			files = (
 				E28A01D1E4D778F56C36ACA2 /* AppDelegate.swift in Sources */,
-				723E73A3B9CC86AA1168EF58 /* AuthCoordinator.swift in Sources */,
-				9826C1DEFE3B50036914D04E /* CharacterSelectionViewController.swift in Sources */,
-				9826C1DEFE3B50036914D07F /* CharacterCustomizationViewController.swift in Sources */,
-				9826C1DEFE3B50036914D04F /* CreateAccountViewController.swift in Sources */,
-				9A77794BE437D1F1682CADF7 /* CharacterSelectionViewModel.swift in Sources */,
-				9A77794BE437D1F1682CADF6 /* CreateAccountViewModel.swift in Sources */,
-				9826C1DEFE3B50036914D06D /* MainDashboardViewController.swift in Sources */,
-				9826C1DEFE3B50036914D06F /* NicknameEntryViewController.swift in Sources */,
-				9826C1DEFE3B50036914D06E /* UIImage+Extensions.swift in Sources */,
-				9826C1DEFE3B50036914D08A /* CharacterAssets.swift in Sources */,
-				CD34EF56789012345678AB12 /* LoadingViewController.swift in Sources */,
-				2420F2605268854171BE9DFF /* BuildingModels.swift in Sources */,
-				26B69B683032CD40AD4C3677 /* BuildingViews.swift in Sources */,
-				A6E1C4B8303B32B886E2BD1A /* MainModels.swift in Sources */,
-				C123A1CFA482A482BA9BAD99 /* AvatarAnnotationView.swift in Sources */,
-				98057B0BEEE4AE65A11398CC /* MainMapViewController.swift in Sources */,
-				F1338CF8C0F2A8440999C7F2 /* MainMapViewController+Location.swift in Sources */,
-				2EBB1B4FE312DDAACCBEFC83 /* MainMapViewController+Map.swift in Sources */,
-				9E21898119A8EB9FD731D08E /* ShopViewController.swift in Sources */,
+				406C09F5D72EB5578BDC97FE /* Weapon.swift in Sources */,
+				44C953F1C7574229FAC4511B /* Mob.swift in Sources */,
+				EA496ACB379276A93ABD3AFE /* Defender.swift in Sources */,
+				CDCA6152A0C17242BAA8435A /* GachaPack.swift in Sources */,
+				58FC8B0643A1156B3EFC408B /* Player.swift in Sources */,
+				99B97C956885DBCEDCF5C86B /* NetworkManager.swift in Sources */,
+				5666C4806F2BF8A7636FEC65 /* StatCalculationService.swift in Sources */,
+				653B3E48129DE11F0AC1D015 /* GoogleMapStyleService.swift in Sources */,
+				EEF7B9F979A0DAFE68521A51 /* FirebaseManager.swift in Sources */,
+				26771580D70604950A75680B /* LootAlertNotification.swift in Sources */,
+				5921597648019402C4EC8342 /* DangerAlertNotification.swift in Sources */,
+				C9186BE47B27A96D873AE8B4 /* BuildingModels.swift in Sources */,
+				615251326A7AFE587012FD71 /* BuildingViews.swift in Sources */,
+				893D1CE3D17D0D4C0DAC974A /* AuthCoordinator.swift in Sources */,
+				4EA330CE44302D10F9687D8B /* UIImage+Extensions.swift in Sources */,
+				AB4405B1F4B1ECE152FB4840 /* CharacterAssets.swift in Sources */,
+				1BC9FEA5A5C26197F99A796E /* CharacterSelectionViewModel.swift in Sources */,
+				C7238D299349A7C68531F1BC /* CreateAccountViewModel.swift in Sources */,
+				07ED013723EEA4B836BFD9C8 /* CharacterCustomizationViewController.swift in Sources */,
+				4C9B270A43CA15E0FC1857E8 /* CharacterSelectionViewController.swift in Sources */,
+				F27E3D1F12F9F1473E8939D2 /* CreateAccountViewController.swift in Sources */,
+				8AB5FA73385FE4DEA79DBBA2 /* NicknameEntryViewController.swift in Sources */,
+				BE4C070DA18BF627507BAC87 /* LoadingViewController.swift in Sources */,
+				5EB8159989EC29EF9A89B6B5 /* MainDashboardViewController.swift in Sources */,
+				C09D51135F14C147E5366C56 /* ShopViewController.swift in Sources */,
+				9AE878D705ABAB82D0A3C84F /* LootManager.swift in Sources */,
+				88B03E1D1101E683C12E4083 /* MapViewController.swift in Sources */,
+				BFD78C1242F9BA1ED0F430C5 /* MapSpawnerService.swift in Sources */,
+				F2E0369E4803D9DE11C7A7A6 /* MapBuildingView.swift in Sources */,
+				71D655B01CC70C592A8F2415 /* MapViewModel.swift in Sources */,
+				DAD10B84037902F79B6B8757 /* DangerLevelManager.swift in Sources */,
+				7EBB45F2E5D1539D0652B9D0 /* FusionService.swift in Sources */,
+				089BB79BC844DF55398FD1EE /* InventoryManager.swift in Sources */,
+				EB739E6F6DC28BDEC5DE4A00 /* InventoryViewModel.swift in Sources */,
+				B8A9F6703D74BC074A5D5514 /* InventoryViewController.swift in Sources */,
+				7A8CEC527CEF523463BFF136 /* MainModels.swift in Sources */,
+				6F28E6554AEE4720D57E930E /* MainMapViewController+Location.swift in Sources */,
+				F2B629DAB94147932172123C /* MainMapViewController+Map.swift in Sources */,
+				C69375F0D03BBCAA333BFC69 /* MainMapViewController.swift in Sources */,
+				FF7B17E8CDD890D0A6FCE7A4 /* AvatarAnnotationView.swift in Sources */,
+				1C4383CD80EE6EF65FA09356 /* StoreViewModel.swift in Sources */,
+				C4CA7A6BA4F2330EBD448ECE /* StoreViewController.swift in Sources */,
+				7112254E87015E2DF09088E4 /* DefenderManager.swift in Sources */,
+				F724AF1A448841A30F600F14 /* GachaService.swift in Sources */,
+				7FD1DB619CBE8A94A61E46A9 /* MobAnnotation.swift in Sources */,
+				2D5F409B3506FE80382C0719 /* MobAnnotationView.swift in Sources */,
+				142302AEEA5AFD1CAC72E6ED /* StatsInventoryViewController.swift in Sources */,
+				8A297E18AEB2449558CE9663 /* LevelRewardsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -486,7 +1005,7 @@
 /* Begin XCBuildConfiguration section */
 		0B0A849084B7B97EF99FBDEA /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7CA39214ED954FBD478D8983 /* Pods-GeoLive.debug.xcconfig */;
+			baseConfigurationReference = FDCAEFB874A0AFF540993326 /* Pods-GeoLive.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -495,12 +1014,15 @@
 				CODE_SIGNING_REQUIRED = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "GeoLive needs your location to show your avatar on the map.";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.geosity.geeliveAppp2334;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
@@ -510,7 +1032,7 @@
 		};
 		1F941A4BCEBD058221B15C3A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F7BE2AE54D466C810AC54354 /* Pods-GeoLive.release.xcconfig */;
+			baseConfigurationReference = 65F93BE7FE1F424C9FA5EC22 /* Pods-GeoLive.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -519,12 +1041,15 @@
 				CODE_SIGNING_REQUIRED = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "GeoLive needs your location to show your avatar on the map.";
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.geosity.geeliveAppp2334;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SDKROOT = iphoneos;
@@ -567,9 +1092,12 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -588,6 +1116,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -628,9 +1157,12 @@
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -642,7 +1174,9 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 5.0;
 			};
 			name = Release;

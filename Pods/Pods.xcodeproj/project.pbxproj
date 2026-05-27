@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -36966,7 +36966,7 @@
 				LastUpgradeCheck = 1600;
 			};
 			buildConfigurationList = 4821239608C13582E20E6DA73FD5F1F9 /* Build configuration list for PBXProject "Pods" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -39925,484 +39925,10 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		086B721EBB5957738BD8DCFDD405B246 /* Release */ = {
+		07E2E5631B89539EEF7586F1A2D3DF73 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E32909A4EEB6036EB290127FBCB37407 /* FirebaseCore.release.xcconfig */;
+			baseConfigurationReference = 4BED5E6719BFC58BCF13056CD3B3D9FC /* FirebaseCoreInternal.debug.xcconfig */;
 			buildSettings = {
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/FirebaseCore";
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				IBSC_MODULE = FirebaseCore;
-				INFOPLIST_FILE = "Target Support Files/FirebaseCore/ResourceBundle-FirebaseCore_Privacy-FirebaseCore-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				PRODUCT_NAME = FirebaseCore_Privacy;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				WRAPPER_EXTENSION = bundle;
-			};
-			name = Release;
-		};
-		0D06372824AEA57A62A3D2BA940B05DE /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3F93FFF2F3315775F1373428D69CD538 /* FirebaseCoreInternal.release.xcconfig */;
-			buildSettings = {
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/FirebaseCoreInternal";
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				IBSC_MODULE = FirebaseCoreInternal;
-				INFOPLIST_FILE = "Target Support Files/FirebaseCoreInternal/ResourceBundle-FirebaseCoreInternal_Privacy-FirebaseCoreInternal-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				PRODUCT_NAME = FirebaseCoreInternal_Privacy;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				WRAPPER_EXTENSION = bundle;
-			};
-			name = Release;
-		};
-		128702B5A67C7BFBEC94C32D1DCD201E /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3E194EDA92BC2D1EA5D3CF77E51CD89A /* FirebaseAuth.debug.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = NO;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = "Target Support Files/FirebaseAuth/FirebaseAuth-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/FirebaseAuth/FirebaseAuth.modulemap";
-				PRODUCT_MODULE_NAME = FirebaseAuth;
-				PRODUCT_NAME = FirebaseAuth;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_INSTALL_OBJC_HEADER = YES;
-				SWIFT_VERSION = 5.9;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		13436312D79ED026BA0F98978DDD2B99 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = F4F6C331E01DCBC0E1A1CC031C466565 /* nanopb.release.xcconfig */;
-			buildSettings = {
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/nanopb";
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				IBSC_MODULE = nanopb;
-				INFOPLIST_FILE = "Target Support Files/nanopb/ResourceBundle-nanopb_Privacy-nanopb-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				PRODUCT_NAME = nanopb_Privacy;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				WRAPPER_EXTENSION = bundle;
-			};
-			name = Release;
-		};
-		134685A1F8C0809D28BAAC2C38E05FA3 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2111319FEBEEFC16E2E5FC6F29826201 /* FirebaseFirestore.release.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = NO;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = "Target Support Files/FirebaseFirestore/FirebaseFirestore-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/FirebaseFirestore/FirebaseFirestore.modulemap";
-				PRODUCT_MODULE_NAME = FirebaseFirestore;
-				PRODUCT_NAME = FirebaseFirestore;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_INSTALL_OBJC_HEADER = YES;
-				SWIFT_VERSION = 5.9;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		17ED1370B1B98D0303028551D2C8FB2C /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4399715197829A3B2E88BBDDA3C0B10E /* abseil.debug.xcconfig */;
-			buildSettings = {
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/abseil";
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				IBSC_MODULE = absl;
-				INFOPLIST_FILE = "Target Support Files/abseil/ResourceBundle-xcprivacy-abseil-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				PRODUCT_NAME = xcprivacy;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				WRAPPER_EXTENSION = bundle;
-			};
-			name = Debug;
-		};
-		1A4D1BD103A6C5969D5C9D70493849B6 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2111319FEBEEFC16E2E5FC6F29826201 /* FirebaseFirestore.release.xcconfig */;
-			buildSettings = {
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/FirebaseFirestore";
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				IBSC_MODULE = FirebaseFirestore;
-				INFOPLIST_FILE = "Target Support Files/FirebaseFirestore/ResourceBundle-FirebaseFirestore_Privacy-FirebaseFirestore-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				PRODUCT_NAME = FirebaseFirestore_Privacy;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				WRAPPER_EXTENSION = bundle;
-			};
-			name = Release;
-		};
-		1DC89F76018D75F5FFB8B3FA15DD20EE /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = BE7B354061878A0A2C07BA540B3F33CD /* GTMSessionFetcher.debug.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = NO;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = "Target Support Files/GTMSessionFetcher/GTMSessionFetcher-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/GTMSessionFetcher/GTMSessionFetcher.modulemap";
-				PRODUCT_MODULE_NAME = GTMSessionFetcher;
-				PRODUCT_NAME = GTMSessionFetcher;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_INSTALL_OBJC_HEADER = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		1E0E9D60EF4416DE7CC0DA105C5C5F24 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 05E4CF38DE95E91CB1AD91E500655160 /* RecaptchaInterop.debug.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = NO;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				GCC_PREFIX_HEADER = "Target Support Files/RecaptchaInterop/RecaptchaInterop-prefix.pch";
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = "Target Support Files/RecaptchaInterop/RecaptchaInterop-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/RecaptchaInterop/RecaptchaInterop.modulemap";
-				PRODUCT_MODULE_NAME = RecaptchaInterop;
-				PRODUCT_NAME = RecaptchaInterop;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_INSTALL_OBJC_HEADER = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		2080A8106ABDD83D5EE8D750C1F44D09 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6F9C15138990A79FDE87E5EDB4EFD5F1 /* gRPC-Core.debug.xcconfig */;
-			buildSettings = {
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/gRPC-Core";
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				IBSC_MODULE = grpc;
-				INFOPLIST_FILE = "Target Support Files/gRPC-Core/ResourceBundle-grpc-gRPC-Core-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				PRODUCT_NAME = grpc;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				WRAPPER_EXTENSION = bundle;
-			};
-			name = Debug;
-		};
-		233705CAACB47F4203F09F0B3D43F4FD /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5BA565D4DC261E73EE86DA9A52B75E84 /* FirebaseFirestoreInternal.debug.xcconfig */;
-			buildSettings = {
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/FirebaseFirestoreInternal";
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				IBSC_MODULE = FirebaseFirestoreInternal;
-				INFOPLIST_FILE = "Target Support Files/FirebaseFirestoreInternal/ResourceBundle-FirebaseFirestoreInternal_Privacy-FirebaseFirestoreInternal-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				PRODUCT_NAME = FirebaseFirestoreInternal_Privacy;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				WRAPPER_EXTENSION = bundle;
-			};
-			name = Debug;
-		};
-		2AFE6360E22D323EFBD75E51ABFFB0A8 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = F4F6C331E01DCBC0E1A1CC031C466565 /* nanopb.release.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = NO;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				GCC_PREFIX_HEADER = "Target Support Files/nanopb/nanopb-prefix.pch";
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = "Target Support Files/nanopb/nanopb-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/nanopb/nanopb.modulemap";
-				PRODUCT_MODULE_NAME = nanopb;
-				PRODUCT_NAME = nanopb;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_INSTALL_OBJC_HEADER = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		2CE68D9FABFE19831855CC42043EA990 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7472036156B7D1D2F78E0037C4253B2C /* GoogleUtilities.debug.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = NO;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = "Target Support Files/GoogleUtilities/GoogleUtilities-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/GoogleUtilities/GoogleUtilities.modulemap";
-				PRODUCT_MODULE_NAME = GoogleUtilities;
-				PRODUCT_NAME = GoogleUtilities;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_INSTALL_OBJC_HEADER = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		33E3FDEF03489305E4FFE220F8B8352B /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = AB97439A4BC459B2A2E373B0CDE7C96E /* BoringSSL-GRPC.debug.xcconfig */;
-			buildSettings = {
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/BoringSSL-GRPC";
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				IBSC_MODULE = openssl_grpc;
-				INFOPLIST_FILE = "Target Support Files/BoringSSL-GRPC/ResourceBundle-openssl_grpc-BoringSSL-GRPC-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				PRODUCT_NAME = openssl_grpc;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				WRAPPER_EXTENSION = bundle;
-			};
-			name = Debug;
-		};
-		341F82170DF1F9BBF3C8B56CD4804A5D /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = B16587EB925C4ECC3576E89946754710 /* nanopb.debug.xcconfig */;
-			buildSettings = {
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/nanopb";
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				IBSC_MODULE = nanopb;
-				INFOPLIST_FILE = "Target Support Files/nanopb/ResourceBundle-nanopb_Privacy-nanopb-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				PRODUCT_NAME = nanopb_Privacy;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				WRAPPER_EXTENSION = bundle;
-			};
-			name = Debug;
-		};
-		34CC2E174A21B242F9553917F9BCDE34 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = EBB526DA3FB0CCBA429E1974575149BE /* Pods-GeoLive.debug.xcconfig */;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = NO;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				INFOPLIST_FILE = "Target Support Files/Pods-GeoLive/Pods-GeoLive-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-GeoLive/Pods-GeoLive.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		357A57F391BED000B5AF2D6351BA767E /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3F93FFF2F3315775F1373428D69CD538 /* FirebaseCoreInternal.release.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CLANG_USE_EXPLICIT_MODULES = NO;
@@ -40424,7 +39950,11 @@
 				INFOPLIST_FILE = "Target Support Files/FirebaseCoreInternal/FirebaseCoreInternal-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MODULEMAP_FILE = "Target Support Files/FirebaseCoreInternal/FirebaseCoreInternal.modulemap";
 				PRODUCT_MODULE_NAME = FirebaseCoreInternal;
 				PRODUCT_NAME = FirebaseCoreInternal;
@@ -40434,101 +39964,59 @@
 				SWIFT_INSTALL_OBJC_HEADER = YES;
 				SWIFT_VERSION = 5.9;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		366640A1B50EDDDA2580DDD4E30E571C /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 313C6E235500DDCEE7FD7B88F9F264E7 /* GTMSessionFetcher.release.xcconfig */;
-			buildSettings = {
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/GTMSessionFetcher";
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				IBSC_MODULE = GTMSessionFetcher;
-				INFOPLIST_FILE = "Target Support Files/GTMSessionFetcher/ResourceBundle-GTMSessionFetcher_Core_Privacy-GTMSessionFetcher-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				PRODUCT_NAME = GTMSessionFetcher_Core_Privacy;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				WRAPPER_EXTENSION = bundle;
-			};
-			name = Release;
-		};
-		38121B6420E49F4686EA4FC4ED5944C2 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3E194EDA92BC2D1EA5D3CF77E51CD89A /* FirebaseAuth.debug.xcconfig */;
-			buildSettings = {
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/FirebaseAuth";
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				IBSC_MODULE = FirebaseAuth;
-				INFOPLIST_FILE = "Target Support Files/FirebaseAuth/ResourceBundle-FirebaseAuth_Privacy-FirebaseAuth-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				PRODUCT_NAME = FirebaseAuth_Privacy;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				WRAPPER_EXTENSION = bundle;
 			};
 			name = Debug;
 		};
-		3EF3905A3734F5D7CF874441109ED384 /* Release */ = {
+		086B721EBB5957738BD8DCFDD405B246 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 059AC4EA6181011C19A34ED15C7ECEB6 /* gRPC-C++.release.xcconfig */;
+			baseConfigurationReference = E32909A4EEB6036EB290127FBCB37407 /* FirebaseCore.release.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_ENABLE_OBJC_WEAK = NO;
 				CLANG_USE_EXPLICIT_MODULES = NO;
 				CODE_SIGNING_ALLOWED = YES;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/FirebaseCore";
 				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				GCC_PREFIX_HEADER = "Target Support Files/gRPC-C++/gRPC-C++-prefix.pch";
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = "Target Support Files/gRPC-C++/gRPC-C++-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IBSC_MODULE = FirebaseCore;
+				INFOPLIST_FILE = "Target Support Files/FirebaseCore/ResourceBundle-FirebaseCore_Privacy-FirebaseCore-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/gRPC-C++/gRPC-C++.modulemap";
-				PRODUCT_MODULE_NAME = grpcpp;
-				PRODUCT_NAME = grpcpp;
+				PRODUCT_NAME = FirebaseCore_Privacy;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_INSTALL_OBJC_HEADER = YES;
-				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
+				WRAPPER_EXTENSION = bundle;
 			};
 			name = Release;
 		};
-		40870CFBE8F014EF84AB05C8EBFBD497 /* Debug */ = {
+		0D06372824AEA57A62A3D2BA940B05DE /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B16587EB925C4ECC3576E89946754710 /* nanopb.debug.xcconfig */;
+			baseConfigurationReference = 3F93FFF2F3315775F1373428D69CD538 /* FirebaseCoreInternal.release.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/FirebaseCoreInternal";
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				IBSC_MODULE = FirebaseCoreInternal;
+				INFOPLIST_FILE = "Target Support Files/FirebaseCoreInternal/ResourceBundle-FirebaseCoreInternal_Privacy-FirebaseCoreInternal-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_NAME = FirebaseCoreInternal_Privacy;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
+		0F70909AE2A2A6E6EFFAEBE36D26A281 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F4F6C331E01DCBC0E1A1CC031C466565 /* nanopb.release.xcconfig */;
+			buildSettings = {
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CLANG_USE_EXPLICIT_MODULES = NO;
@@ -40550,10 +40038,104 @@
 				INFOPLIST_FILE = "Target Support Files/nanopb/nanopb-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MODULEMAP_FILE = "Target Support Files/nanopb/nanopb.modulemap";
 				PRODUCT_MODULE_NAME = nanopb;
 				PRODUCT_NAME = nanopb;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		11B6C683CE2D59AC45E5D297861BE672 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 09F2BB8F73D86D43AEAF1352B7C1C1BA /* FirebaseCoreExtension.release.xcconfig */;
+			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_PREFIX_HEADER = "Target Support Files/FirebaseCoreExtension/FirebaseCoreExtension-prefix.pch";
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Target Support Files/FirebaseCoreExtension/FirebaseCoreExtension-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/FirebaseCoreExtension/FirebaseCoreExtension.modulemap";
+				PRODUCT_MODULE_NAME = FirebaseCoreExtension;
+				PRODUCT_NAME = FirebaseCoreExtension;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		130F57CFECB9D9481051F54C9992F2E1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6F9C15138990A79FDE87E5EDB4EFD5F1 /* gRPC-Core.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_PREFIX_HEADER = "Target Support Files/gRPC-Core/gRPC-Core-prefix.pch";
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Target Support Files/gRPC-Core/gRPC-Core-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/gRPC-Core/gRPC-Core.modulemap";
+				PRODUCT_MODULE_NAME = grpc;
+				PRODUCT_NAME = grpc;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
@@ -40565,11 +40147,143 @@
 			};
 			name = Debug;
 		};
-		47842061B92FDF2C2F7669306A7F17F0 /* Release */ = {
+		13436312D79ED026BA0F98978DDD2B99 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 97ED5079FA049DAE401ED67500CB56FF /* FirebaseAuth.release.xcconfig */;
+			baseConfigurationReference = F4F6C331E01DCBC0E1A1CC031C466565 /* nanopb.release.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/nanopb";
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				IBSC_MODULE = nanopb;
+				INFOPLIST_FILE = "Target Support Files/nanopb/ResourceBundle-nanopb_Privacy-nanopb-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_NAME = nanopb_Privacy;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
+		1471FE40504C568C6DAEB64E47F91973 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3F93FFF2F3315775F1373428D69CD538 /* FirebaseCoreInternal.release.xcconfig */;
+			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_PREFIX_HEADER = "Target Support Files/FirebaseCoreInternal/FirebaseCoreInternal-prefix.pch";
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Target Support Files/FirebaseCoreInternal/FirebaseCoreInternal-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/FirebaseCoreInternal/FirebaseCoreInternal.modulemap";
+				PRODUCT_MODULE_NAME = FirebaseCoreInternal;
+				PRODUCT_NAME = FirebaseCoreInternal;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		17ED1370B1B98D0303028551D2C8FB2C /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4399715197829A3B2E88BBDDA3C0B10E /* abseil.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/abseil";
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				IBSC_MODULE = absl;
+				INFOPLIST_FILE = "Target Support Files/abseil/ResourceBundle-xcprivacy-abseil-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_NAME = xcprivacy;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		1A4D1BD103A6C5969D5C9D70493849B6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2111319FEBEEFC16E2E5FC6F29826201 /* FirebaseFirestore.release.xcconfig */;
+			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/FirebaseFirestore";
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				IBSC_MODULE = FirebaseFirestore;
+				INFOPLIST_FILE = "Target Support Files/FirebaseFirestore/ResourceBundle-FirebaseFirestore_Privacy-FirebaseFirestore-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_NAME = FirebaseFirestore_Privacy;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
+		2080A8106ABDD83D5EE8D750C1F44D09 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6F9C15138990A79FDE87E5EDB4EFD5F1 /* gRPC-Core.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/gRPC-Core";
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				IBSC_MODULE = grpc;
+				INFOPLIST_FILE = "Target Support Files/gRPC-Core/ResourceBundle-grpc-gRPC-Core-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_NAME = grpc;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		223B96444E9AAF64ABB0D730E7B2EC55 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D213FDD4CA49D877DD2943210DBBD5A2 /* FirebaseSharedSwift.debug.xcconfig */;
+			buildSettings = {
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CLANG_USE_EXPLICIT_MODULES = NO;
@@ -40587,18 +40301,88 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = "Target Support Files/FirebaseAuth/FirebaseAuth-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/FirebaseSharedSwift/FirebaseSharedSwift-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/FirebaseAuth/FirebaseAuth.modulemap";
-				PRODUCT_MODULE_NAME = FirebaseAuth;
-				PRODUCT_NAME = FirebaseAuth;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/FirebaseSharedSwift/FirebaseSharedSwift.modulemap";
+				PRODUCT_MODULE_NAME = FirebaseSharedSwift;
+				PRODUCT_NAME = FirebaseSharedSwift;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
 				SWIFT_INSTALL_OBJC_HEADER = YES;
 				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		233705CAACB47F4203F09F0B3D43F4FD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5BA565D4DC261E73EE86DA9A52B75E84 /* FirebaseFirestoreInternal.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/FirebaseFirestoreInternal";
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				IBSC_MODULE = FirebaseFirestoreInternal;
+				INFOPLIST_FILE = "Target Support Files/FirebaseFirestoreInternal/ResourceBundle-FirebaseFirestoreInternal_Privacy-FirebaseFirestoreInternal-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_NAME = FirebaseFirestoreInternal_Privacy;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		24F9905E444DAF977DD60CFAD1D12176 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 059AC4EA6181011C19A34ED15C7ECEB6 /* gRPC-C++.release.xcconfig */;
+			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_PREFIX_HEADER = "Target Support Files/gRPC-C++/gRPC-C++-prefix.pch";
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Target Support Files/gRPC-C++/gRPC-C++-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/gRPC-C++/gRPC-C++.modulemap";
+				PRODUCT_MODULE_NAME = grpcpp;
+				PRODUCT_NAME = grpcpp;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -40606,11 +40390,76 @@
 			};
 			name = Release;
 		};
-		47BA0259E01CE56EC1A0E6EA1FDDED9C /* Release */ = {
+		33E3FDEF03489305E4FFE220F8B8352B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 619F8379AB9E9C858CCC8B74CA887848 /* GoogleUtilities.release.xcconfig */;
+			baseConfigurationReference = AB97439A4BC459B2A2E373B0CDE7C96E /* BoringSSL-GRPC.debug.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/BoringSSL-GRPC";
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				IBSC_MODULE = openssl_grpc;
+				INFOPLIST_FILE = "Target Support Files/BoringSSL-GRPC/ResourceBundle-openssl_grpc-BoringSSL-GRPC-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_NAME = openssl_grpc;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		341F82170DF1F9BBF3C8B56CD4804A5D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B16587EB925C4ECC3576E89946754710 /* nanopb.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/nanopb";
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				IBSC_MODULE = nanopb;
+				INFOPLIST_FILE = "Target Support Files/nanopb/ResourceBundle-nanopb_Privacy-nanopb-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_NAME = nanopb_Privacy;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		366640A1B50EDDDA2580DDD4E30E571C /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 313C6E235500DDCEE7FD7B88F9F264E7 /* GTMSessionFetcher.release.xcconfig */;
+			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/GTMSessionFetcher";
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				IBSC_MODULE = GTMSessionFetcher;
+				INFOPLIST_FILE = "Target Support Files/GTMSessionFetcher/ResourceBundle-GTMSessionFetcher_Core_Privacy-GTMSessionFetcher-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_NAME = GTMSessionFetcher_Core_Privacy;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
+		37C88939CA1B3F4FFC9971C0325B687E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7472036156B7D1D2F78E0037C4253B2C /* GoogleUtilities.debug.xcconfig */;
+			buildSettings = {
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CLANG_USE_EXPLICIT_MODULES = NO;
@@ -40631,7 +40480,11 @@
 				INFOPLIST_FILE = "Target Support Files/GoogleUtilities/GoogleUtilities-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MODULEMAP_FILE = "Target Support Files/GoogleUtilities/GoogleUtilities.modulemap";
 				PRODUCT_MODULE_NAME = GoogleUtilities;
 				PRODUCT_NAME = GoogleUtilities;
@@ -40641,11 +40494,252 @@
 				SWIFT_INSTALL_OBJC_HEADER = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		38121B6420E49F4686EA4FC4ED5944C2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3E194EDA92BC2D1EA5D3CF77E51CD89A /* FirebaseAuth.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/FirebaseAuth";
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				IBSC_MODULE = FirebaseAuth;
+				INFOPLIST_FILE = "Target Support Files/FirebaseAuth/ResourceBundle-FirebaseAuth_Privacy-FirebaseAuth-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_NAME = FirebaseAuth_Privacy;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		38331347EA16F635ACF3DA559B3BC8C6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E32909A4EEB6036EB290127FBCB37407 /* FirebaseCore.release.xcconfig */;
+			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Target Support Files/FirebaseCore/FirebaseCore-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/FirebaseCore/FirebaseCore.modulemap";
+				PRODUCT_MODULE_NAME = FirebaseCore;
+				PRODUCT_NAME = FirebaseCore;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
+		};
+		3B07532EA688C0F78C184DE3C80AFFA0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 05E4CF38DE95E91CB1AD91E500655160 /* RecaptchaInterop.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_PREFIX_HEADER = "Target Support Files/RecaptchaInterop/RecaptchaInterop-prefix.pch";
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Target Support Files/RecaptchaInterop/RecaptchaInterop-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/RecaptchaInterop/RecaptchaInterop.modulemap";
+				PRODUCT_MODULE_NAME = RecaptchaInterop;
+				PRODUCT_NAME = RecaptchaInterop;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		3BFCEF2A4532CCFEFBEA88D80BD94993 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B16587EB925C4ECC3576E89946754710 /* nanopb.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_PREFIX_HEADER = "Target Support Files/nanopb/nanopb-prefix.pch";
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Target Support Files/nanopb/nanopb-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/nanopb/nanopb.modulemap";
+				PRODUCT_MODULE_NAME = nanopb;
+				PRODUCT_NAME = nanopb;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		3C0F0285655EBD525FE398798AEA0974 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = AB97439A4BC459B2A2E373B0CDE7C96E /* BoringSSL-GRPC.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_PREFIX_HEADER = "Target Support Files/BoringSSL-GRPC/BoringSSL-GRPC-prefix.pch";
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Target Support Files/BoringSSL-GRPC/BoringSSL-GRPC-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/BoringSSL-GRPC/BoringSSL-GRPC.modulemap";
+				PRODUCT_MODULE_NAME = openssl_grpc;
+				PRODUCT_NAME = openssl_grpc;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		47361A512F879CA52016BCECF107793F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = EBB526DA3FB0CCBA429E1974575149BE /* Pods-GeoLive.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				INFOPLIST_FILE = "Target Support Files/Pods-GeoLive/Pods-GeoLive-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-GeoLive/Pods-GeoLive.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
 		};
 		4BC7450F9457737EE3E637BA155B56F7 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -40713,11 +40807,296 @@
 			};
 			name = Debug;
 		};
-		5DF347BA992DE4DD383570AE5F75608F /* Debug */ = {
+		4E0752C988E4C01BD48FA09567A56C03 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7A758CF2EF6463949C13CE74807A4CD4 /* FirebaseFirestore.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Target Support Files/FirebaseFirestore/FirebaseFirestore-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/FirebaseFirestore/FirebaseFirestore.modulemap";
+				PRODUCT_MODULE_NAME = FirebaseFirestore;
+				PRODUCT_NAME = FirebaseFirestore;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		55CA2992230B0C3EA1451D352DE73F53 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = AFBC51EC1957849E06F50A71C12ECB1B /* Firebase.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		5A1C23D326A4A134BE34977419931489 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9D56D7CAF9D27A5F2D2B264F4F567453 /* BoringSSL-GRPC.release.xcconfig */;
+			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_PREFIX_HEADER = "Target Support Files/BoringSSL-GRPC/BoringSSL-GRPC-prefix.pch";
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Target Support Files/BoringSSL-GRPC/BoringSSL-GRPC-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/BoringSSL-GRPC/BoringSSL-GRPC.modulemap";
+				PRODUCT_MODULE_NAME = openssl_grpc;
+				PRODUCT_NAME = openssl_grpc;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		5A8126568D4863D8FC0205AC753C6B9B /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 97ED5079FA049DAE401ED67500CB56FF /* FirebaseAuth.release.xcconfig */;
+			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Target Support Files/FirebaseAuth/FirebaseAuth-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/FirebaseAuth/FirebaseAuth.modulemap";
+				PRODUCT_MODULE_NAME = FirebaseAuth;
+				PRODUCT_NAME = FirebaseAuth;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		5D231D05E6E268061FF7E63FA1CE8A4F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F599E7E0A3FC9BA7851DE2DC8B56E694 /* Pods-GeoLive.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				INFOPLIST_FILE = "Target Support Files/Pods-GeoLive/Pods-GeoLive-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACH_O_TYPE = staticlib;
+				MODULEMAP_FILE = "Target Support Files/Pods-GeoLive/Pods-GeoLive.modulemap";
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PODS_ROOT = "$(SRCROOT)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		5E9934CD53AF3D85351199C5F509BABB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 4399715197829A3B2E88BBDDA3C0B10E /* abseil.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_PREFIX_HEADER = "Target Support Files/abseil/abseil-prefix.pch";
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Target Support Files/abseil/abseil-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/abseil/abseil.modulemap";
+				PRODUCT_MODULE_NAME = absl;
+				PRODUCT_NAME = absl;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		5EF359612729286F87C9128AE3613D39 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3E194EDA92BC2D1EA5D3CF77E51CD89A /* FirebaseAuth.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Target Support Files/FirebaseAuth/FirebaseAuth-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/FirebaseAuth/FirebaseAuth.modulemap";
+				PRODUCT_MODULE_NAME = FirebaseAuth;
+				PRODUCT_NAME = FirebaseAuth;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		5FA2648BBFF7EFCBE9E85DA3B2224076 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 573F5047488AEDFAB65EDC1E5EDA4ECB /* FirebaseCore.debug.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CLANG_USE_EXPLICIT_MODULES = NO;
@@ -40738,7 +41117,11 @@
 				INFOPLIST_FILE = "Target Support Files/FirebaseCore/FirebaseCore-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MODULEMAP_FILE = "Target Support Files/FirebaseCore/FirebaseCore.modulemap";
 				PRODUCT_MODULE_NAME = FirebaseCore;
 				PRODUCT_NAME = FirebaseCore;
@@ -40762,6 +41145,7 @@
 				CODE_SIGNING_ALLOWED = YES;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/gRPC-C++";
 				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				IBSC_MODULE = grpcpp;
 				INFOPLIST_FILE = "Target Support Files/gRPC-C++/ResourceBundle-gRPCCertificates-Cpp-gRPC-C++-Info.plist";
@@ -40774,260 +41158,10 @@
 			};
 			name = Debug;
 		};
-		62922B300F03C51224292A8A29AB6489 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 97D34D647734C5A097BB28D33D3F4F94 /* gRPC-Core.release.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = NO;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				GCC_PREFIX_HEADER = "Target Support Files/gRPC-Core/gRPC-Core-prefix.pch";
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = "Target Support Files/gRPC-Core/gRPC-Core-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/gRPC-Core/gRPC-Core.modulemap";
-				PRODUCT_MODULE_NAME = grpc;
-				PRODUCT_NAME = grpc;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_INSTALL_OBJC_HEADER = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		64D32C1D58E7DEC6CDEBF1470784E749 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 09F2BB8F73D86D43AEAF1352B7C1C1BA /* FirebaseCoreExtension.release.xcconfig */;
-			buildSettings = {
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/FirebaseCoreExtension";
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				IBSC_MODULE = FirebaseCoreExtension;
-				INFOPLIST_FILE = "Target Support Files/FirebaseCoreExtension/ResourceBundle-FirebaseCoreExtension_Privacy-FirebaseCoreExtension-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				PRODUCT_NAME = FirebaseCoreExtension_Privacy;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				WRAPPER_EXTENSION = bundle;
-			};
-			name = Release;
-		};
-		6B33A9673D3D9213C95C8AEAE4EB01D0 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 09F2BB8F73D86D43AEAF1352B7C1C1BA /* FirebaseCoreExtension.release.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = NO;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				GCC_PREFIX_HEADER = "Target Support Files/FirebaseCoreExtension/FirebaseCoreExtension-prefix.pch";
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = "Target Support Files/FirebaseCoreExtension/FirebaseCoreExtension-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/FirebaseCoreExtension/FirebaseCoreExtension.modulemap";
-				PRODUCT_MODULE_NAME = FirebaseCoreExtension;
-				PRODUCT_NAME = FirebaseCoreExtension;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_INSTALL_OBJC_HEADER = YES;
-				SWIFT_VERSION = 5.9;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		6DC252D44232F96322F0CF3F1973995E /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 059AC4EA6181011C19A34ED15C7ECEB6 /* gRPC-C++.release.xcconfig */;
-			buildSettings = {
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/gRPC-C++";
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				IBSC_MODULE = grpcpp;
-				INFOPLIST_FILE = "Target Support Files/gRPC-C++/ResourceBundle-grpcpp-gRPC-C++-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				PRODUCT_NAME = grpcpp;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				WRAPPER_EXTENSION = bundle;
-			};
-			name = Release;
-		};
-		6E1350D7218E4EFB3AAAAF8A4C28CBD3 /* Debug */ = {
+		64C1C954DC45E356FF4BE422CEE5B580 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7993089B8357BD7C569C3A5D08EE4309 /* gRPC-C++.debug.xcconfig */;
 			buildSettings = {
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/gRPC-C++";
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				IBSC_MODULE = grpcpp;
-				INFOPLIST_FILE = "Target Support Files/gRPC-C++/ResourceBundle-grpcpp-gRPC-C++-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				PRODUCT_NAME = grpcpp;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				WRAPPER_EXTENSION = bundle;
-			};
-			name = Debug;
-		};
-		70F33747D14BCD34AB83C048FD1443CC /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0DA4E946D1D5DFEA995CE49A1E5F665B /* FirebaseFirestoreInternal.release.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = NO;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = "Target Support Files/FirebaseFirestoreInternal/FirebaseFirestoreInternal-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/FirebaseFirestoreInternal/FirebaseFirestoreInternal.modulemap";
-				PRODUCT_MODULE_NAME = FirebaseFirestoreInternal;
-				PRODUCT_NAME = FirebaseFirestoreInternal;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_INSTALL_OBJC_HEADER = YES;
-				SWIFT_VERSION = 5.9;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		73EC629852FC70835E017F83E87F2E21 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 573F5047488AEDFAB65EDC1E5EDA4ECB /* FirebaseCore.debug.xcconfig */;
-			buildSettings = {
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/FirebaseCore";
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				IBSC_MODULE = FirebaseCore;
-				INFOPLIST_FILE = "Target Support Files/FirebaseCore/ResourceBundle-FirebaseCore_Privacy-FirebaseCore-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				PRODUCT_NAME = FirebaseCore_Privacy;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				WRAPPER_EXTENSION = bundle;
-			};
-			name = Debug;
-		};
-		758125F8628289943EF7895D973FFBCF /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 313C6E235500DDCEE7FD7B88F9F264E7 /* GTMSessionFetcher.release.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = NO;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = "Target Support Files/GTMSessionFetcher/GTMSessionFetcher-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/GTMSessionFetcher/GTMSessionFetcher.modulemap";
-				PRODUCT_MODULE_NAME = GTMSessionFetcher;
-				PRODUCT_NAME = GTMSessionFetcher;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_INSTALL_OBJC_HEADER = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		7CA3D5D1D3F7F831D13C9726641497E7 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7993089B8357BD7C569C3A5D08EE4309 /* gRPC-C++.debug.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CLANG_USE_EXPLICIT_MODULES = NO;
@@ -41049,7 +41183,11 @@
 				INFOPLIST_FILE = "Target Support Files/gRPC-C++/gRPC-C++-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MODULEMAP_FILE = "Target Support Files/gRPC-C++/gRPC-C++.modulemap";
 				PRODUCT_MODULE_NAME = grpcpp;
 				PRODUCT_NAME = grpcpp;
@@ -41064,11 +41202,32 @@
 			};
 			name = Debug;
 		};
-		815FFE0B41963004942D53A35456A91E /* Release */ = {
+		64D32C1D58E7DEC6CDEBF1470784E749 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EB63D06AE20FA072E100E91A757730F1 /* FirebaseSharedSwift.release.xcconfig */;
+			baseConfigurationReference = 09F2BB8F73D86D43AEAF1352B7C1C1BA /* FirebaseCoreExtension.release.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/FirebaseCoreExtension";
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				IBSC_MODULE = FirebaseCoreExtension;
+				INFOPLIST_FILE = "Target Support Files/FirebaseCoreExtension/ResourceBundle-FirebaseCoreExtension_Privacy-FirebaseCoreExtension-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_NAME = FirebaseCoreExtension_Privacy;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Release;
+		};
+		6AE60B580CB292C4B99D9E86E849BC25 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5BA565D4DC261E73EE86DA9A52B75E84 /* FirebaseFirestoreInternal.debug.xcconfig */;
+			buildSettings = {
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CLANG_USE_EXPLICIT_MODULES = NO;
@@ -41086,52 +41245,76 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = "Target Support Files/FirebaseSharedSwift/FirebaseSharedSwift-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/FirebaseFirestoreInternal/FirebaseFirestoreInternal-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/FirebaseSharedSwift/FirebaseSharedSwift.modulemap";
-				PRODUCT_MODULE_NAME = FirebaseSharedSwift;
-				PRODUCT_NAME = FirebaseSharedSwift;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/FirebaseFirestoreInternal/FirebaseFirestoreInternal.modulemap";
+				PRODUCT_MODULE_NAME = FirebaseFirestoreInternal;
+				PRODUCT_NAME = FirebaseFirestoreInternal;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
 				SWIFT_INSTALL_OBJC_HEADER = YES;
 				SWIFT_VERSION = 5.9;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
-			name = Release;
+			name = Debug;
 		};
-		8434BD690D3AB4AAA4EEABE55C6FE586 /* Release */ = {
+		6DC252D44232F96322F0CF3F1973995E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C47EAB0E3C2EAE20A3A0D8E55ADC4622 /* Firebase.release.xcconfig */;
+			baseConfigurationReference = 059AC4EA6181011C19A34ED15C7ECEB6 /* gRPC-C++.release.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_ENABLE_OBJC_WEAK = NO;
 				CLANG_USE_EXPLICIT_MODULES = NO;
 				CODE_SIGNING_ALLOWED = YES;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/gRPC-C++";
 				DEVELOPMENT_TEAM = R6VTAQ7R5H;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				IBSC_MODULE = grpcpp;
+				INFOPLIST_FILE = "Target Support Files/gRPC-C++/ResourceBundle-grpcpp-gRPC-C++-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_NAME = grpcpp;
 				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
+				WRAPPER_EXTENSION = bundle;
 			};
 			name = Release;
 		};
-		869BED894D3685BB6F3B594588C9A7B0 /* Debug */ = {
+		6E1350D7218E4EFB3AAAAF8A4C28CBD3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7993089B8357BD7C569C3A5D08EE4309 /* gRPC-C++.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/gRPC-C++";
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				IBSC_MODULE = grpcpp;
+				INFOPLIST_FILE = "Target Support Files/gRPC-C++/ResourceBundle-grpcpp-gRPC-C++-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_NAME = grpcpp;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		7183C174F5714CD89CC0E6384AB17FD4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8FD8265ECC85453A3FE50AC35A9CA6C6 /* FirebaseCoreExtension.debug.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CLANG_USE_EXPLICIT_MODULES = NO;
@@ -41153,7 +41336,11 @@
 				INFOPLIST_FILE = "Target Support Files/FirebaseCoreExtension/FirebaseCoreExtension-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MODULEMAP_FILE = "Target Support Files/FirebaseCoreExtension/FirebaseCoreExtension.modulemap";
 				PRODUCT_MODULE_NAME = FirebaseCoreExtension;
 				PRODUCT_NAME = FirebaseCoreExtension;
@@ -41168,11 +41355,10 @@
 			};
 			name = Debug;
 		};
-		892EDDAA4A2FD28B1A174E5BE846A358 /* Debug */ = {
+		721A5B8B16168067683F1D74F736B5AC /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6F9C15138990A79FDE87E5EDB4EFD5F1 /* gRPC-Core.debug.xcconfig */;
+			baseConfigurationReference = 77FAD97BB4AEAFB8424228744A2D2277 /* leveldb-library.debug.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CLANG_USE_EXPLICIT_MODULES = NO;
@@ -41188,16 +41374,20 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_MODULE_VERIFIER = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				GCC_PREFIX_HEADER = "Target Support Files/gRPC-Core/gRPC-Core-prefix.pch";
+				GCC_PREFIX_HEADER = "Target Support Files/leveldb-library/leveldb-library-prefix.pch";
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = "Target Support Files/gRPC-Core/gRPC-Core-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/leveldb-library/leveldb-library-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/gRPC-Core/gRPC-Core.modulemap";
-				PRODUCT_MODULE_NAME = grpc;
-				PRODUCT_NAME = grpc;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/leveldb-library/leveldb-library.modulemap";
+				PRODUCT_MODULE_NAME = leveldb;
+				PRODUCT_NAME = leveldb;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
@@ -41208,6 +41398,96 @@
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Debug;
+		};
+		73EC629852FC70835E017F83E87F2E21 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 573F5047488AEDFAB65EDC1E5EDA4ECB /* FirebaseCore.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/FirebaseCore";
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				IBSC_MODULE = FirebaseCore;
+				INFOPLIST_FILE = "Target Support Files/FirebaseCore/ResourceBundle-FirebaseCore_Privacy-FirebaseCore-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_NAME = FirebaseCore_Privacy;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		7946210EF81BBD2B254E9E4A5D5D33BF /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C47EAB0E3C2EAE20A3A0D8E55ADC4622 /* Firebase.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		86DC49E45E13FEC8134610870068133F /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = EB63D06AE20FA072E100E91A757730F1 /* FirebaseSharedSwift.release.xcconfig */;
+			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Target Support Files/FirebaseSharedSwift/FirebaseSharedSwift-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/FirebaseSharedSwift/FirebaseSharedSwift.modulemap";
+				PRODUCT_MODULE_NAME = FirebaseSharedSwift;
+				PRODUCT_NAME = FirebaseSharedSwift;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
 		};
 		8B5A46FF8D3C1289CDEE3BAFACABCD2A /* Release */ = {
 			isa = XCBuildConfiguration;
@@ -41280,6 +41560,7 @@
 				CODE_SIGNING_ALLOWED = YES;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/gRPC-Core";
 				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				IBSC_MODULE = grpc;
 				INFOPLIST_FILE = "Target Support Files/gRPC-Core/ResourceBundle-grpc-gRPC-Core-Info.plist";
@@ -41301,6 +41582,7 @@
 				CODE_SIGNING_ALLOWED = YES;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/FirebaseFirestoreInternal";
 				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				IBSC_MODULE = FirebaseFirestoreInternal;
 				INFOPLIST_FILE = "Target Support Files/FirebaseFirestoreInternal/ResourceBundle-FirebaseFirestoreInternal_Privacy-FirebaseFirestoreInternal-Info.plist";
@@ -41322,6 +41604,7 @@
 				CODE_SIGNING_ALLOWED = YES;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/GoogleUtilities";
 				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				IBSC_MODULE = GoogleUtilities;
 				INFOPLIST_FILE = "Target Support Files/GoogleUtilities/ResourceBundle-GoogleUtilities_Privacy-GoogleUtilities-Info.plist";
@@ -41334,11 +41617,54 @@
 			};
 			name = Release;
 		};
-		9721F1AF15AFD6FB8789CE48022C4D2C /* Release */ = {
+		91BE8C3C8D2BA7E340151DACE33E2EC9 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FA5658E6B0F2EFE24BD68CED28295C2C /* FirebaseAuthInterop.release.xcconfig */;
+			baseConfigurationReference = ED7A74FCCDAB98EEFE2AB262E4048D71 /* abseil.release.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_PREFIX_HEADER = "Target Support Files/abseil/abseil-prefix.pch";
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Target Support Files/abseil/abseil-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/abseil/abseil.modulemap";
+				PRODUCT_MODULE_NAME = absl;
+				PRODUCT_NAME = absl;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		99129EB289277FC084968DF21871D0A7 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F20D8694E8418C1AA752BECBA9556A53 /* FirebaseAuthInterop.debug.xcconfig */;
+			buildSettings = {
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CLANG_USE_EXPLICIT_MODULES = NO;
@@ -41360,10 +41686,58 @@
 				INFOPLIST_FILE = "Target Support Files/FirebaseAuthInterop/FirebaseAuthInterop-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MODULEMAP_FILE = "Target Support Files/FirebaseAuthInterop/FirebaseAuthInterop.modulemap";
 				PRODUCT_MODULE_NAME = FirebaseAuthInterop;
 				PRODUCT_NAME = FirebaseAuthInterop;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		9BD789AB20C505FD62DA4169F7991B52 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 97C0B82A3B0E64299F86729246D1512F /* FirebaseAppCheckInterop.release.xcconfig */;
+			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_PREFIX_HEADER = "Target Support Files/FirebaseAppCheckInterop/FirebaseAppCheckInterop-prefix.pch";
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Target Support Files/FirebaseAppCheckInterop/FirebaseAppCheckInterop-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/FirebaseAppCheckInterop/FirebaseAppCheckInterop.modulemap";
+				PRODUCT_MODULE_NAME = FirebaseAppCheckInterop;
+				PRODUCT_NAME = FirebaseAppCheckInterop;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
@@ -41376,68 +41750,6 @@
 			};
 			name = Release;
 		};
-		986369AD24570CC90E04C99D8685BA0C /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4BED5E6719BFC58BCF13056CD3B3D9FC /* FirebaseCoreInternal.debug.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = NO;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				GCC_PREFIX_HEADER = "Target Support Files/FirebaseCoreInternal/FirebaseCoreInternal-prefix.pch";
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = "Target Support Files/FirebaseCoreInternal/FirebaseCoreInternal-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/FirebaseCoreInternal/FirebaseCoreInternal.modulemap";
-				PRODUCT_MODULE_NAME = FirebaseCoreInternal;
-				PRODUCT_NAME = FirebaseCoreInternal;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_INSTALL_OBJC_HEADER = YES;
-				SWIFT_VERSION = 5.9;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		9BD41A5033A5BE3F94E16C86F2F2AB35 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = AFBC51EC1957849E06F50A71C12ECB1B /* Firebase.debug.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
 		9D953C372D80842FA715FC726AA3FAF9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 97ED5079FA049DAE401ED67500CB56FF /* FirebaseAuth.release.xcconfig */;
@@ -41447,6 +41759,7 @@
 				CODE_SIGNING_ALLOWED = YES;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/FirebaseAuth";
 				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				IBSC_MODULE = FirebaseAuth;
 				INFOPLIST_FILE = "Target Support Files/FirebaseAuth/ResourceBundle-FirebaseAuth_Privacy-FirebaseAuth-Info.plist";
@@ -41459,12 +41772,10 @@
 			};
 			name = Release;
 		};
-		9E1E7FD1C15758B72A1F850A0D809ABC /* Release */ = {
+		9EBC2B941CDE5DD9A66654A642D03308 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F599E7E0A3FC9BA7851DE2DC8B56E694 /* Pods-GeoLive.release.xcconfig */;
+			baseConfigurationReference = 619F8379AB9E9C858CCC8B74CA887848 /* GoogleUtilities.release.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CLANG_USE_EXPLICIT_MODULES = NO;
@@ -41481,19 +41792,23 @@
 				ENABLE_MODULE_VERIFIER = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				INFOPLIST_FILE = "Target Support Files/Pods-GeoLive/Pods-GeoLive-Info.plist";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Target Support Files/GoogleUtilities/GoogleUtilities-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-GeoLive/Pods-GeoLive.modulemap";
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PODS_ROOT = "$(SRCROOT)";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/GoogleUtilities/GoogleUtilities.modulemap";
+				PRODUCT_MODULE_NAME = GoogleUtilities;
+				PRODUCT_NAME = GoogleUtilities;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -41501,11 +41816,10 @@
 			};
 			name = Release;
 		};
-		A26B6CD8B062DB9ABD58B9896BEC33B2 /* Release */ = {
+		A17C3BDA3D2A12C3A0705B97AC32421A /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FF39868390FA2C1D381CB30052DFBD4F /* RecaptchaInterop.release.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CLANG_USE_EXPLICIT_MODULES = NO;
@@ -41527,7 +41841,11 @@
 				INFOPLIST_FILE = "Target Support Files/RecaptchaInterop/RecaptchaInterop-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MODULEMAP_FILE = "Target Support Files/RecaptchaInterop/RecaptchaInterop.modulemap";
 				PRODUCT_MODULE_NAME = RecaptchaInterop;
 				PRODUCT_NAME = RecaptchaInterop;
@@ -41552,6 +41870,7 @@
 				CODE_SIGNING_ALLOWED = YES;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/BoringSSL-GRPC";
 				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				IBSC_MODULE = openssl_grpc;
 				INFOPLIST_FILE = "Target Support Files/BoringSSL-GRPC/ResourceBundle-openssl_grpc-BoringSSL-GRPC-Info.plist";
@@ -41564,46 +41883,6 @@
 			};
 			name = Release;
 		};
-		AA2A6F7DC64BA8917690A6E2A144C369 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 4399715197829A3B2E88BBDDA3C0B10E /* abseil.debug.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = NO;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				GCC_PREFIX_HEADER = "Target Support Files/abseil/abseil-prefix.pch";
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = "Target Support Files/abseil/abseil-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/abseil/abseil.modulemap";
-				PRODUCT_MODULE_NAME = absl;
-				PRODUCT_NAME = absl;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_INSTALL_OBJC_HEADER = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
 		AAE53BB0A2C52F32EABB946D6A012A84 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 4BED5E6719BFC58BCF13056CD3B3D9FC /* FirebaseCoreInternal.debug.xcconfig */;
@@ -41613,6 +41892,7 @@
 				CODE_SIGNING_ALLOWED = YES;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/FirebaseCoreInternal";
 				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				IBSC_MODULE = FirebaseCoreInternal;
 				INFOPLIST_FILE = "Target Support Files/FirebaseCoreInternal/ResourceBundle-FirebaseCoreInternal_Privacy-FirebaseCoreInternal-Info.plist";
@@ -41634,6 +41914,7 @@
 				CODE_SIGNING_ALLOWED = YES;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/GTMSessionFetcher";
 				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				IBSC_MODULE = GTMSessionFetcher;
 				INFOPLIST_FILE = "Target Support Files/GTMSessionFetcher/ResourceBundle-GTMSessionFetcher_Core_Privacy-GTMSessionFetcher-Info.plist";
@@ -41646,11 +41927,231 @@
 			};
 			name = Debug;
 		};
-		AC6D55D22D4FBC95E9943878FBBDFB74 /* Debug */ = {
+		AF2263B139233DFFA4F32088B47E0442 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5BA565D4DC261E73EE86DA9A52B75E84 /* FirebaseFirestoreInternal.debug.xcconfig */;
+			baseConfigurationReference = 7CB1A8B2E5908117EE0150A220EC24CA /* leveldb-library.release.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_PREFIX_HEADER = "Target Support Files/leveldb-library/leveldb-library-prefix.pch";
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Target Support Files/leveldb-library/leveldb-library-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/leveldb-library/leveldb-library.modulemap";
+				PRODUCT_MODULE_NAME = leveldb;
+				PRODUCT_NAME = leveldb;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		B23C35A4401FE929C93E65C84874EF3E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7A758CF2EF6463949C13CE74807A4CD4 /* FirebaseFirestore.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/FirebaseFirestore";
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				IBSC_MODULE = FirebaseFirestore;
+				INFOPLIST_FILE = "Target Support Files/FirebaseFirestore/ResourceBundle-FirebaseFirestore_Privacy-FirebaseFirestore-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_NAME = FirebaseFirestore_Privacy;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		B746A483C6FD93BFE1A58244B6D94E28 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2111319FEBEEFC16E2E5FC6F29826201 /* FirebaseFirestore.release.xcconfig */;
+			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Target Support Files/FirebaseFirestore/FirebaseFirestore-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/FirebaseFirestore/FirebaseFirestore.modulemap";
+				PRODUCT_MODULE_NAME = FirebaseFirestore;
+				PRODUCT_NAME = FirebaseFirestore;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_VERSION = 5.9;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		BA9EC7F60BCE5306FB2317D7DFCE26F2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 313C6E235500DDCEE7FD7B88F9F264E7 /* GTMSessionFetcher.release.xcconfig */;
+			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Target Support Files/GTMSessionFetcher/GTMSessionFetcher-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/GTMSessionFetcher/GTMSessionFetcher.modulemap";
+				PRODUCT_MODULE_NAME = GTMSessionFetcher;
+				PRODUCT_NAME = GTMSessionFetcher;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		BCD5ACFE562D3A719BA941BF2B23D87A /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 97D34D647734C5A097BB28D33D3F4F94 /* gRPC-Core.release.xcconfig */;
+			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
+				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_PREFIX_HEADER = "Target Support Files/gRPC-Core/gRPC-Core-prefix.pch";
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "Target Support Files/gRPC-Core/gRPC-Core-Info.plist";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/gRPC-Core/gRPC-Core.modulemap";
+				PRODUCT_MODULE_NAME = grpc;
+				PRODUCT_NAME = grpc;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
+				SWIFT_INSTALL_OBJC_HEADER = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		BFF997F6B9427A4153DB535373E72474 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 77FAD97BB4AEAFB8424228744A2D2277 /* leveldb-library.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/leveldb-library";
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				IBSC_MODULE = leveldb;
+				INFOPLIST_FILE = "Target Support Files/leveldb-library/ResourceBundle-leveldb_Privacy-leveldb-library-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_NAME = leveldb_Privacy;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = bundle;
+			};
+			name = Debug;
+		};
+		C103D8A33320D7604F8C10E880AD1872 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0DA4E946D1D5DFEA995CE49A1E5F665B /* FirebaseFirestoreInternal.release.xcconfig */;
+			buildSettings = {
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CLANG_USE_EXPLICIT_MODULES = NO;
@@ -41671,7 +42172,11 @@
 				INFOPLIST_FILE = "Target Support Files/FirebaseFirestoreInternal/FirebaseFirestoreInternal-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MODULEMAP_FILE = "Target Support Files/FirebaseFirestoreInternal/FirebaseFirestoreInternal.modulemap";
 				PRODUCT_MODULE_NAME = FirebaseFirestoreInternal;
 				PRODUCT_NAME = FirebaseFirestoreInternal;
@@ -41681,121 +42186,16 @@
 				SWIFT_INSTALL_OBJC_HEADER = YES;
 				SWIFT_VERSION = 5.9;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		B23C35A4401FE929C93E65C84874EF3E /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7A758CF2EF6463949C13CE74807A4CD4 /* FirebaseFirestore.debug.xcconfig */;
-			buildSettings = {
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/FirebaseFirestore";
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				IBSC_MODULE = FirebaseFirestore;
-				INFOPLIST_FILE = "Target Support Files/FirebaseFirestore/ResourceBundle-FirebaseFirestore_Privacy-FirebaseFirestore-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				PRODUCT_NAME = FirebaseFirestore_Privacy;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				WRAPPER_EXTENSION = bundle;
-			};
-			name = Debug;
-		};
-		BFF997F6B9427A4153DB535373E72474 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 77FAD97BB4AEAFB8424228744A2D2277 /* leveldb-library.debug.xcconfig */;
-			buildSettings = {
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/leveldb-library";
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				IBSC_MODULE = leveldb;
-				INFOPLIST_FILE = "Target Support Files/leveldb-library/ResourceBundle-leveldb_Privacy-leveldb-library-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				PRODUCT_NAME = leveldb_Privacy;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				WRAPPER_EXTENSION = bundle;
-			};
-			name = Debug;
-		};
-		C81983BD4A6CA69AF2104EF44E6C3BC3 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7472036156B7D1D2F78E0037C4253B2C /* GoogleUtilities.debug.xcconfig */;
-			buildSettings = {
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/GoogleUtilities";
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				IBSC_MODULE = GoogleUtilities;
-				INFOPLIST_FILE = "Target Support Files/GoogleUtilities/ResourceBundle-GoogleUtilities_Privacy-GoogleUtilities-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				PRODUCT_NAME = GoogleUtilities_Privacy;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				WRAPPER_EXTENSION = bundle;
-			};
-			name = Debug;
-		};
-		C8B068AC3EDB44377118616BC659EF5A /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9D56D7CAF9D27A5F2D2B264F4F567453 /* BoringSSL-GRPC.release.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = NO;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				GCC_PREFIX_HEADER = "Target Support Files/BoringSSL-GRPC/BoringSSL-GRPC-prefix.pch";
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = "Target Support Files/BoringSSL-GRPC/BoringSSL-GRPC-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/BoringSSL-GRPC/BoringSSL-GRPC.modulemap";
-				PRODUCT_MODULE_NAME = openssl_grpc;
-				PRODUCT_NAME = openssl_grpc;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_INSTALL_OBJC_HEADER = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
 			name = Release;
 		};
-		CDA928D46E136FD95DB8612CD0328461 /* Debug */ = {
+		C1CF55003ADEC1F075070D01ECDC2D26 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F20D8694E8418C1AA752BECBA9556A53 /* FirebaseAuthInterop.debug.xcconfig */;
+			baseConfigurationReference = FA5658E6B0F2EFE24BD68CED28295C2C /* FirebaseAuthInterop.release.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CLANG_USE_EXPLICIT_MODULES = NO;
@@ -41817,7 +42217,11 @@
 				INFOPLIST_FILE = "Target Support Files/FirebaseAuthInterop/FirebaseAuthInterop-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MODULEMAP_FILE = "Target Support Files/FirebaseAuthInterop/FirebaseAuthInterop.modulemap";
 				PRODUCT_MODULE_NAME = FirebaseAuthInterop;
 				PRODUCT_NAME = FirebaseAuthInterop;
@@ -41827,8 +42231,31 @@
 				SWIFT_INSTALL_OBJC_HEADER = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		C81983BD4A6CA69AF2104EF44E6C3BC3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7472036156B7D1D2F78E0037C4253B2C /* GoogleUtilities.debug.xcconfig */;
+			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_USE_EXPLICIT_MODULES = NO;
+				CODE_SIGNING_ALLOWED = YES;
+				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/GoogleUtilities";
+				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				IBSC_MODULE = GoogleUtilities;
+				INFOPLIST_FILE = "Target Support Files/GoogleUtilities/ResourceBundle-GoogleUtilities_Privacy-GoogleUtilities-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				PRODUCT_NAME = GoogleUtilities_Privacy;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				WRAPPER_EXTENSION = bundle;
 			};
 			name = Debug;
 		};
@@ -41841,6 +42268,7 @@
 				CODE_SIGNING_ALLOWED = YES;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/leveldb-library";
 				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				IBSC_MODULE = leveldb;
 				INFOPLIST_FILE = "Target Support Files/leveldb-library/ResourceBundle-leveldb_Privacy-leveldb-library-Info.plist";
@@ -41853,48 +42281,6 @@
 			};
 			name = Release;
 		};
-		D479334EF41E6569D5F9968E61A40D3A /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 97C0B82A3B0E64299F86729246D1512F /* FirebaseAppCheckInterop.release.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = NO;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				GCC_PREFIX_HEADER = "Target Support Files/FirebaseAppCheckInterop/FirebaseAppCheckInterop-prefix.pch";
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = "Target Support Files/FirebaseAppCheckInterop/FirebaseAppCheckInterop-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/FirebaseAppCheckInterop/FirebaseAppCheckInterop.modulemap";
-				PRODUCT_MODULE_NAME = FirebaseAppCheckInterop;
-				PRODUCT_NAME = FirebaseAppCheckInterop;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_INSTALL_OBJC_HEADER = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
 		DB596A0BAE5282E70F3631A202C6C9BE /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = ED7A74FCCDAB98EEFE2AB262E4048D71 /* abseil.release.xcconfig */;
@@ -41904,6 +42290,7 @@
 				CODE_SIGNING_ALLOWED = YES;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/abseil";
 				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				IBSC_MODULE = absl;
 				INFOPLIST_FILE = "Target Support Files/abseil/ResourceBundle-xcprivacy-abseil-Info.plist";
@@ -41916,89 +42303,6 @@
 			};
 			name = Release;
 		};
-		DC290844583E1B36C779913BDFAAF12F /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = E32909A4EEB6036EB290127FBCB37407 /* FirebaseCore.release.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = NO;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = "Target Support Files/FirebaseCore/FirebaseCore-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/FirebaseCore/FirebaseCore.modulemap";
-				PRODUCT_MODULE_NAME = FirebaseCore;
-				PRODUCT_NAME = FirebaseCore;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_INSTALL_OBJC_HEADER = YES;
-				SWIFT_VERSION = 5.9;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		DE0D6EAD4314CAE47010564382FF2D9E /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7CB1A8B2E5908117EE0150A220EC24CA /* leveldb-library.release.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = NO;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				GCC_PREFIX_HEADER = "Target Support Files/leveldb-library/leveldb-library-prefix.pch";
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = "Target Support Files/leveldb-library/leveldb-library-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/leveldb-library/leveldb-library.modulemap";
-				PRODUCT_MODULE_NAME = leveldb;
-				PRODUCT_NAME = leveldb;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_INSTALL_OBJC_HEADER = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
 		E1B728F6B10DEB3EF66757102C256181 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 059AC4EA6181011C19A34ED15C7ECEB6 /* gRPC-C++.release.xcconfig */;
@@ -42008,6 +42312,7 @@
 				CODE_SIGNING_ALLOWED = YES;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/gRPC-C++";
 				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				IBSC_MODULE = grpcpp;
 				INFOPLIST_FILE = "Target Support Files/gRPC-C++/ResourceBundle-gRPCCertificates-Cpp-gRPC-C++-Info.plist";
@@ -42020,127 +42325,6 @@
 			};
 			name = Release;
 		};
-		E76CBCDAE9415E1436DF2E5FBA1692A8 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = AB97439A4BC459B2A2E373B0CDE7C96E /* BoringSSL-GRPC.debug.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = NO;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				GCC_PREFIX_HEADER = "Target Support Files/BoringSSL-GRPC/BoringSSL-GRPC-prefix.pch";
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = "Target Support Files/BoringSSL-GRPC/BoringSSL-GRPC-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/BoringSSL-GRPC/BoringSSL-GRPC.modulemap";
-				PRODUCT_MODULE_NAME = openssl_grpc;
-				PRODUCT_NAME = openssl_grpc;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_INSTALL_OBJC_HEADER = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		E92F616788671EEF59E869C188943AD1 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = D213FDD4CA49D877DD2943210DBBD5A2 /* FirebaseSharedSwift.debug.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = NO;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = "Target Support Files/FirebaseSharedSwift/FirebaseSharedSwift-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/FirebaseSharedSwift/FirebaseSharedSwift.modulemap";
-				PRODUCT_MODULE_NAME = FirebaseSharedSwift;
-				PRODUCT_NAME = FirebaseSharedSwift;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_INSTALL_OBJC_HEADER = YES;
-				SWIFT_VERSION = 5.9;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
-		EBA99D334CA030C566A2DD73650BC8BE /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7A758CF2EF6463949C13CE74807A4CD4 /* FirebaseFirestore.debug.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_ENABLE_OBJC_WEAK = NO;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = NO;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = "Target Support Files/FirebaseFirestore/FirebaseFirestore-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/FirebaseFirestore/FirebaseFirestore.modulemap";
-				PRODUCT_MODULE_NAME = FirebaseFirestore;
-				PRODUCT_NAME = FirebaseFirestore;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_INSTALL_OBJC_HEADER = YES;
-				SWIFT_VERSION = 5.9;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Debug;
-		};
 		ED97DECE6215E628C7FC34FF4A8AC02F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 8FD8265ECC85453A3FE50AC35A9CA6C6 /* FirebaseCoreExtension.debug.xcconfig */;
@@ -42150,6 +42334,7 @@
 				CODE_SIGNING_ALLOWED = YES;
 				CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)/FirebaseCoreExtension";
 				DEVELOPMENT_TEAM = R6VTAQ7R5H;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				IBSC_MODULE = FirebaseCoreExtension;
 				INFOPLIST_FILE = "Target Support Files/FirebaseCoreExtension/ResourceBundle-FirebaseCoreExtension_Privacy-FirebaseCoreExtension-Info.plist";
@@ -42162,11 +42347,10 @@
 			};
 			name = Debug;
 		};
-		EFF9A7069F4D7C6564E98E6D716DEE48 /* Debug */ = {
+		EFF1C60DC10F7B37881F39BA61B1AC47 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 77FAD97BB4AEAFB8424228744A2D2277 /* leveldb-library.debug.xcconfig */;
+			baseConfigurationReference = BE7B354061878A0A2C07BA540B3F33CD /* GTMSessionFetcher.debug.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CLANG_USE_EXPLICIT_MODULES = NO;
@@ -42175,23 +42359,25 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
 				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = R6VTAQ7R5H;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				ENABLE_MODULE_VERIFIER = NO;
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				GCC_PREFIX_HEADER = "Target Support Files/leveldb-library/leveldb-library-prefix.pch";
 				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = "Target Support Files/leveldb-library/leveldb-library-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/GTMSessionFetcher/GTMSessionFetcher-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/leveldb-library/leveldb-library.modulemap";
-				PRODUCT_MODULE_NAME = leveldb;
-				PRODUCT_NAME = leveldb;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MODULEMAP_FILE = "Target Support Files/GTMSessionFetcher/GTMSessionFetcher.modulemap";
+				PRODUCT_MODULE_NAME = GTMSessionFetcher;
+				PRODUCT_NAME = GTMSessionFetcher;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
@@ -42203,52 +42389,10 @@
 			};
 			name = Debug;
 		};
-		F0B93EC2495B7146A09A67403181C64B /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = ED7A74FCCDAB98EEFE2AB262E4048D71 /* abseil.release.xcconfig */;
-			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
-				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				CLANG_USE_EXPLICIT_MODULES = NO;
-				CODE_SIGNING_ALLOWED = YES;
-				"CODE_SIGN_IDENTITY[sdk=appletvos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
-				"CODE_SIGN_IDENTITY[sdk=watchos*]" = "";
-				CURRENT_PROJECT_VERSION = 1;
-				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = R6VTAQ7R5H;
-				DYLIB_COMPATIBILITY_VERSION = 1;
-				DYLIB_CURRENT_VERSION = 1;
-				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				ENABLE_MODULE_VERIFIER = NO;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
-				GCC_PREFIX_HEADER = "Target Support Files/abseil/abseil-prefix.pch";
-				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
-				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = "Target Support Files/abseil/abseil-Info.plist";
-				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				MODULEMAP_FILE = "Target Support Files/abseil/abseil.modulemap";
-				PRODUCT_MODULE_NAME = absl;
-				PRODUCT_NAME = absl;
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_INSTALL_OBJC_HEADER = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				VALIDATE_PRODUCT = YES;
-				VERSIONING_SYSTEM = "apple-generic";
-				VERSION_INFO_PREFIX = "";
-			};
-			name = Release;
-		};
-		FB90D2AB991E2F8E757AE85236155E4C /* Debug */ = {
+		F7294B3706EA3DE4270A995A1C277542 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D7EDA1D4E4CA07A55B42FA95F7574B21 /* FirebaseAppCheckInterop.debug.xcconfig */;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_64_BIT)";
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CLANG_USE_EXPLICIT_MODULES = NO;
@@ -42270,7 +42414,11 @@
 				INFOPLIST_FILE = "Target Support Files/FirebaseAppCheckInterop/FirebaseAppCheckInterop-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				MODULEMAP_FILE = "Target Support Files/FirebaseAppCheckInterop/FirebaseAppCheckInterop.modulemap";
 				PRODUCT_MODULE_NAME = FirebaseAppCheckInterop;
 				PRODUCT_NAME = FirebaseAppCheckInterop;
@@ -42291,8 +42439,8 @@
 		006522451F92EA6A6C0E030606575540 /* Build configuration list for PBXNativeTarget "FirebaseAuth" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				128702B5A67C7BFBEC94C32D1DCD201E /* Debug */,
-				47842061B92FDF2C2F7669306A7F17F0 /* Release */,
+				5EF359612729286F87C9128AE3613D39 /* Debug */,
+				5A8126568D4863D8FC0205AC753C6B9B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -42309,8 +42457,8 @@
 		12D821916D969D1A7F6BC7581B6F26F4 /* Build configuration list for PBXNativeTarget "gRPC-Core" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				892EDDAA4A2FD28B1A174E5BE846A358 /* Debug */,
-				62922B300F03C51224292A8A29AB6489 /* Release */,
+				130F57CFECB9D9481051F54C9992F2E1 /* Debug */,
+				BCD5ACFE562D3A719BA941BF2B23D87A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -42336,8 +42484,8 @@
 		1D33D8DB1EFFD16940CDAE0D3170F5B2 /* Build configuration list for PBXNativeTarget "GoogleUtilities" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				2CE68D9FABFE19831855CC42043EA990 /* Debug */,
-				47BA0259E01CE56EC1A0E6EA1FDDED9C /* Release */,
+				37C88939CA1B3F4FFC9971C0325B687E /* Debug */,
+				9EBC2B941CDE5DD9A66654A642D03308 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -42345,8 +42493,8 @@
 		26E0753EAA3FB69768B19D1A3C2D6E56 /* Build configuration list for PBXNativeTarget "FirebaseSharedSwift" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				E92F616788671EEF59E869C188943AD1 /* Debug */,
-				815FFE0B41963004942D53A35456A91E /* Release */,
+				223B96444E9AAF64ABB0D730E7B2EC55 /* Debug */,
+				86DC49E45E13FEC8134610870068133F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -42354,8 +42502,8 @@
 		3A11AD794AA052058BF478BB3FE05FD0 /* Build configuration list for PBXNativeTarget "FirebaseCoreExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				869BED894D3685BB6F3B594588C9A7B0 /* Debug */,
-				6B33A9673D3D9213C95C8AEAE4EB01D0 /* Release */,
+				7183C174F5714CD89CC0E6384AB17FD4 /* Debug */,
+				11B6C683CE2D59AC45E5D297861BE672 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -42390,8 +42538,8 @@
 		68EE099ECADAB001E960D12EB10C9C19 /* Build configuration list for PBXNativeTarget "FirebaseFirestoreInternal" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				AC6D55D22D4FBC95E9943878FBBDFB74 /* Debug */,
-				70F33747D14BCD34AB83C048FD1443CC /* Release */,
+				6AE60B580CB292C4B99D9E86E849BC25 /* Debug */,
+				C103D8A33320D7604F8C10E880AD1872 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -42399,8 +42547,8 @@
 		6F56248CA997FC6EC9757B3304E8A007 /* Build configuration list for PBXNativeTarget "BoringSSL-GRPC" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				E76CBCDAE9415E1436DF2E5FBA1692A8 /* Debug */,
-				C8B068AC3EDB44377118616BC659EF5A /* Release */,
+				3C0F0285655EBD525FE398798AEA0974 /* Debug */,
+				5A1C23D326A4A134BE34977419931489 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -42426,8 +42574,8 @@
 		7ED562D0F375D65C65B530CC3BD3BA3C /* Build configuration list for PBXNativeTarget "leveldb-library" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				EFF9A7069F4D7C6564E98E6D716DEE48 /* Debug */,
-				DE0D6EAD4314CAE47010564382FF2D9E /* Release */,
+				721A5B8B16168067683F1D74F736B5AC /* Debug */,
+				AF2263B139233DFFA4F32088B47E0442 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -42435,8 +42583,8 @@
 		88CFF76EBA1D2BCE34EE8ACA77684646 /* Build configuration list for PBXNativeTarget "nanopb" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				40870CFBE8F014EF84AB05C8EBFBD497 /* Debug */,
-				2AFE6360E22D323EFBD75E51ABFFB0A8 /* Release */,
+				3BFCEF2A4532CCFEFBEA88D80BD94993 /* Debug */,
+				0F70909AE2A2A6E6EFFAEBE36D26A281 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -42453,8 +42601,8 @@
 		8F753E945580F6459078AE64DC0ACCDC /* Build configuration list for PBXNativeTarget "GTMSessionFetcher" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1DC89F76018D75F5FFB8B3FA15DD20EE /* Debug */,
-				758125F8628289943EF7895D973FFBCF /* Release */,
+				EFF1C60DC10F7B37881F39BA61B1AC47 /* Debug */,
+				BA9EC7F60BCE5306FB2317D7DFCE26F2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -42462,8 +42610,8 @@
 		908D3AB6F4F1DD3587F5915EFA83D7E6 /* Build configuration list for PBXNativeTarget "FirebaseCoreInternal" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				986369AD24570CC90E04C99D8685BA0C /* Debug */,
-				357A57F391BED000B5AF2D6351BA767E /* Release */,
+				07E2E5631B89539EEF7586F1A2D3DF73 /* Debug */,
+				1471FE40504C568C6DAEB64E47F91973 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -42471,8 +42619,8 @@
 		935902CF3480EC4712F3D285D344F8BF /* Build configuration list for PBXNativeTarget "FirebaseAppCheckInterop" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				FB90D2AB991E2F8E757AE85236155E4C /* Debug */,
-				D479334EF41E6569D5F9968E61A40D3A /* Release */,
+				F7294B3706EA3DE4270A995A1C277542 /* Debug */,
+				9BD789AB20C505FD62DA4169F7991B52 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -42480,8 +42628,8 @@
 		946D831A1358870A687EBB752ABB6C80 /* Build configuration list for PBXNativeTarget "FirebaseFirestore" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				EBA99D334CA030C566A2DD73650BC8BE /* Debug */,
-				134685A1F8C0809D28BAAC2C38E05FA3 /* Release */,
+				4E0752C988E4C01BD48FA09567A56C03 /* Debug */,
+				B746A483C6FD93BFE1A58244B6D94E28 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -42489,8 +42637,8 @@
 		947EDCF04EC620D515E92D26978AFE7B /* Build configuration list for PBXNativeTarget "RecaptchaInterop" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				1E0E9D60EF4416DE7CC0DA105C5C5F24 /* Debug */,
-				A26B6CD8B062DB9ABD58B9896BEC33B2 /* Release */,
+				3B07532EA688C0F78C184DE3C80AFFA0 /* Debug */,
+				A17C3BDA3D2A12C3A0705B97AC32421A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -42516,8 +42664,8 @@
 		A4D0E947A7EBA9387137D6B412561C3C /* Build configuration list for PBXNativeTarget "gRPC-C++" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				7CA3D5D1D3F7F831D13C9726641497E7 /* Debug */,
-				3EF3905A3734F5D7CF874441109ED384 /* Release */,
+				64C1C954DC45E356FF4BE422CEE5B580 /* Debug */,
+				24F9905E444DAF977DD60CFAD1D12176 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -42525,8 +42673,8 @@
 		B0D9AA15D3016C98FFD7A2309A2E06B8 /* Build configuration list for PBXAggregateTarget "Firebase" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				9BD41A5033A5BE3F94E16C86F2F2AB35 /* Debug */,
-				8434BD690D3AB4AAA4EEABE55C6FE586 /* Release */,
+				55CA2992230B0C3EA1451D352DE73F53 /* Debug */,
+				7946210EF81BBD2B254E9E4A5D5D33BF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -42534,8 +42682,8 @@
 		B2FC07EA44D897E2E1F7C43E66D81E70 /* Build configuration list for PBXNativeTarget "Pods-GeoLive" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				34CC2E174A21B242F9553917F9BCDE34 /* Debug */,
-				9E1E7FD1C15758B72A1F850A0D809ABC /* Release */,
+				47361A512F879CA52016BCECF107793F /* Debug */,
+				5D231D05E6E268061FF7E63FA1CE8A4F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -42570,8 +42718,8 @@
 		D3D629579412B6FADC8FB25A1AC3D3A2 /* Build configuration list for PBXNativeTarget "abseil" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				AA2A6F7DC64BA8917690A6E2A144C369 /* Debug */,
-				F0B93EC2495B7146A09A67403181C64B /* Release */,
+				5E9934CD53AF3D85351199C5F509BABB /* Debug */,
+				91BE8C3C8D2BA7E340151DACE33E2EC9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -42579,8 +42727,8 @@
 		D962EA292C3B77BF1204B85F00D3AE33 /* Build configuration list for PBXNativeTarget "FirebaseCore" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				5DF347BA992DE4DD383570AE5F75608F /* Debug */,
-				DC290844583E1B36C779913BDFAAF12F /* Release */,
+				5FA2648BBFF7EFCBE9E85DA3B2224076 /* Debug */,
+				38331347EA16F635ACF3DA559B3BC8C6 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -42606,8 +42754,8 @@
 		F9FFE58570CE62764B23CF2DC59CBD9C /* Build configuration list for PBXNativeTarget "FirebaseAuthInterop" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				CDA928D46E136FD95DB8612CD0328461 /* Debug */,
-				9721F1AF15AFD6FB8789CE48022C4D2C /* Release */,
+				99129EB289277FC084968DF21871D0A7 /* Debug */,
+				C1CF55003ADEC1F075070D01ECDC2D26 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

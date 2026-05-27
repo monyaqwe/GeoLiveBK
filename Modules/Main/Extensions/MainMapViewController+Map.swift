@@ -1,6 +1,59 @@
 import UIKit
 import MapKit
 
+// MARK: - Skull Annotation Model
+public final class SkullAnnotation: NSObject, MKAnnotation {
+    public dynamic var coordinate: CLLocationCoordinate2D
+    public var title: String? { "REMAINS 💀" }
+    public var subtitle: String? { "Tap to collect remains for +1 XP!" }
+    
+    public init(coordinate: CLLocationCoordinate2D) {
+        self.coordinate = coordinate
+        super.init()
+    }
+}
+
+// MARK: - Skull Annotation View
+public final class SkullAnnotationView: MKAnnotationView {
+    public static let reuseIdentifier = "SkullAnnotationView"
+    
+    private let emojiLabel: UILabel = {
+        let label = UILabel()
+        label.text = "💀"
+        label.font = .systemFont(ofSize: 32)
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    public override init(annotation: MKAnnotation?, reuseIdentifier: String?) {
+        super.init(annotation: annotation, reuseIdentifier: reuseIdentifier)
+        setupView()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setupView()
+    }
+    
+    private func setupView() {
+        frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+        centerOffset = CGPoint(x: 0, y: -20)
+        addSubview(emojiLabel)
+        NSLayoutConstraint.activate([
+            emojiLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            emojiLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
+            emojiLabel.widthAnchor.constraint(equalToConstant: 40),
+            emojiLabel.heightAnchor.constraint(equalToConstant: 40)
+        ])
+        
+        layer.shadowColor = UIColor.red.cgColor
+        layer.shadowRadius = 6.0
+        layer.shadowOpacity = 0.8
+        layer.shadowOffset = .zero
+    }
+}
+
 // MARK: - MKMapViewDelegate
 extension MainMapViewController: MKMapViewDelegate {
 
@@ -15,13 +68,29 @@ extension MainMapViewController: MKMapViewDelegate {
             return view
         }
 
+        if let skullAnn = annotation as? SkullAnnotation {
+            let view = (mapView.dequeueReusableAnnotationView(withIdentifier: SkullAnnotationView.reuseIdentifier)
+                        as? SkullAnnotationView)
+                       ?? SkullAnnotationView(annotation: skullAnn, reuseIdentifier: SkullAnnotationView.reuseIdentifier)
+            view.annotation = skullAnn
+            return view
+        }
+
+        if let mobAnn = annotation as? MobAnnotation {
+            let view = (mapView.dequeueReusableAnnotationView(withIdentifier: MobAnnotationView.reuseIdentifier)
+                        as? MobAnnotationView)
+                       ?? MobAnnotationView(annotation: mobAnn, reuseIdentifier: MobAnnotationView.reuseIdentifier)
+            view.annotation = mobAnn
+            view.configure(with: mobAnn.mobDTO)
+            return view
+        }
+
         if let building = annotation as? BuildingAnnotation {
             let view = (mapView.dequeueReusableAnnotationView(withIdentifier: BuildingAnnotationView.reuseID)
                         as? BuildingAnnotationView)
                        ?? BuildingAnnotationView(annotation: building, reuseIdentifier: BuildingAnnotationView.reuseID)
             view.annotation = building
             view.configure(with: building.buildingItem)
-            // tapHandler is kept nil – didSelect handles everything instantly
             view.tapHandler = nil
             return view
         }
@@ -30,9 +99,9 @@ extension MainMapViewController: MKMapViewDelegate {
         let view = (mapView.dequeueReusableAnnotationView(withIdentifier: AvatarAnnotationView.reuseID)
                     as? AvatarAnnotationView)
                    ?? AvatarAnnotationView(annotation: avatarAnn, reuseIdentifier: AvatarAnnotationView.reuseID)
-        view.annotation = avatarAnn
-        view.configure(with: avatarAnn.avatarImage)
-        return view
+         view.annotation = avatarAnn
+         view.configure(with: avatarAnn.avatarImage)
+         return view
     }
 
     // MARK: Overlay rendering
@@ -69,8 +138,20 @@ extension MainMapViewController: MKMapViewDelegate {
         return MKOverlayRenderer(overlay: overlay)
     }
 
-    // MARK: Tap a building annotation
+    // MARK: Tap a building or mob annotation
     public func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        if let skullAnn = view.annotation as? SkullAnnotation {
+            self.collectSkull(skullAnn)
+            mapView.deselectAnnotation(skullAnn, animated: false)
+            return
+        }
+
+        if let mobAnn = view.annotation as? MobAnnotation {
+            self.targetMob(mobAnn)
+            mapView.deselectAnnotation(mobAnn, animated: false)
+            return
+        }
+
         guard let buildingView = view as? BuildingAnnotationView,
               let annotation   = view.annotation as? BuildingAnnotation else {
             mapView.deselectAnnotation(view.annotation, animated: false)
@@ -96,6 +177,4 @@ extension MainMapViewController: MKMapViewDelegate {
         mapView.deselectAnnotation(annotation, animated: false)
         showBuildingInspectionPanel(for: annotation)
     }
-
-    // MARK: - Helpers
 }

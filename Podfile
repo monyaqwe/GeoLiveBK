@@ -17,6 +17,7 @@ post_install do |installer|
       config.build_settings['GCC_TREAT_WARNINGS_AS_ERRORS'] = 'NO'
       config.build_settings['CLANG_USE_EXPLICIT_MODULES'] = 'NO'
       config.build_settings['CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES'] = 'YES'
+      config.build_settings['ENABLE_USER_SCRIPT_SANDBOXING'] = 'NO'
       
       # Разрешаем подпись для Подов, чтобы приложение запускалось на реальном устройстве
       config.build_settings['CODE_SIGNING_ALLOWED'] = 'YES'

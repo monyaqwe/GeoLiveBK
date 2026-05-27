@@ -1,0 +1,1 @@
+/Users/makarmonko/Library/Developer/Xcode/DerivedData/GeoLive-fkqztrdcuytsukcqrwmoqmbjcuvj/Build/Products/Debug-iphoneos/GeoLive.app

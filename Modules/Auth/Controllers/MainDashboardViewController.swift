@@ -1,5 +1,7 @@
 import UIKit
 
+/// High-fidelity cyber-operative profile dashboard (Cheapshot Aesthetic).
+/// Displays character mannequins, secure data synchronization metrics, and tactical maps transition triggers.
 final class MainDashboardViewController: UIViewController {
     
     private let nickname: String
@@ -8,19 +10,19 @@ final class MainDashboardViewController: UIViewController {
     private let onDisconnect: (() -> Void)?
     var onProceed: (() -> Void)?
     
-    // UI Elements
+    // Ambient dark background hierarchy
     private let backgroundContainerView: UIView = {
         let view = UIView()
-        view.backgroundColor = .white
+        view.backgroundColor = UIColor(white: 0.05, alpha: 1.0)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
     private let welcomeLabel: UILabel = {
         let label = UILabel()
-        label.text = "AUTHORIZED ACCESS"
+        label.text = "OPERATIVE DASHBOARD"
         label.font = UIFont.systemFont(ofSize: 22, weight: .black)
-        label.textColor = UIColor(red: 0.08, green: 0.12, blue: 0.20, alpha: 1.0)
+        label.textColor = UIColor(red: 0.00, green: 0.94, blue: 1.00, alpha: 1.0)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -28,9 +30,9 @@ final class MainDashboardViewController: UIViewController {
     
     private let subtitleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Your 3D avatar is connected to the GeoLive matrix."
-        label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-        label.textColor = UIColor(red: 0.25, green: 0.30, blue: 0.40, alpha: 1.0)
+        label.text = "Securing biometric sync links to the GeoLive grid..."
+        label.font = UIFont.systemFont(ofSize: 12, weight: .semibold)
+        label.textColor = UIColor.white.withAlphaComponent(0.50)
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -46,29 +48,31 @@ final class MainDashboardViewController: UIViewController {
     private let proceedButton: UIButton = {
         let button = UIButton(type: .custom)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("CONFIGURE NICKNAME & MAP", for: .normal)
-        button.setTitleColor(.white, for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
-        button.backgroundColor = UIColor(red: 0.05, green: 0.40, blue: 0.95, alpha: 1.0)
+        button.setTitle("ACCESS TACTICAL MAP", for: .normal)
+        button.setTitleColor(UIColor(white: 0.08, alpha: 1.0), for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .black)
+        button.backgroundColor = UIColor(red: 0.00, green: 0.94, blue: 1.00, alpha: 1.0)
         button.layer.cornerRadius = 25
-        button.layer.shadowColor = UIColor(red: 0.05, green: 0.40, blue: 0.95, alpha: 1.0).cgColor
-        button.layer.shadowOpacity = 0.3
+        
+        // High-tech glowing neon shadow
+        button.layer.shadowColor = UIColor(red: 0.00, green: 0.94, blue: 1.00, alpha: 1.0).cgColor
+        button.layer.shadowOpacity = 0.4
         button.layer.shadowOffset = CGSize(width: 0, height: 4)
-        button.layer.shadowRadius = 8
+        button.layer.shadowRadius = 10
         return button
     }()
     
-    // Glassmorphic Info Card
+    // Glassmorphic Info Card with vibrant cyber cyan highlights
     private let statsCard: UIView = {
         let view = UIView()
-        view.backgroundColor = .clear
+        view.backgroundColor = UIColor(white: 0.10, alpha: 0.65)
         view.layer.cornerRadius = 20
-        view.layer.borderWidth = 1.0
-        view.layer.borderColor = UIColor.white.withAlphaComponent(0.50).cgColor
+        view.layer.borderWidth = 1.2
+        view.layer.borderColor = UIColor(red: 0.00, green: 0.94, blue: 1.00, alpha: 0.25).cgColor
         view.clipsToBounds = true
         view.translatesAutoresizingMaskIntoConstraints = false
         
-        let blurEffect = UIBlurEffect(style: .systemMaterialLight)
+        let blurEffect = UIBlurEffect(style: .dark)
         let blurView = UIVisualEffectView(effect: blurEffect)
         blurView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(blurView)
@@ -85,15 +89,15 @@ final class MainDashboardViewController: UIViewController {
     private let disconnectButton: UIButton = {
         let button = UIButton(type: .custom)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("DISCONNECT", for: .normal)
-        button.setTitleColor(UIColor(red: 0.85, green: 0.20, blue: 0.20, alpha: 1.0), for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 15, weight: .bold)
+        button.setTitle("DISCONNECT LINK", for: .normal)
+        button.setTitleColor(UIColor(red: 1.00, green: 0.25, blue: 0.25, alpha: 1.0), for: .normal)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .black)
         button.layer.cornerRadius = 25
         button.layer.borderWidth = 1.2
-        button.layer.borderColor = UIColor.red.withAlphaComponent(0.20).cgColor
+        button.layer.borderColor = UIColor(red: 1.00, green: 0.25, blue: 0.25, alpha: 0.35).cgColor
         button.clipsToBounds = true
         
-        let blurEffect = UIBlurEffect(style: .systemUltraThinMaterial)
+        let blurEffect = UIBlurEffect(style: .dark)
         let blurView = UIVisualEffectView(effect: blurEffect)
         blurView.translatesAutoresizingMaskIntoConstraints = false
         blurView.isUserInteractionEnabled = false
@@ -133,9 +137,9 @@ final class MainDashboardViewController: UIViewController {
     }
     
     private func setupUI() {
-        view.backgroundColor = .clear
+        view.backgroundColor = .black
         
-        // 1. Frosted ambient background
+        // Setup visual hierarchy
         setupBackground()
         
         view.addSubview(welcomeLabel)
@@ -145,16 +149,16 @@ final class MainDashboardViewController: UIViewController {
         view.addSubview(proceedButton)
         view.addSubview(disconnectButton)
         
-        // Populate stats inside card
+        // Dynamic cyber details
         let displayNickname = nickname.isEmpty ? "NOT CONFIGURED" : nickname.uppercased()
-        let nicknameColor = nickname.isEmpty ? UIColor.systemOrange : UIColor(red: 0.05, green: 0.60, blue: 0.30, alpha: 1.0)
-        let title1 = createStatLabel(title: "NICKNAME", value: displayNickname, color: nicknameColor)
-        let title2 = createStatLabel(title: "DATA SYNC", value: "TODAY, " + getCurrentTime(), color: .darkGray)
-        let title3 = createStatLabel(title: "AVATAR ID", value: selectedGender == .male ? "GEN-MALE // CLAY-01" : "GEN-FEMALE // CLAY-02", color: .darkGray)
+        let nicknameColor = nickname.isEmpty ? UIColor.systemOrange : UIColor(red: 0.00, green: 0.94, blue: 1.00, alpha: 1.0)
+        let title1 = createStatLabel(title: "IDENTITY CALLSIGN", value: displayNickname, color: nicknameColor)
+        let title2 = createStatLabel(title: "DATA ENCRYPTION SYNC", value: "SECURE // " + getCurrentTime(), color: UIColor.white.withAlphaComponent(0.60))
+        let title3 = createStatLabel(title: "OPERATIVE AVATAR MODEL", value: selectedGender == .male ? "GEN-MALE // BATTLE-CLAY-01" : "GEN-FEMALE // BATTLE-CLAY-02", color: UIColor.white.withAlphaComponent(0.60))
         
         let stack = UIStackView(arrangedSubviews: [title1, title2, title3])
         stack.axis = .vertical
-        stack.spacing = 10
+        stack.spacing = 14
         stack.translatesAutoresizingMaskIntoConstraints = false
         statsCard.addSubview(stack)
         
@@ -174,14 +178,14 @@ final class MainDashboardViewController: UIViewController {
             statsCard.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
             statsCard.bottomAnchor.constraint(equalTo: proceedButton.topAnchor, constant: -20),
             
-            stack.topAnchor.constraint(equalTo: statsCard.topAnchor, constant: 16),
+            stack.topAnchor.constraint(equalTo: statsCard.topAnchor, constant: 18),
             stack.leadingAnchor.constraint(equalTo: statsCard.leadingAnchor, constant: 20),
             stack.trailingAnchor.constraint(equalTo: statsCard.trailingAnchor, constant: -20),
-            stack.bottomAnchor.constraint(equalTo: statsCard.bottomAnchor, constant: -16),
+            stack.bottomAnchor.constraint(equalTo: statsCard.bottomAnchor, constant: -18),
             
             proceedButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
             proceedButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
-            proceedButton.bottomAnchor.constraint(equalTo: disconnectButton.topAnchor, constant: -14),
+            proceedButton.bottomAnchor.constraint(equalTo: disconnectButton.topAnchor, constant: 14),
             proceedButton.heightAnchor.constraint(equalToConstant: 50),
             
             disconnectButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 32),
@@ -200,28 +204,24 @@ final class MainDashboardViewController: UIViewController {
         let screenWidth = UIScreen.main.bounds.width
         let screenHeight = UIScreen.main.bounds.height
         
+        // Cyber neon aura blobs
         let blob1 = UIView()
-        blob1.backgroundColor = UIColor(red: 0.05, green: 0.30, blue: 0.85, alpha: 0.50)
+        blob1.backgroundColor = UIColor(red: 0.00, green: 0.94, blue: 1.00, alpha: 0.18)
         blob1.layer.cornerRadius = 140
         blob1.frame = CGRect(x: -80, y: 100, width: 280, height: 280)
         backgroundContainerView.addSubview(blob1)
         
         let blob2 = UIView()
-        blob2.backgroundColor = UIColor(red: 0.20, green: 0.60, blue: 1.00, alpha: 0.50)
+        blob2.backgroundColor = UIColor(red: 0.08, green: 0.30, blue: 0.95, alpha: 0.20)
         blob2.layer.cornerRadius = 140
         blob2.frame = CGRect(x: screenWidth - 200, y: screenHeight * 0.5, width: 280, height: 280)
         backgroundContainerView.addSubview(blob2)
         
-        let blurEffect = UIBlurEffect(style: .regular)
+        let blurEffect = UIBlurEffect(style: .dark)
         let blurView = UIVisualEffectView(effect: blurEffect)
         blurView.frame = UIScreen.main.bounds
         blurView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         backgroundContainerView.addSubview(blurView)
-        
-        let whiteOverlay = UIView(frame: UIScreen.main.bounds)
-        whiteOverlay.backgroundColor = UIColor.white.withAlphaComponent(0.75)
-        whiteOverlay.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        backgroundContainerView.addSubview(whiteOverlay)
     }
     
     private func createStatLabel(title: String, value: String, color: UIColor) -> UIView {
@@ -229,13 +229,13 @@ final class MainDashboardViewController: UIViewController {
         
         let lblTitle = UILabel()
         lblTitle.text = title
-        lblTitle.font = UIFont.systemFont(ofSize: 11, weight: .bold)
-        lblTitle.textColor = UIColor(red: 0.40, green: 0.45, blue: 0.55, alpha: 1.0)
+        lblTitle.font = UIFont.systemFont(ofSize: 10, weight: .black)
+        lblTitle.textColor = UIColor.white.withAlphaComponent(0.40)
         lblTitle.translatesAutoresizingMaskIntoConstraints = false
         
         let lblValue = UILabel()
         lblValue.text = value
-        lblValue.font = UIFont.systemFont(ofSize: 13, weight: .semibold)
+        lblValue.font = UIFont.systemFont(ofSize: 13, weight: .bold)
         lblValue.textColor = color
         lblValue.translatesAutoresizingMaskIntoConstraints = false
         
@@ -276,8 +276,9 @@ final class MainDashboardViewController: UIViewController {
     }
     
     @objc private func proceedTapped() {
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         UIView.animate(withDuration: 0.12, animations: {
-            self.proceedButton.transform = CGAffineTransform(scaleX: 0.93, y: 0.93)
+            self.proceedButton.transform = CGAffineTransform(scaleX: 0.95, y: 0.95)
         }) { _ in
             UIView.animate(withDuration: 0.1) {
                 self.proceedButton.transform = .identity
@@ -287,6 +288,7 @@ final class MainDashboardViewController: UIViewController {
     }
     
     @objc private func disconnectTapped() {
+        UIImpactFeedbackGenerator(style: .light).impactOccurred()
         onDisconnect?()
     }
 }
