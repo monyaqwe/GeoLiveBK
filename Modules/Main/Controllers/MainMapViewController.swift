@@ -324,12 +324,38 @@ public final class MainMapViewController: UIViewController {
     private let levelLabel: UILabel = {
         let label = UILabel()
         label.text = "LEVEL 1"
-        label.font = UIFont.systemFont(ofSize: 13, weight: .black)
+        label.font = UIFont.systemFont(ofSize: 11, weight: .black)
         label.textColor = UIColor(red: 0.15, green: 0.65, blue: 1.0, alpha: 1.0)
         label.textAlignment = .left
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    
+    // Glowing XP Progress Bar
+    private let xpProgressBar: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.white.withAlphaComponent(0.08)
+        view.layer.cornerRadius = 2
+        view.clipsToBounds = true
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private let xpProgressFillView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(red: 0.00, green: 0.94, blue: 1.00, alpha: 1.0)
+        view.layer.cornerRadius = 2
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        // Add dynamic glow to progress fill
+        view.layer.shadowColor = UIColor(red: 0.00, green: 0.94, blue: 1.00, alpha: 1.0).cgColor
+        view.layer.shadowRadius = 4.0
+        view.layer.shadowOpacity = 0.8
+        view.layer.shadowOffset = .zero
+        return view
+    }()
+    
+    private var xpProgressWidthConstraint: NSLayoutConstraint?
     
     // Quests Container inside expandable bottomBar
     private let questsContainerView: UIView = {
@@ -523,6 +549,8 @@ public final class MainMapViewController: UIViewController {
         headerContainerView.addSubview(statusDot)
         headerContainerView.addSubview(nicknameLabel)
         headerContainerView.addSubview(levelLabel)
+        headerContainerView.addSubview(xpProgressBar)
+        xpProgressBar.addSubview(xpProgressFillView)
         
         nicknameLabel.text = nickname
         avatarThumb.image = avatarImage
@@ -626,11 +654,20 @@ public final class MainMapViewController: UIViewController {
             
             nicknameLabel.leadingAnchor.constraint(equalTo: statusDot.trailingAnchor, constant: 8),
             nicknameLabel.trailingAnchor.constraint(lessThanOrEqualTo: tabsStackView.leadingAnchor, constant: -12),
-            nicknameLabel.bottomAnchor.constraint(equalTo: avatarThumb.centerYAnchor, constant: 1),
+            nicknameLabel.bottomAnchor.constraint(equalTo: avatarThumb.centerYAnchor, constant: -4),
             
             levelLabel.leadingAnchor.constraint(equalTo: nicknameLabel.leadingAnchor),
             levelLabel.topAnchor.constraint(equalTo: nicknameLabel.bottomAnchor, constant: 1),
             levelLabel.trailingAnchor.constraint(lessThanOrEqualTo: tabsStackView.leadingAnchor, constant: -12),
+            
+            xpProgressBar.leadingAnchor.constraint(equalTo: levelLabel.leadingAnchor),
+            xpProgressBar.topAnchor.constraint(equalTo: levelLabel.bottomAnchor, constant: 4),
+            xpProgressBar.widthAnchor.constraint(equalToConstant: 120),
+            xpProgressBar.heightAnchor.constraint(equalToConstant: 4),
+            
+            xpProgressFillView.topAnchor.constraint(equalTo: xpProgressBar.topAnchor),
+            xpProgressFillView.leadingAnchor.constraint(equalTo: xpProgressBar.leadingAnchor),
+            xpProgressFillView.bottomAnchor.constraint(equalTo: xpProgressBar.bottomAnchor),
             
             // Tabs Stack
             tabsStackView.trailingAnchor.constraint(equalTo: headerContainerView.trailingAnchor, constant: -12),
@@ -1230,19 +1267,45 @@ public final class MainMapViewController: UIViewController {
             playerXP += xpReward
             coins += xpReward * 10
             
-            DangerLevelManager.shared.registerMobKilled()
-            let newDanger = DangerLevelManager.shared.currentDangerLevel
+            // Drop skull remains at exact coordinates
+            let skull = SkullAnnotation(coordinate: mobAnn.coordinate)
+            mapView.addAnnotation(skull)
             
+            var playerLeveledUp = false
             var message = "DEFEATED \(mob.type.rawValue.uppercased())! Earned $\(xpReward * 10) & +\(xpReward) XP"
             if playerXP >= 100 {
                 playerXP -= 100
                 playerLevel += 1
-                message += " — LEVEL UP! Now Lv.\(playerLevel)"
+                playerLeveledUp = true
+                message += " — LEVEL UP!"
             }
-            message += " | Danger Lv.\(newDanger)"
+            
+            // Group clearance check
+            var groupLeveledUp = false
+            var newGroupLevel = 1
+            if let groupId = mob.groupId {
+                let remainingInGroup = activeMobAnnotations.filter { ann in
+                    ann != mobAnn && ann.mobDTO.groupId == groupId && ann.mobDTO.type == mob.type
+                }
+                if remainingInGroup.isEmpty {
+                    DangerLevelManager.shared.incrementLevel(for: mob.type)
+                    newGroupLevel = DangerLevelManager.shared.level(for: mob.type)
+                    groupLeveledUp = true
+                }
+            }
             
             updateStatsBarLabels()
             showNotificationHUD(message: message)
+            
+            if playerLeveledUp {
+                showTopLevelUpBanner(message: "⚡ PLAYER LEVEL UP!\nYou advanced to Level \(playerLevel)!")
+                showLevelUpCongratulationAlert()
+                lightUpRewardsButton()
+            }
+            
+            if groupLeveledUp {
+                showTopLevelUpBanner(message: "⚠️ NEIGHBORHOOD DANGER INCREASED\n\(mob.type.rawValue) group cleared! Leveled up to Lv. \(newGroupLevel)!")
+            }
             
             mapView.removeAnnotation(mobAnn)
             if let idx = activeMobAnnotations.firstIndex(of: mobAnn) {
@@ -1254,10 +1317,14 @@ public final class MainMapViewController: UIViewController {
             }
             targetedMobAnnotation = nil
         } else {
-            // Mob counter-attacks after short delay
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
-                guard let self = self else { return }
-                self.takeDamage(amount: mob.damage)
+            // Mob only counter-attacks if outside the player's small inner circle (150m)
+            if distanceM >= 150 {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
+                    guard let self = self else { return }
+                    self.takeDamage(amount: mob.damage)
+                }
+            } else {
+                showNotificationHUD(message: "🛡️ TARGET TOO CLOSE\nEnemy cannot fire at you inside your safe circle!")
             }
         }
     }
@@ -1712,11 +1779,27 @@ public final class MainMapViewController: UIViewController {
         
         let building = annotation.buildingItem
         
+        let emojiContainer = UIView()
+        emojiContainer.backgroundColor = UIColor.white.withAlphaComponent(0.06)
+        emojiContainer.layer.cornerRadius = 12
+        emojiContainer.layer.borderWidth = 1.0
+        emojiContainer.layer.borderColor = UIColor.white.withAlphaComponent(0.12).cgColor
+        emojiContainer.clipsToBounds = true
+        emojiContainer.translatesAutoresizingMaskIntoConstraints = false
+        panel.addSubview(emojiContainer)
+        
         let emojiLabel = UILabel()
         emojiLabel.text = building.emoji
-        emojiLabel.font = .systemFont(ofSize: 38)
+        emojiLabel.font = .systemFont(ofSize: 26)
+        emojiLabel.textAlignment = .center
         emojiLabel.translatesAutoresizingMaskIntoConstraints = false
-        panel.addSubview(emojiLabel)
+        emojiContainer.addSubview(emojiLabel)
+        
+        // Setup internal constraints for the emoji inside the container
+        NSLayoutConstraint.activate([
+            emojiLabel.centerXAnchor.constraint(equalTo: emojiContainer.centerXAnchor),
+            emojiLabel.centerYAnchor.constraint(equalTo: emojiContainer.centerYAnchor)
+        ])
         
         let nameLabel = UILabel()
         nameLabel.text = "\(building.name.uppercased())"
@@ -2079,23 +2162,23 @@ public final class MainMapViewController: UIViewController {
             dragHandle.widthAnchor.constraint(equalToConstant: 36),
             dragHandle.heightAnchor.constraint(equalToConstant: 5),
             
-            emojiLabel.topAnchor.constraint(equalTo: dragHandle.bottomAnchor, constant: 14),
-            emojiLabel.leadingAnchor.constraint(equalTo: panel.leadingAnchor, constant: 20),
-            emojiLabel.widthAnchor.constraint(equalToConstant: 44),
-            emojiLabel.heightAnchor.constraint(equalToConstant: 44),
+            emojiContainer.topAnchor.constraint(equalTo: dragHandle.bottomAnchor, constant: 14),
+            emojiContainer.leadingAnchor.constraint(equalTo: panel.leadingAnchor, constant: 20),
+            emojiContainer.widthAnchor.constraint(equalToConstant: 44),
+            emojiContainer.heightAnchor.constraint(equalToConstant: 44),
             
-            nameLabel.topAnchor.constraint(equalTo: emojiLabel.topAnchor, constant: 2),
-            nameLabel.leadingAnchor.constraint(equalTo: emojiLabel.trailingAnchor, constant: 12),
+            nameLabel.topAnchor.constraint(equalTo: emojiContainer.topAnchor, constant: 2),
+            nameLabel.leadingAnchor.constraint(equalTo: emojiContainer.trailingAnchor, constant: 12),
             
             levelLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 2),
-            levelLabel.leadingAnchor.constraint(equalTo: emojiLabel.trailingAnchor, constant: 12),
+            levelLabel.leadingAnchor.constraint(equalTo: emojiContainer.trailingAnchor, constant: 12),
             
             closeButton.centerYAnchor.constraint(equalTo: nameLabel.centerYAnchor),
             closeButton.trailingAnchor.constraint(equalTo: panel.trailingAnchor, constant: -20),
             closeButton.widthAnchor.constraint(equalToConstant: 28),
             closeButton.heightAnchor.constraint(equalToConstant: 28),
             
-            incomeLabel.topAnchor.constraint(equalTo: emojiLabel.bottomAnchor, constant: 16),
+            incomeLabel.topAnchor.constraint(equalTo: emojiContainer.bottomAnchor, constant: 16),
             incomeLabel.leadingAnchor.constraint(equalTo: panel.leadingAnchor, constant: 20),
 
             collectBtn.leadingAnchor.constraint(equalTo: incomeLabel.trailingAnchor, constant: 10),
@@ -2383,8 +2466,16 @@ public final class MainMapViewController: UIViewController {
         bagLabel?.text = "\(occupied)/\(maxSlots)"
         
         // Update level label with XP remaining progression next to level callsign
-        let xpToNext = 100 - playerXP
-        levelLabel.text = "LEVEL \(playerLevel) (XP TO NEXT: \(xpToNext))"
+        levelLabel.text = "LVL \(playerLevel) • XP \(playerXP)/100"
+        
+        let progress = max(0.0, min(1.0, CGFloat(playerXP) / 100.0))
+        xpProgressWidthConstraint?.isActive = false
+        xpProgressWidthConstraint = xpProgressFillView.widthAnchor.constraint(equalTo: xpProgressBar.widthAnchor, multiplier: progress)
+        xpProgressWidthConstraint?.isActive = true
+        
+        UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseOut, animations: {
+            self.xpProgressBar.layoutIfNeeded()
+        }, completion: nil)
         
         UIView.animate(withDuration: 0.1, animations: {
             self.coinsLabel?.transform = CGAffineTransform(scaleX: 1.15, y: 1.15)
@@ -2462,6 +2553,86 @@ public final class MainMapViewController: UIViewController {
                 if self?.activeToastView == toast {
                     self?.activeToastView = nil
                 }
+            }
+        }
+    }
+    
+    public func showTopLevelUpBanner(message: String) {
+        let banner = UIView()
+        banner.backgroundColor = UIColor(white: 0.08, alpha: 0.95)
+        banner.layer.cornerRadius = 16
+        banner.layer.borderWidth = 1.5
+        banner.layer.borderColor = UIColor(red: 1.0, green: 0.85, blue: 0.0, alpha: 0.8).cgColor // Gorgeous Gold/Yellow glow border
+        banner.clipsToBounds = true
+        banner.translatesAutoresizingMaskIntoConstraints = false
+        
+        let blurEffect = UIBlurEffect(style: .dark)
+        let blurView = UIVisualEffectView(effect: blurEffect)
+        blurView.translatesAutoresizingMaskIntoConstraints = false
+        banner.addSubview(blurView)
+        
+        let trophyIcon = UILabel()
+        trophyIcon.text = "⚡"
+        trophyIcon.font = .systemFont(ofSize: 22)
+        trophyIcon.translatesAutoresizingMaskIntoConstraints = false
+        banner.addSubview(trophyIcon)
+        
+        let label = UILabel()
+        label.text = message
+        label.textColor = .white
+        label.font = UIFont.systemFont(ofSize: 13, weight: .black)
+        label.textAlignment = .left
+        label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        banner.addSubview(label)
+        
+        view.addSubview(banner)
+        
+        NSLayoutConstraint.activate([
+            blurView.topAnchor.constraint(equalTo: banner.topAnchor),
+            blurView.leadingAnchor.constraint(equalTo: banner.leadingAnchor),
+            blurView.trailingAnchor.constraint(equalTo: banner.trailingAnchor),
+            blurView.bottomAnchor.constraint(equalTo: banner.bottomAnchor),
+            
+            trophyIcon.leadingAnchor.constraint(equalTo: banner.leadingAnchor, constant: 16),
+            trophyIcon.centerYAnchor.constraint(equalTo: banner.centerYAnchor),
+            trophyIcon.widthAnchor.constraint(equalToConstant: 24),
+            
+            label.topAnchor.constraint(equalTo: banner.topAnchor, constant: 14),
+            label.leadingAnchor.constraint(equalTo: trophyIcon.trailingAnchor, constant: 12),
+            label.trailingAnchor.constraint(equalTo: banner.trailingAnchor, constant: -16),
+            label.bottomAnchor.constraint(equalTo: banner.bottomAnchor, constant: -14),
+            
+            banner.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 12),
+            banner.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            banner.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.90)
+        ])
+        
+        // Dynamic drop shadow glow
+        banner.layer.shadowColor = UIColor(red: 1.0, green: 0.85, blue: 0.0, alpha: 1.0).cgColor
+        banner.layer.shadowRadius = 12.0
+        banner.layer.shadowOpacity = 0.6
+        banner.layer.shadowOffset = .zero
+        
+        // Slide down animation
+        banner.transform = CGAffineTransform(translationX: 0, y: -100)
+        banner.alpha = 0.0
+        
+        UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.75, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: {
+            banner.transform = .identity
+            banner.alpha = 1.0
+        }) { _ in
+            UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+        }
+        
+        // Slide up and remove after 4.0 seconds
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) { [weak banner] in
+            guard let banner = banner else { return }
+            UIView.animate(withDuration: 0.4, animations: {
+                banner.alpha = 0.0
+                banner.transform = CGAffineTransform(translationX: 0, y: -100)
+            }) { _ in
+                banner.removeFromSuperview()
             }
         }
     }

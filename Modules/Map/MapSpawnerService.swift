@@ -24,6 +24,7 @@ public final class MapSpawnerService: MapSpawnerServiceProtocol {
         let spawnCount = min(baseCount + extraCount, 6)
         
         var spawnedMobs: [MobDTO] = []
+        let waveGroupId = UUID()
         
         for i in 0..<spawnCount {
             // Pick Mob Type based on danger level weightings
@@ -50,7 +51,8 @@ public final class MapSpawnerService: MapSpawnerServiceProtocol {
             let mobLat = playerCoordinate.latitude + latOffset
             let mobLon = playerCoordinate.longitude + lonOffset
             
-            let mob = MobDTO(type: type, latitude: mobLat, longitude: mobLon, dangerLevel: dangerLevel)
+            let specificTypeLevel = DangerLevelManager.shared.level(for: type)
+            let mob = MobDTO(groupId: waveGroupId, type: type, latitude: mobLat, longitude: mobLon, dangerLevel: specificTypeLevel)
             spawnedMobs.append(mob)
         }
         

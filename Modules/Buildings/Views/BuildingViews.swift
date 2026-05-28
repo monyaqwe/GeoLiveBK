@@ -73,10 +73,12 @@ public final class BuildingAnnotationView: MKAnnotationView {
         frame = CGRect(x: 0, y: 0, width: 56, height: 62)
         centerOffset = CGPoint(x: 0, y: -24)
         
+        containerView.clipsToBounds = true // Clip any emoji/building model overflow inside the square
+        
         addSubview(groundShadowView)
         addSubview(containerView)
         containerView.addSubview(emojiLabel)
-        containerView.addSubview(badgeLabel)
+        addSubview(badgeLabel) // Add to self so it doesn't get clipped by containerView!
         
         NSLayoutConstraint.activate([
             groundShadowView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 2),

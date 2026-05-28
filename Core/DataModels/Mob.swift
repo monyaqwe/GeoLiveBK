@@ -35,6 +35,7 @@ public enum MobType: String, Codable, CaseIterable {
 /// Dynamic Data Transfer Object for Mobs spawned on the map
 public struct MobDTO: Codable {
     public let id: UUID
+    public var groupId: UUID?
     public let type: MobType
     public var latitude: Double
     public var longitude: Double
@@ -49,8 +50,9 @@ public struct MobDTO: Codable {
         return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     }
     
-    public init(id: UUID = UUID(), type: MobType, latitude: Double, longitude: Double, dangerLevel: Int) {
+    public init(id: UUID = UUID(), groupId: UUID? = nil, type: MobType, latitude: Double, longitude: Double, dangerLevel: Int) {
         self.id = id
+        self.groupId = groupId
         self.type = type
         self.latitude = latitude
         self.longitude = longitude
