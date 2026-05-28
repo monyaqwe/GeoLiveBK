@@ -26,12 +26,19 @@ public final class MainMapViewController: UIViewController {
     // Dynamic Player Combat & Respawn State
     private var playerLevel: Int = 1
     private var playerXP: Int = 0
+    private var sessionKills: Int = 0
+    public var requiredXP: Int {
+        return Int(100 * pow(1.5, Double(playerLevel - 1)))
+    }
     private var playerCurrentHP: Int = 100
     private var playerMaxHP: Int = 100
     private var isPlayerDead: Bool = false
+    private var hasAngeredMobs: Bool = false
     private var respawnTimer: Timer?
     private var combatTimer: Timer?
     private var mobMovementTimer: Timer?
+    private var inventoryScrollView: UIScrollView?
+    private var inventoryContentStack: UIStackView?
     private weak var activeToastView: UIView?
 
     // Mobs Targeting & Combat state
@@ -78,13 +85,20 @@ public final class MainMapViewController: UIViewController {
     
     public let attackBtn: UIButton = {
         let btn = UIButton(type: .custom)
-        btn.setTitle("ATTACK", for: .normal)
-        btn.titleLabel?.font = .systemFont(ofSize: 12, weight: .black)
+        btn.setTitle("💥 FIRE!", for: .normal)
+        btn.titleLabel?.font = .systemFont(ofSize: 14, weight: .black)
         btn.setTitleColor(.white, for: .normal)
-        btn.backgroundColor = UIColor(red: 0.85, green: 0.15, blue: 0.15, alpha: 1.0)
-        btn.layer.cornerRadius = 16
-        btn.layer.borderWidth = 1.0
-        btn.layer.borderColor = UIColor(red: 1.0, green: 0.4, blue: 0.4, alpha: 0.6).cgColor
+        btn.backgroundColor = UIColor(red: 0.90, green: 0.10, blue: 0.10, alpha: 1.0)
+        btn.layer.cornerRadius = 22
+        btn.layer.borderWidth = 1.5
+        btn.layer.borderColor = UIColor(red: 1.00, green: 0.35, blue: 0.35, alpha: 0.8).cgColor
+        
+        // Add a premium target crosshair shadow glow
+        btn.layer.shadowColor = UIColor(red: 1.0, green: 0.2, blue: 0.2, alpha: 1.0).cgColor
+        btn.layer.shadowOffset = .zero
+        btn.layer.shadowRadius = 8.0
+        btn.layer.shadowOpacity = 0.6
+        
         btn.translatesAutoresizingMaskIntoConstraints = false
         return btn
     }()
@@ -135,6 +149,7 @@ public final class MainMapViewController: UIViewController {
     
     // Bottom bar height adjustment state
     private var bottomBarHeightConstraint: NSLayoutConstraint?
+    private var centerButtonBottomConstraint: NSLayoutConstraint?
     private var isBottomBarExpanded = false
     
     // Premium horizontal top status bar (Gems, Coins, Backpack)
@@ -162,11 +177,11 @@ public final class MainMapViewController: UIViewController {
         return view
     }()
     
-    // Floating bottom menu and tab bar
     private let bottomBar: UIView = {
         let view = UIView()
         view.backgroundColor = UIColor(white: 0.10, alpha: 0.85)
         view.layer.cornerRadius = 28
+        view.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         view.layer.borderWidth = 1.0
         view.layer.borderColor = UIColor(white: 0.25, alpha: 0.60).cgColor
         view.clipsToBounds = true
@@ -284,13 +299,13 @@ public final class MainMapViewController: UIViewController {
         return button
     }()
     
-    // Shop button — opens Build Store panel
+    // Shop button — opens Build Store panel (Changed to hammer.fill for construction representation)
     private let shopButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
         
         let config = UIImage.SymbolConfiguration(pointSize: 18, weight: .bold)
-        let icon = UIImage(systemName: "bag.fill", withConfiguration: config)
+        let icon = UIImage(systemName: "hammer.fill", withConfiguration: config)
         button.setImage(icon, for: .normal)
         button.tintColor = UIColor(red: 0.95, green: 0.75, blue: 0.15, alpha: 1.0)
         
@@ -386,7 +401,8 @@ public final class MainMapViewController: UIViewController {
     
     private var questsList: [GameQuest] = [
         GameQuest(id: "quest_1", title: "Establish Foothold (Place 1 Building)", requiredCount: 1, rewardGems: 1, isClaimed: false),
-        GameQuest(id: "quest_2", title: "Expanding Influence (Place 2 Buildings)", requiredCount: 2, rewardGems: 1, isClaimed: false)
+        GameQuest(id: "quest_2", title: "Expanding Influence (Place 2 Buildings)", requiredCount: 2, rewardGems: 1, isClaimed: false),
+        GameQuest(id: "quest_3", title: "Apex Contractor (Upgrade 1 Building to Level 5)", requiredCount: 5, rewardGems: 5, isClaimed: false)
     ]
     
     // Sheet State and Views
@@ -506,6 +522,11 @@ public final class MainMapViewController: UIViewController {
         
         mapView.mapType = .mutedStandard
         
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleMapLongPress(_:)))
+        longPress.minimumPressDuration = 0.5
+        longPress.delegate = self
+        mapView.addGestureRecognizer(longPress)
+        
         let strictFilter = MKPointOfInterestFilter(including: [.museum, .nationalPark])
         mapView.pointOfInterestFilter = strictFilter
         
@@ -538,7 +559,7 @@ public final class MainMapViewController: UIViewController {
         // Bottom bar
         view.addSubview(bottomBar)
         
-        // Add header container, inventory container, and quests container to bottomBar
+        // Add header container, inventory container, and quests container
         bottomBar.addSubview(headerContainerView)
         bottomBar.addSubview(inventoryContainerView)
         bottomBar.addSubview(questsContainerView)
@@ -549,14 +570,13 @@ public final class MainMapViewController: UIViewController {
         headerContainerView.addSubview(statusDot)
         headerContainerView.addSubview(nicknameLabel)
         headerContainerView.addSubview(levelLabel)
-        headerContainerView.addSubview(xpProgressBar)
-        xpProgressBar.addSubview(xpProgressFillView)
         
-        nicknameLabel.text = nickname
+        nicknameLabel.text = "\(nickname) \(playerLevel)"
         avatarThumb.image = avatarImage
         
         // Badge inside Quests Button
         questsButton.addSubview(questsBadge)
+        
         NSLayoutConstraint.activate([
             questsBadge.topAnchor.constraint(equalTo: questsButton.topAnchor, constant: -2),
             questsBadge.trailingAnchor.constraint(equalTo: questsButton.trailingAnchor, constant: 2),
@@ -574,7 +594,6 @@ public final class MainMapViewController: UIViewController {
         rewardsButton.layer.borderWidth = 1.0
         rewardsButton.layer.borderColor = UIColor.white.withAlphaComponent(0.20).cgColor
         rewardsButton.translatesAutoresizingMaskIntoConstraints = false
-        rewardsButton.addTarget(self, action: #selector(rewardsTapped), for: .touchUpInside)
 
         let tabsStackView = UIStackView(arrangedSubviews: [questsButton, rewardsButton])
         tabsStackView.axis = .horizontal
@@ -611,9 +630,13 @@ public final class MainMapViewController: UIViewController {
         view.addSubview(shopButton)
         view.addSubview(storeButton)
         
+        view.bringSubviewToFront(bottomBar)
+        
         bottomBarHeightConstraint = bottomBar.heightAnchor.constraint(equalToConstant: 76)
+        centerButtonBottomConstraint = centerButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -96)
         
         NSLayoutConstraint.activate([
+            centerButtonBottomConstraint!,
             // Top Stats Bar
             topStatsBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 12),
             topStatsBar.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -625,9 +648,9 @@ public final class MainMapViewController: UIViewController {
             statsStack.heightAnchor.constraint(equalTo: topStatsBar.heightAnchor),
             
             // Bottom Tab Bar
-            bottomBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
-            bottomBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            bottomBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            bottomBar.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            bottomBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            bottomBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             bottomBarHeightConstraint!,
             
             // Header Container View
@@ -660,15 +683,6 @@ public final class MainMapViewController: UIViewController {
             levelLabel.topAnchor.constraint(equalTo: nicknameLabel.bottomAnchor, constant: 1),
             levelLabel.trailingAnchor.constraint(lessThanOrEqualTo: tabsStackView.leadingAnchor, constant: -12),
             
-            xpProgressBar.leadingAnchor.constraint(equalTo: levelLabel.leadingAnchor),
-            xpProgressBar.topAnchor.constraint(equalTo: levelLabel.bottomAnchor, constant: 4),
-            xpProgressBar.widthAnchor.constraint(equalToConstant: 120),
-            xpProgressBar.heightAnchor.constraint(equalToConstant: 4),
-            
-            xpProgressFillView.topAnchor.constraint(equalTo: xpProgressBar.topAnchor),
-            xpProgressFillView.leadingAnchor.constraint(equalTo: xpProgressBar.leadingAnchor),
-            xpProgressFillView.bottomAnchor.constraint(equalTo: xpProgressBar.bottomAnchor),
-            
             // Tabs Stack
             tabsStackView.trailingAnchor.constraint(equalTo: headerContainerView.trailingAnchor, constant: -12),
             tabsStackView.centerYAnchor.constraint(equalTo: avatarThumb.centerYAnchor),
@@ -680,6 +694,7 @@ public final class MainMapViewController: UIViewController {
             inventoryContainerView.topAnchor.constraint(equalTo: headerContainerView.bottomAnchor),
             inventoryContainerView.leadingAnchor.constraint(equalTo: bottomBar.leadingAnchor),
             inventoryContainerView.trailingAnchor.constraint(equalTo: bottomBar.trailingAnchor),
+            inventoryContainerView.bottomAnchor.constraint(equalTo: bottomBar.bottomAnchor),
             
             // Quests Container
             questsContainerView.topAnchor.constraint(equalTo: headerContainerView.bottomAnchor),
@@ -687,9 +702,8 @@ public final class MainMapViewController: UIViewController {
             questsContainerView.trailingAnchor.constraint(equalTo: bottomBar.trailingAnchor),
             questsContainerView.bottomAnchor.constraint(equalTo: bottomBar.bottomAnchor),
             
-            // Floating buttons
+            // Floating buttons anchored statically above collapsed bottomBar (76px + safeArea spacing)
             centerButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            centerButton.bottomAnchor.constraint(equalTo: bottomBar.topAnchor, constant: -16),
             centerButton.widthAnchor.constraint(equalToConstant: 52),
             centerButton.heightAnchor.constraint(equalToConstant: 52),
             
@@ -716,24 +730,24 @@ public final class MainMapViewController: UIViewController {
         combatControlBar.addSubview(attackBtn)
         
         NSLayoutConstraint.activate([
-            // Combat bar: left-anchored to avoid overlapping the right-side floating buttons
-            combatControlBar.bottomAnchor.constraint(equalTo: bottomBar.topAnchor, constant: -16),
-            combatControlBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            combatControlBar.trailingAnchor.constraint(equalTo: centerButton.leadingAnchor, constant: -12),
-            combatControlBar.heightAnchor.constraint(equalToConstant: 64),
+            // Combat bar: Anchored statically above the base bottom bar level
+            combatControlBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -96),
+            combatControlBar.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            combatControlBar.widthAnchor.constraint(equalToConstant: 340),
+            combatControlBar.heightAnchor.constraint(equalToConstant: 76),
             
             targetNameLabel.leadingAnchor.constraint(equalTo: combatControlBar.leadingAnchor, constant: 16),
-            targetNameLabel.topAnchor.constraint(equalTo: combatControlBar.topAnchor, constant: 14),
+            targetNameLabel.topAnchor.constraint(equalTo: combatControlBar.topAnchor, constant: 16),
             targetNameLabel.trailingAnchor.constraint(lessThanOrEqualTo: attackBtn.leadingAnchor, constant: -8),
             
             targetHPLabel.leadingAnchor.constraint(equalTo: targetNameLabel.leadingAnchor),
-            targetHPLabel.topAnchor.constraint(equalTo: targetNameLabel.bottomAnchor, constant: 2),
+            targetHPLabel.topAnchor.constraint(equalTo: targetNameLabel.bottomAnchor, constant: 4),
             targetHPLabel.trailingAnchor.constraint(lessThanOrEqualTo: attackBtn.leadingAnchor, constant: -8),
             
-            attackBtn.trailingAnchor.constraint(equalTo: combatControlBar.trailingAnchor, constant: -12),
+            attackBtn.trailingAnchor.constraint(equalTo: combatControlBar.trailingAnchor, constant: -14),
             attackBtn.centerYAnchor.constraint(equalTo: combatControlBar.centerYAnchor),
-            attackBtn.widthAnchor.constraint(equalToConstant: 100),
-            attackBtn.heightAnchor.constraint(equalToConstant: 34)
+            attackBtn.widthAnchor.constraint(equalToConstant: 110),
+            attackBtn.heightAnchor.constraint(equalToConstant: 44)
         ])
         
         // Mount respawn overlay constraints
@@ -791,62 +805,33 @@ public final class MainMapViewController: UIViewController {
     
     // MARK: - Setup Inventory UI
     private func setupInventoryUI() {
-        let inventoryTitleLabel = UILabel()
-        inventoryTitleLabel.text = "INVENTORY"
-        inventoryTitleLabel.textColor = UIColor.white.withAlphaComponent(0.45)
-        inventoryTitleLabel.font = UIFont.systemFont(ofSize: 11, weight: .black)
-        inventoryTitleLabel.textAlignment = .left
-        inventoryTitleLabel.translatesAutoresizingMaskIntoConstraints = false
-        inventoryContainerView.addSubview(inventoryTitleLabel)
+        let scrollView = UIScrollView()
+        scrollView.showsVerticalScrollIndicator = false
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        inventoryContainerView.addSubview(scrollView)
+        self.inventoryScrollView = scrollView
         
-        let gridStackView = UIStackView()
-        gridStackView.axis = .vertical
-        gridStackView.spacing = 12
-        gridStackView.distribution = .fillEqually
-        gridStackView.translatesAutoresizingMaskIntoConstraints = false
-        inventoryContainerView.addSubview(gridStackView)
-        
-        for _ in 0..<2 {
-            let rowStackView = UIStackView()
-            rowStackView.axis = .horizontal
-            rowStackView.spacing = 12
-            rowStackView.distribution = .fillEqually
-            
-            for _ in 0..<4 {
-                let slotView = UIView()
-                slotView.backgroundColor = UIColor.white.withAlphaComponent(0.06)
-                slotView.layer.cornerRadius = 12
-                slotView.layer.borderWidth = 1.0
-                slotView.layer.borderColor = UIColor.white.withAlphaComponent(0.12).cgColor
-                
-                let innerDot = UIView()
-                innerDot.backgroundColor = UIColor.white.withAlphaComponent(0.08)
-                innerDot.layer.cornerRadius = 4
-                innerDot.translatesAutoresizingMaskIntoConstraints = false
-                slotView.addSubview(innerDot)
-                
-                NSLayoutConstraint.activate([
-                    innerDot.centerXAnchor.constraint(equalTo: slotView.centerXAnchor),
-                    innerDot.centerYAnchor.constraint(equalTo: slotView.centerYAnchor),
-                    innerDot.widthAnchor.constraint(equalToConstant: 8),
-                    innerDot.heightAnchor.constraint(equalToConstant: 8)
-                ])
-                
-                rowStackView.addArrangedSubview(slotView)
-            }
-            gridStackView.addArrangedSubview(rowStackView)
-        }
+        let contentStack = UIStackView()
+        contentStack.axis = .vertical
+        contentStack.spacing = 14
+        contentStack.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(contentStack)
+        self.inventoryContentStack = contentStack
         
         NSLayoutConstraint.activate([
-            inventoryTitleLabel.topAnchor.constraint(equalTo: inventoryContainerView.topAnchor, constant: 6),
-            inventoryTitleLabel.leadingAnchor.constraint(equalTo: inventoryContainerView.leadingAnchor, constant: 16),
-            inventoryTitleLabel.trailingAnchor.constraint(equalTo: inventoryContainerView.trailingAnchor, constant: -16),
+            scrollView.topAnchor.constraint(equalTo: inventoryContainerView.topAnchor, constant: 10),
+            scrollView.leadingAnchor.constraint(equalTo: inventoryContainerView.leadingAnchor, constant: 16),
+            scrollView.trailingAnchor.constraint(equalTo: inventoryContainerView.trailingAnchor, constant: -16),
+            scrollView.bottomAnchor.constraint(equalTo: inventoryContainerView.bottomAnchor, constant: -10),
             
-            gridStackView.topAnchor.constraint(equalTo: inventoryTitleLabel.bottomAnchor, constant: 10),
-            gridStackView.leadingAnchor.constraint(equalTo: inventoryContainerView.leadingAnchor, constant: 16),
-            gridStackView.trailingAnchor.constraint(equalTo: inventoryContainerView.trailingAnchor, constant: -16),
-            gridStackView.heightAnchor.constraint(equalToConstant: 160)
+            contentStack.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            contentStack.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            contentStack.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            contentStack.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            contentStack.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
         ])
+        
+        refreshInventoryUI()
     }
     
     private func setupActions() {
@@ -859,13 +844,29 @@ public final class MainMapViewController: UIViewController {
         attackBtn.addTarget(self, action: #selector(attackBtnTapped), for: .touchUpInside)
         
         headerContainerView.isUserInteractionEnabled = true
-        let swipeUpHeader = UISwipeGestureRecognizer(target: self, action: #selector(statsTapped))
+        let swipeUpHeader = UISwipeGestureRecognizer(target: self, action: #selector(showInventoryPanel))
         swipeUpHeader.direction = .up
         headerContainerView.addGestureRecognizer(swipeUpHeader)
         
-        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGesture(_:)))
-        swipeDown.direction = .down
-        bottomBar.addGestureRecognizer(swipeDown)
+        let pan = UIPanGestureRecognizer(target: self, action: #selector(handleBottomBarPan(_:)))
+        bottomBar.addGestureRecognizer(pan)
+        
+        let mapTap = UITapGestureRecognizer(target: self, action: #selector(handleCombatDismissTap(_:)))
+        mapTap.cancelsTouchesInView = false
+        mapTap.delegate = self
+        view.addGestureRecognizer(mapTap)
+        
+        let mapSwipeUp = UISwipeGestureRecognizer(target: self, action: #selector(showInventoryPanel))
+        mapSwipeUp.direction = .up
+        mapSwipeUp.delegate = self
+        mapView.addGestureRecognizer(mapSwipeUp)
+    }
+    
+    @objc private func handleCombatDismissTap(_ gesture: UITapGestureRecognizer) {
+        let loc = gesture.location(in: view)
+        if combatControlBar.alpha > 0 && !combatControlBar.frame.contains(loc) {
+            hideCombatBar()
+        }
     }
     
     @objc private func handleSwipeGesture(_ gesture: UISwipeGestureRecognizer) {
@@ -970,7 +971,7 @@ public final class MainMapViewController: UIViewController {
             questsStackView.addArrangedSubview(row)
             
             let iconLabel = UILabel()
-            iconLabel.text = quest.requiredCount == 1 ? "🏗️" : "🏢"
+            iconLabel.text = quest.id == "quest_3" ? "🚀" : (quest.requiredCount == 1 ? "🏗️" : "🏢")
             iconLabel.font = .systemFont(ofSize: 22)
             iconLabel.translatesAutoresizingMaskIntoConstraints = false
             row.addSubview(iconLabel)
@@ -987,9 +988,22 @@ public final class MainMapViewController: UIViewController {
             qTitle.font = UIFont.systemFont(ofSize: 11, weight: .bold)
             infoStack.addArrangedSubview(qTitle)
             
-            let progress = min(currentPlaced, quest.requiredCount)
+            // Calculate progress and completion dynamically per quest type
+            let progressVal: Int
+            let isComplete: Bool
+            
+            if quest.id == "quest_3" {
+                let maxLevel = placedBuildings.map { $0.level }.max() ?? 1
+                progressVal = maxLevel
+                isComplete = maxLevel >= quest.requiredCount
+            } else {
+                progressVal = currentPlaced
+                isComplete = currentPlaced >= quest.requiredCount
+            }
+            
+            let cappedProgress = min(progressVal, quest.requiredCount)
             let qProgress = UILabel()
-            qProgress.text = "Progress: \(progress)/\(quest.requiredCount) | Reward: \(quest.rewardGems) 💎"
+            qProgress.text = "Progress: \(cappedProgress)/\(quest.requiredCount) | Reward: \(quest.rewardGems) 💎"
             qProgress.textColor = UIColor.white.withAlphaComponent(0.5)
             qProgress.font = UIFont.systemFont(ofSize: 9, weight: .semibold)
             infoStack.addArrangedSubview(qProgress)
@@ -1007,7 +1021,7 @@ public final class MainMapViewController: UIViewController {
                 actionBtn.layer.borderWidth = 1.0
                 actionBtn.layer.borderColor = UIColor.white.withAlphaComponent(0.08).cgColor
                 actionBtn.isEnabled = false
-            } else if currentPlaced >= quest.requiredCount {
+            } else if isComplete {
                 actionBtn.setTitle("CLAIM", for: .normal)
                 actionBtn.setTitleColor(.white, for: .normal)
                 actionBtn.backgroundColor = UIColor(red: 0.95, green: 0.65, blue: 0.15, alpha: 1.0)
@@ -1071,7 +1085,15 @@ public final class MainMapViewController: UIViewController {
         let currentPlaced = placedBuildings.count
         
         for quest in questsList {
-            if !quest.isClaimed && currentPlaced >= quest.requiredCount {
+            let isComplete: Bool
+            if quest.id == "quest_3" {
+                let maxLevel = placedBuildings.map { $0.level }.max() ?? 1
+                isComplete = maxLevel >= quest.requiredCount
+            } else {
+                isComplete = currentPlaced >= quest.requiredCount
+            }
+            
+            if !quest.isClaimed && isComplete {
                 claimableCount += 1
             }
         }
@@ -1092,6 +1114,33 @@ public final class MainMapViewController: UIViewController {
             questsButton.tintColor = .white
             questsButton.transform = .identity
             questsButton.layer.removeAllAnimations()
+        }
+    }
+    
+    private func checkProgressionMilestones() {
+        let hasThreeBuildings = placedBuildings.count >= 3
+        let maxBuildingLevel = placedBuildings.map { $0.level }.max() ?? 1
+        let hasLevel5Building = maxBuildingLevel >= 5
+        
+        if (hasThreeBuildings || hasLevel5Building) && playerLevel < 2 {
+            playerLevel = 2
+            playerXP = 0 // Reset XP
+            updateStatsBarLabels()
+            showTopLevelUpBanner(message: "⚡ PLAYER LEVEL UP!\nYou achieved Level 2 by completing milestones!")
+            showLevelUpCongratulationAlert()
+            lightUpRewardsButton()
+            
+            // Award +50 damage pistol
+            let rewardPistol = WeaponDTO(type: .pistol, tier: .legendary, damage: 65) // 15 base + 50 DMG = 65 DMG
+            InventoryManager.shared.addItem(rewardPistol) { [weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success:
+                    self.showNotificationHUD(message: "🎁 LEVEL 2 MILESTONE REWARD\nReceived Milestone Pistol (+50 DMG)!\nOpen Stats/Inventory to equip it!")
+                case .failure:
+                    self.showNotificationHUD(message: "⚠️ INVENTORY FULL\nCould not receive Milestone Pistol. Clear some space!")
+                }
+            }
         }
     }
     
@@ -1167,18 +1216,21 @@ public final class MainMapViewController: UIViewController {
         present(shopVC, animated: false)
     }
     
-    @objc private func statsTapped() {
-        let statsVC = StatsInventoryViewController()
-        statsVC.coins = coins
-        statsVC.gems = gems
-        statsVC.level = playerLevel
-        statsVC.xp = playerXP
-        statsVC.maxXP = 100
-        statsVC.hp = playerCurrentHP
-        statsVC.maxHP = playerMaxHP
-        statsVC.modalPresentationStyle = .overFullScreen
-        statsVC.modalTransitionStyle = .crossDissolve
-        present(statsVC, animated: false)
+    @objc private func showInventoryPanel() {
+        let isAlreadyShowingInventory = isBottomBarExpanded && inventoryContainerView.alpha == 1.0
+        
+        if isAlreadyShowingInventory {
+            collapseBottomBar()
+        } else {
+            self.activeTab = 0
+            self.refreshInventoryUI()
+            expandBottomBar()
+            
+            UIView.animate(withDuration: 0.3) {
+                self.questsContainerView.alpha = 0.0
+                self.inventoryContainerView.alpha = 1.0
+            }
+        }
     }
     
     @objc private func rewardsTapped() {
@@ -1207,7 +1259,20 @@ public final class MainMapViewController: UIViewController {
     
 
     
+    public func hideCombatBar() {
+        guard combatControlBar.alpha > 0 else { return }
+        targetedMobAnnotation = nil
+        UIView.animate(withDuration: 0.3) {
+            self.combatControlBar.alpha = 0.0
+            self.centerButtonBottomConstraint?.constant = -96
+            self.view.layoutIfNeeded()
+        }
+    }
+    
     public func targetMob(_ annotation: MobAnnotation) {
+        // Attack has absolute priority -> Dismiss building inspection panels immediately!
+        dismissActivePanels(animated: true)
+        
         self.targetedMobAnnotation = annotation
         
         targetNameLabel.text = annotation.mobDTO.type.rawValue.uppercased()
@@ -1216,6 +1281,8 @@ public final class MainMapViewController: UIViewController {
         // Show combat control bar
         UIView.animate(withDuration: 0.3) {
             self.combatControlBar.alpha = 1.0
+            self.centerButtonBottomConstraint?.constant = -180
+            self.view.layoutIfNeeded()
         }
     }
     
@@ -1239,7 +1306,13 @@ public final class MainMapViewController: UIViewController {
         // Linear: multiplier = 1.0 - 0.8 * (distance / radius)
         let t = distanceM / attackRadius                        // 0…1
         let multiplier = 1.0 - 0.80 * t                        // 1.0 … 0.20
-        let baseDamage: Double = 20
+        // Trigger mob anger immediately
+        hasAngeredMobs = true
+        
+        var baseDamage: Double = 20
+        if let equipped = InventoryManager.shared.getEquippedWeapon() {
+            baseDamage = Double(equipped.damage)
+        }
         let scaledDamage = Int(max(1, (baseDamage * multiplier).rounded()))
         
         // Muzzle flash / haptic feedback
@@ -1265,21 +1338,13 @@ public final class MainMapViewController: UIViewController {
         // Death check
         if mob.currentHP <= 0 {
             let xpReward = mob.type.baseXP
-            playerXP += xpReward
             coins += xpReward * 10
             
             // Drop skull remains at exact coordinates
             let skull = SkullAnnotation(coordinate: mobAnn.coordinate)
             mapView.addAnnotation(skull)
             
-            var playerLeveledUp = false
-            var message = "DEFEATED \(mob.type.rawValue.uppercased())! Earned $\(xpReward * 10) & +\(xpReward) XP"
-            if playerXP >= 100 {
-                playerXP -= 100
-                playerLevel += 1
-                playerLeveledUp = true
-                message += " — LEVEL UP!"
-            }
+            let message = "DEFEATED \(mob.type.rawValue.uppercased())! Earned $\(xpReward * 10)"
             
             // Series-based mob type leveling check
             var typeLeveledUp = false
@@ -1292,12 +1357,6 @@ public final class MainMapViewController: UIViewController {
             updateStatsBarLabels()
             showNotificationHUD(message: message)
             
-            if playerLeveledUp {
-                showTopLevelUpBanner(message: "⚡ PLAYER LEVEL UP!\nYou advanced to Level \(playerLevel)!")
-                showLevelUpCongratulationAlert()
-                lightUpRewardsButton()
-            }
-            
             if typeLeveledUp {
                 showTopLevelUpBanner(message: "⚠️ NEIGHBORHOOD DANGER INCREASED\n\(mob.type.rawValue) level raised to Lv. \(newTypeLevel)!")
             }
@@ -1307,10 +1366,18 @@ public final class MainMapViewController: UIViewController {
                 activeMobAnnotations.remove(at: idx)
             }
             
-            UIView.animate(withDuration: 0.3) {
-                self.combatControlBar.alpha = 0.0
+            sessionKills += 1
+            if let playerCoord = avatarAnnotation?.coordinate {
+                MapSpawnerService.shared.spawnRevengeWave(
+                    playerCoordinate: playerCoord,
+                    dangerLevel: DangerLevelManager.shared.currentDangerLevel,
+                    sessionKills: sessionKills
+                ) { [weak self] newMobs in
+                    self?.handleNewMobsSpawned(newMobs)
+                }
             }
-            targetedMobAnnotation = nil
+            
+            hideCombatBar()
         } else {
             // Mobs can only shoot/counter-attack when inside your small 150m circle (their max attack range)
             if distanceM <= 150 {
@@ -1325,30 +1392,27 @@ public final class MainMapViewController: UIViewController {
     }
     
     private func handleNewMobsSpawned(_ mobs: [MobDTO]) {
-        var updatedAnnotations: [MobAnnotation] = []
-        
         for mob in mobs {
-            // Check if we already have this mob on the map
-            if let existing = activeMobAnnotations.first(where: { $0.mobDTO.id == mob.id }) {
-                existing.mobDTO = mob
-                // Smooth glide transition to the new coordinate
-                self.animateAnnotation(existing, toCoordinate: mob.coordinate, duration: 1.0)
-                updatedAnnotations.append(existing)
-            } else {
-                // New mob spawned
+            // Avoid duplicates
+            if !activeMobAnnotations.contains(where: { $0.mobDTO.id == mob.id }) {
                 let ann = MobAnnotation(coordinate: mob.coordinate, mobDTO: mob)
                 mapView.addAnnotation(ann)
-                updatedAnnotations.append(ann)
+                activeMobAnnotations.append(ann)
             }
         }
         
-        // Clean up any old mobs that are no longer spawned
-        let toRemove = activeMobAnnotations.filter { oldAnn in
-            !mobs.contains(where: { $0.id == oldAnn.mobDTO.id })
+        // Clean up mobs that are extremely far from the player (> 2000 meters) to keep memory footprint clean
+        if let playerCoord = avatarAnnotation?.coordinate {
+            let playerCL = CLLocation(latitude: playerCoord.latitude, longitude: playerCoord.longitude)
+            let toRemove = activeMobAnnotations.filter { ann in
+                let mobCL = CLLocation(latitude: ann.coordinate.latitude, longitude: ann.coordinate.longitude)
+                return playerCL.distance(from: mobCL) > 2000.0
+            }
+            if !toRemove.isEmpty {
+                mapView.removeAnnotations(toRemove)
+                activeMobAnnotations.removeAll { ann in toRemove.contains(where: { $0.mobDTO.id == ann.mobDTO.id }) }
+            }
         }
-        mapView.removeAnnotations(toRemove)
-        
-        activeMobAnnotations = updatedAnnotations
     }
     
     // MARK: - Build Store & Dynamic Placement Engine
@@ -1742,7 +1806,29 @@ public final class MainMapViewController: UIViewController {
 
         UINotificationFeedbackGenerator().notificationOccurred(.success)
         showNotificationHUD(message: "CONSTRUCTION SUCCESSFUL 🏗\nPlaced \(type.rawValue)!")
+        
+        // Award XP for placing a building: 35 XP
+        playerXP += 35
+        
+        var req = requiredXP
+        var levelUpOccurred = false
+        while playerXP >= req {
+            playerXP -= req
+            playerLevel += 1
+            levelUpOccurred = true
+            req = Int(100 * pow(1.5, Double(playerLevel - 1)))
+        }
+        
+        updateStatsBarLabels()
+        
+        if levelUpOccurred {
+            showTopLevelUpBanner(message: "⚡ PLAYER LEVEL UP!\nYou advanced to Level \(playerLevel)!")
+            showLevelUpCongratulationAlert()
+            lightUpRewardsButton()
+        }
+        
         checkQuestsProgress()
+        checkProgressionMilestones()
         cancelPlacementMode()
     }
     
@@ -1849,16 +1935,25 @@ public final class MainMapViewController: UIViewController {
             ? "COLLECT $\(pending) ⬆️"
             : "EMPTY 📭"
         collectBtn.setTitle(collectTitle, for: .normal)
-        collectBtn.titleLabel?.font = UIFont.systemFont(ofSize: 10, weight: .black)
+        collectBtn.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .bold)
         collectBtn.titleLabel?.numberOfLines = 1
-        collectBtn.setTitleColor(canCollect ? UIColor(white: 0.08, alpha: 1) : .white, for: .normal)
-        collectBtn.backgroundColor = canCollect
-            ? UIColor(red: 0.25, green: 0.85, blue: 0.45, alpha: 1.0)
-            : UIColor.white.withAlphaComponent(0.10)
+        if #available(iOS 15.0, *) {
+            var config = UIButton.Configuration.filled()
+            config.contentInsets = NSDirectionalEdgeInsets(top: 6, leading: 12, bottom: 6, trailing: 12)
+            config.baseBackgroundColor = canCollect
+                ? UIColor(red: 0.25, green: 0.85, blue: 0.45, alpha: 1.0)
+                : UIColor.white.withAlphaComponent(0.10)
+            config.baseForegroundColor = canCollect ? UIColor(white: 0.08, alpha: 1) : .white
+            collectBtn.configuration = config
+        } else {
+            collectBtn.contentEdgeInsets = UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 12)
+            collectBtn.backgroundColor = canCollect
+                ? UIColor(red: 0.25, green: 0.85, blue: 0.45, alpha: 1.0)
+                : UIColor.white.withAlphaComponent(0.10)
+        }
         collectBtn.layer.cornerRadius = 12
         collectBtn.layer.borderWidth = 1.0
         collectBtn.layer.borderColor = UIColor.white.withAlphaComponent(canCollect ? 0.0 : 0.12).cgColor
-        collectBtn.contentEdgeInsets = UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 12)
         collectBtn.isEnabled = canCollect
         collectBtn.translatesAutoresizingMaskIntoConstraints = false
         collectBtn.addTarget(self, action: #selector(collectIncomeTapped), for: .touchUpInside)
@@ -2190,8 +2285,10 @@ public final class MainMapViewController: UIViewController {
             incomeLabel.topAnchor.constraint(equalTo: emojiContainer.bottomAnchor, constant: 16),
             incomeLabel.leadingAnchor.constraint(equalTo: panel.leadingAnchor, constant: 20),
 
-            collectBtn.leadingAnchor.constraint(equalTo: incomeLabel.trailingAnchor, constant: 10),
-            collectBtn.centerYAnchor.constraint(equalTo: incomeLabel.centerYAnchor),
+            collectBtn.trailingAnchor.constraint(equalTo: panel.trailingAnchor, constant: -20),
+            collectBtn.bottomAnchor.constraint(equalTo: upgradeButton.topAnchor, constant: -8),
+            collectBtn.widthAnchor.constraint(equalToConstant: 150),
+            collectBtn.heightAnchor.constraint(equalToConstant: 36),
 
             capacityLabel.topAnchor.constraint(equalTo: incomeLabel.bottomAnchor, constant: 6),
             capacityLabel.leadingAnchor.constraint(equalTo: panel.leadingAnchor, constant: 20),
@@ -2343,6 +2440,35 @@ public final class MainMapViewController: UIViewController {
         
         annotation.buildingItem.level += 1
         
+        // Sync back into placedBuildings array
+        if let idx = placedBuildings.firstIndex(where: { $0.id == annotation.buildingItem.id }) {
+            placedBuildings[idx] = annotation.buildingItem
+        }
+        
+        // Award XP for upgrading a building: 15 XP * level
+        let xpAward = 15 * (currentLevel + 1)
+        playerXP += xpAward
+        
+        var req = requiredXP
+        var levelUpOccurred = false
+        while playerXP >= req {
+            playerXP -= req
+            playerLevel += 1
+            levelUpOccurred = true
+            req = Int(100 * pow(1.5, Double(playerLevel - 1)))
+        }
+        
+        updateStatsBarLabels()
+        
+        if levelUpOccurred {
+            showTopLevelUpBanner(message: "⚡ PLAYER LEVEL UP!\nYou advanced to Level \(playerLevel)!")
+            showLevelUpCongratulationAlert()
+            lightUpRewardsButton()
+        }
+        
+        checkQuestsProgress()
+        checkProgressionMilestones()
+        
         mapView.removeAnnotation(annotation)
         mapView.addAnnotation(annotation)
         
@@ -2431,10 +2557,42 @@ public final class MainMapViewController: UIViewController {
         }
 
         coins += amount
+        
+        // Roll 5% chance for XP: awards 50% of the collected amount as XP
+        var xpGained = 0
+        if Double.random(in: 0..<1) < 0.05 {
+            xpGained = amount / 2
+        }
+        
+        if xpGained > 0 {
+            playerXP += xpGained
+            showFloatingXPPopup(amount: xpGained)
+        }
+        
+        var req = requiredXP
+        var levelUpOccurred = false
+        while playerXP >= req {
+            playerXP -= req
+            playerLevel += 1
+            levelUpOccurred = true
+            req = Int(100 * pow(1.5, Double(playerLevel - 1)))
+        }
+        
         updateStatsBarLabels()
 
         UINotificationFeedbackGenerator().notificationOccurred(.success)
-        showNotificationHUD(message: "COLLECTED $\(amount) 💰\nFrom \(annotation.buildingItem.name)!")
+        
+        var msg = "COLLECTED $\(amount) 💰\nFrom \(annotation.buildingItem.name)!"
+        if xpGained > 0 {
+            msg += "\n🔥 BONUS: +\(xpGained) XP gained!"
+        }
+        showNotificationHUD(message: msg)
+        
+        if levelUpOccurred {
+            showTopLevelUpBanner(message: "⚡ PLAYER LEVEL UP!\nYou advanced to Level \(playerLevel)!")
+            showLevelUpCongratulationAlert()
+            lightUpRewardsButton()
+        }
     }
 
     @objc private func collectIncomeTapped() {
@@ -2475,16 +2633,11 @@ public final class MainMapViewController: UIViewController {
         bagLabel?.text = "\(occupied)/\(maxSlots)"
         
         // Update level label with XP remaining progression next to level callsign
-        levelLabel.text = "LVL \(playerLevel) • XP \(playerXP)/100"
+        nicknameLabel.text = "\(nickname) \(playerLevel)"
         
-        let progress = max(0.0, min(1.0, CGFloat(playerXP) / 100.0))
-        xpProgressWidthConstraint?.isActive = false
-        xpProgressWidthConstraint = xpProgressFillView.widthAnchor.constraint(equalTo: xpProgressBar.widthAnchor, multiplier: progress)
-        xpProgressWidthConstraint?.isActive = true
-        
-        UIView.animate(withDuration: 0.3, delay: 0.0, options: .curveEaseOut, animations: {
-            self.xpProgressBar.layoutIfNeeded()
-        }, completion: nil)
+        let req = requiredXP
+        levelLabel.text = "\(req - playerXP) XP to level-up"
+        refreshInventoryUI()
         
         UIView.animate(withDuration: 0.1, animations: {
             self.coinsLabel?.transform = CGAffineTransform(scaleX: 1.15, y: 1.15)
@@ -2675,6 +2828,24 @@ public final class MainMapViewController: UIViewController {
             } else {
                 panel.removeFromSuperview()
             }
+        }
+        
+        // Restore bottom bar and floating buttons when panels are dismissed
+        let restoreBlock = {
+            self.bottomBar.transform = .identity
+            self.bottomBar.alpha = 1.0
+            self.centerButton.transform = .identity
+            self.centerButton.alpha = 1.0
+            self.shopButton.transform = .identity
+            self.shopButton.alpha = 1.0
+            self.storeButton.transform = .identity
+            self.storeButton.alpha = 1.0
+        }
+        
+        if animated {
+            UIView.animate(withDuration: 0.40, delay: 0.0, usingSpringWithDamping: 0.78, initialSpringVelocity: 0.5, options: .curveEaseOut, animations: restoreBlock, completion: nil)
+        } else {
+            restoreBlock()
         }
     }
     
@@ -2919,6 +3090,7 @@ public final class MainMapViewController: UIViewController {
     
     private func triggerPlayerDeath() {
         isPlayerDead = true
+        hasAngeredMobs = false // Stop pursuing after death
         respawnTimer?.invalidate()
         
         // Respawn cooldown rises with level: base 3s + level * 1.5s
@@ -2973,11 +3145,13 @@ public final class MainMapViewController: UIViewController {
         // Award 1 XP and update labels
         playerXP += 1
         
+        let req = requiredXP
         var levelUpOccurred = false
-        if playerXP >= 100 {
-            playerXP -= 100
+        while playerXP >= req {
+            playerXP -= req
             playerLevel += 1
             levelUpOccurred = true
+            // Re-fetch req to support multiple level-ups
         }
         
         updateStatsBarLabels()
@@ -3019,6 +3193,7 @@ public final class MainMapViewController: UIViewController {
         mobMovementTimer = Timer.scheduledTimer(withTimeInterval: 1.5, repeats: true) { [weak self] _ in
             guard let self = self, !self.isPlayerDead else { return }
             let userCoord = self.avatarAnnotation?.coordinate ?? CLLocationCoordinate2D(latitude: 37.3382, longitude: -121.8863)
+            let playerCL = CLLocation(latitude: userCoord.latitude, longitude: userCoord.longitude)
             
             for (idx, mobAnn) in self.activeMobAnnotations.enumerated() {
                 var mob = mobAnn.mobDTO
@@ -3026,6 +3201,18 @@ public final class MainMapViewController: UIViewController {
                 let lonDiff = userCoord.longitude - mobAnn.coordinate.longitude
                 
                 let dist = sqrt(latDiff*latDiff + lonDiff*lonDiff)
+                
+                // Mobs automatically fire at you periodically once angered and within safe circle (150m) range!
+                let mobCL = CLLocation(latitude: mobAnn.coordinate.latitude, longitude: mobAnn.coordinate.longitude)
+                let distM = playerCL.distance(from: mobCL)
+                
+                if self.hasAngeredMobs && distM <= 150 {
+                    self.takeDamage(amount: mob.damage)
+                }
+                
+                // Mobs always pursue the player now
+                // guard self.hasAngeredMobs else { continue }
+                
                 guard dist > 0.0002 else { continue } // Stop when very close
                 
                 // Glide step speed step: 0.00015 (~15 meters per 1.5s)
@@ -3073,6 +3260,502 @@ public final class MainMapViewController: UIViewController {
             }
         }
         RunLoop.main.add(timer, forMode: .common)
+    }
+    
+    // MARK: - Long Press Gestures & Auto Collection
+
+    @objc private func handleMapLongPress(_ gesture: UILongPressGestureRecognizer) {
+        guard gesture.state == .began else { return }
+        
+        let touchPoint = gesture.location(in: mapView)
+        
+        // Find which annotation view's frame contains the touchPoint directly in mapView coordinates!
+        var pressedAnnotation: MKAnnotation?
+        for annotation in mapView.annotations {
+            if let view = mapView.view(for: annotation) {
+                if view.frame.contains(touchPoint) {
+                    pressedAnnotation = annotation
+                    break
+                }
+            }
+        }
+        
+        guard let pressedAnn = pressedAnnotation else { return }
+        
+        if let _ = pressedAnn as? BuildingAnnotation {
+            autoCollectAllBuildingsInCircle()
+        } else if let skullAnn = pressedAnn as? SkullAnnotation {
+            autoCollectAllNearbySkulls(from: skullAnn)
+        }
+    }
+    
+    private func autoCollectAllBuildingsInCircle() {
+        guard let playerCoord = avatarAnnotation?.coordinate else { return }
+        let playerCL = CLLocation(latitude: playerCoord.latitude, longitude: playerCoord.longitude)
+        
+        var collectedTotal = 0
+        var totalXPGained = 0
+        var buildingsCount = 0
+        
+        // Find all building annotations within 500m
+        let buildingsToCollect = mapView.annotations.compactMap { $0 as? BuildingAnnotation }.filter { ann in
+            let mobCL = CLLocation(latitude: ann.coordinate.latitude, longitude: ann.coordinate.longitude)
+            let distance = playerCL.distance(from: mobCL)
+            return distance <= 500
+        }
+        
+        for ann in buildingsToCollect {
+            let amount = ann.buildingItem.collectIncome()
+            if amount > 0 {
+                // Sync back into placedBuildings array
+                if let idx = placedBuildings.firstIndex(where: { $0.id == ann.buildingItem.id }) {
+                    placedBuildings[idx] = ann.buildingItem
+                }
+                collectedTotal += amount
+                buildingsCount += 1
+                
+                // Roll 5% chance for XP
+                if Double.random(in: 0..<1) < 0.05 {
+                    let xpGained = amount / 2
+                    totalXPGained += xpGained
+                }
+            }
+        }
+        
+        if collectedTotal > 0 {
+            coins += collectedTotal
+            if totalXPGained > 0 {
+                playerXP += totalXPGained
+                showFloatingXPPopup(amount: totalXPGained)
+            }
+            
+            var req = requiredXP
+            var levelUpOccurred = false
+            while playerXP >= req {
+                playerXP -= req
+                playerLevel += 1
+                levelUpOccurred = true
+                req = Int(100 * pow(1.5, Double(playerLevel - 1)))
+            }
+            
+            updateStatsBarLabels()
+            UINotificationFeedbackGenerator().notificationOccurred(.success)
+            
+            var msg = "⚡ AUTO-COLLECTED $\(collectedTotal) 💰\nFrom \(buildingsCount) buildings in circle!"
+            if totalXPGained > 0 {
+                msg += "\n🔥 BONUS: +\(totalXPGained) XP gained!"
+            }
+            showNotificationHUD(message: msg)
+            
+            if levelUpOccurred {
+                showTopLevelUpBanner(message: "⚡ PLAYER LEVEL UP!\nYou advanced to Level \(playerLevel)!")
+                showLevelUpCongratulationAlert()
+                lightUpRewardsButton()
+            }
+        } else {
+            showNotificationHUD(message: "No income ready in circle buildings")
+        }
+    }
+    
+    private func autoCollectAllNearbySkulls(from tappedSkull: SkullAnnotation) {
+        let centerCL = CLLocation(latitude: tappedSkull.coordinate.latitude, longitude: tappedSkull.coordinate.longitude)
+        
+        let skullsToCollect = mapView.annotations.compactMap { $0 as? SkullAnnotation }.filter { ann in
+            let skullCL = CLLocation(latitude: ann.coordinate.latitude, longitude: ann.coordinate.longitude)
+            let distance = centerCL.distance(from: skullCL)
+            return distance <= 250
+        }
+        
+        guard !skullsToCollect.isEmpty else { return }
+        
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        
+        let skullsCount = skullsToCollect.count
+        playerXP += skullsCount
+        
+        var req = requiredXP
+        var levelUpOccurred = false
+        while playerXP >= req {
+            playerXP -= req
+            playerLevel += 1
+            levelUpOccurred = true
+            // Re-fetch req to support multiple level-ups
+            req = Int(100 * pow(1.5, Double(playerLevel - 1)))
+        }
+        
+        updateStatsBarLabels()
+        showNotificationHUD(message: "💀 Collected \(skullsCount) Remains! +\(skullsCount) XP! \(levelUpOccurred ? "\n⚡ LEVEL UP! NOW LEVEL \(playerLevel)!" : "")")
+        
+        if levelUpOccurred {
+            showTopLevelUpBanner(message: "⚡ PLAYER LEVEL UP!\nYou advanced to Level \(playerLevel)!")
+            showLevelUpCongratulationAlert()
+            lightUpRewardsButton()
+        }
+        
+        for skull in skullsToCollect {
+            mapView.removeAnnotation(skull)
+        }
+    }
+    
+    public func showFloatingXPPopup(amount: Int) {
+        guard let avatar = avatarAnnotation,
+              mapView.view(for: avatar) != nil else { return }
+        
+        let label = UILabel()
+        label.text = "+\(amount) XP"
+        label.textColor = UIColor(red: 0.0, green: 0.8, blue: 1.0, alpha: 1.0)
+        label.font = UIFont(name: "Outfit-Bold", size: 18) ?? UIFont.systemFont(ofSize: 18, weight: .bold)
+        
+        label.layer.shadowColor = UIColor(red: 0.0, green: 0.8, blue: 1.0, alpha: 1.0).cgColor
+        label.layer.shadowOffset = .zero
+        label.layer.shadowRadius = 4.0
+        label.layer.shadowOpacity = 0.8
+        
+        label.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(label)
+        
+        let screenPoint = mapView.convert(avatar.coordinate, toPointTo: self.view)
+        
+        label.centerXAnchor.constraint(equalTo: self.view.leadingAnchor, constant: screenPoint.x).isActive = true
+        let topConst = label.topAnchor.constraint(equalTo: self.view.topAnchor, constant: screenPoint.y - 30)
+        topConst.isActive = true
+        
+        self.view.layoutIfNeeded()
+        
+        UIView.animate(withDuration: 1.8, delay: 0.0, options: .curveEaseOut, animations: {
+            topConst.constant -= 80
+            label.alpha = 0.0
+            self.view.layoutIfNeeded()
+        }) { _ in
+            label.removeFromSuperview()
+        }
+    }
+    
+    // MARK: - Drag/Pan Bottom Sheet Layout Engine
+    private var panStartHeight: CGFloat = 76
+    private var activeTab: Int = 0 // 0 = Inventory, 1 = Quests
+    
+    @objc private func handleBottomBarPan(_ gesture: UIPanGestureRecognizer) {
+        let translation = gesture.translation(in: view)
+        
+        switch gesture.state {
+        case .began:
+            panStartHeight = bottomBarHeightConstraint?.constant ?? 76
+        case .changed:
+            let newHeight = panStartHeight - translation.y
+            bottomBarHeightConstraint?.constant = max(76, min(640, newHeight))
+            
+            let progress = (bottomBarHeightConstraint!.constant - 76) / (640 - 76)
+            if activeTab == 0 {
+                inventoryContainerView.alpha = progress
+                questsContainerView.alpha = 0.0
+            } else {
+                inventoryContainerView.alpha = 0.0
+                questsContainerView.alpha = progress
+            }
+            view.layoutIfNeeded()
+        case .ended, .cancelled:
+            let velocity = gesture.velocity(in: view)
+            let currentHeight = bottomBarHeightConstraint?.constant ?? 76
+            
+            let shouldExpand: Bool
+            if velocity.y < -300 {
+                shouldExpand = true
+            } else if velocity.y > 300 {
+                shouldExpand = false
+            } else {
+                shouldExpand = currentHeight > 300
+            }
+            
+            if shouldExpand {
+                isBottomBarExpanded = true
+                self.refreshInventoryUI()
+                UIView.animate(withDuration: 0.45, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.5, options: [.allowUserInteraction, .beginFromCurrentState], animations: {
+                    self.bottomBarHeightConstraint?.constant = 640
+                    if self.activeTab == 0 {
+                        self.inventoryContainerView.alpha = 1.0
+                        self.questsContainerView.alpha = 0.0
+                    } else {
+                        self.inventoryContainerView.alpha = 0.0
+                        self.questsContainerView.alpha = 1.0
+                    }
+                    self.view.layoutIfNeeded()
+                }, completion: nil)
+            } else {
+                isBottomBarExpanded = false
+                UIView.animate(withDuration: 0.40, delay: 0.0, usingSpringWithDamping: 0.82, initialSpringVelocity: 0.5, options: [.allowUserInteraction, .beginFromCurrentState], animations: {
+                    self.bottomBarHeightConstraint?.constant = 76
+                    self.inventoryContainerView.alpha = 0.0
+                    self.questsContainerView.alpha = 0.0
+                    self.view.layoutIfNeeded()
+                }, completion: nil)
+            }
+        default:
+            break
+        }
+    }
+    
+    // MARK: - Premium Dynamic Bottom Sheet Inventory Renderer
+    
+    private func refreshInventoryUI() {
+        guard let contentStack = inventoryContentStack else { return }
+        
+        // Clear old subviews
+        for subview in contentStack.arrangedSubviews {
+            subview.removeFromSuperview()
+        }
+        
+        // 1. HP & Recovery Circles + 2 Red Parameter Bars Row
+        func makeProgressCircle(title: String, val: String, progress: CGFloat, color: UIColor) -> UIView {
+            let container = UIView()
+            container.translatesAutoresizingMaskIntoConstraints = false
+            container.backgroundColor = UIColor.white.withAlphaComponent(0.04)
+            container.layer.cornerRadius = 36
+            
+            let trackLayer = CAShapeLayer()
+            trackLayer.fillColor = UIColor.clear.cgColor
+            trackLayer.strokeColor = UIColor.white.withAlphaComponent(0.1).cgColor
+            trackLayer.lineWidth = 3
+            
+            let progressLayer = CAShapeLayer()
+            progressLayer.fillColor = UIColor.clear.cgColor
+            progressLayer.strokeColor = color.cgColor
+            progressLayer.lineWidth = 3
+            progressLayer.strokeEnd = progress
+            progressLayer.lineCap = .round
+            
+            let center = CGPoint(x: 36, y: 36)
+            let path = UIBezierPath(arcCenter: center, radius: 34.5, startAngle: -CGFloat.pi/2, endAngle: 1.5 * CGFloat.pi, clockwise: true)
+            trackLayer.path = path.cgPath
+            progressLayer.path = path.cgPath
+            
+            container.layer.addSublayer(trackLayer)
+            container.layer.addSublayer(progressLayer)
+            
+            let titleL = UILabel()
+            titleL.text = title
+            titleL.textColor = .white.withAlphaComponent(0.6)
+            titleL.font = .systemFont(ofSize: 8, weight: .bold)
+            titleL.textAlignment = .center
+            titleL.translatesAutoresizingMaskIntoConstraints = false
+            container.addSubview(titleL)
+            
+            let valL = UILabel()
+            valL.text = val
+            valL.textColor = .white
+            valL.font = .systemFont(ofSize: 11, weight: .black)
+            valL.textAlignment = .center
+            valL.translatesAutoresizingMaskIntoConstraints = false
+            container.addSubview(valL)
+            
+            NSLayoutConstraint.activate([
+                container.widthAnchor.constraint(equalToConstant: 72),
+                container.heightAnchor.constraint(equalToConstant: 72),
+                titleL.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+                titleL.centerYAnchor.constraint(equalTo: container.centerYAnchor, constant: -10),
+                valL.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+                valL.centerYAnchor.constraint(equalTo: container.centerYAnchor, constant: 8)
+            ])
+            return container
+        }
+        
+        let hpPct = CGFloat(playerCurrentHP) / CGFloat(max(1, playerMaxHP))
+        let hpCircle = makeProgressCircle(title: "LIFE", val: "\(playerCurrentHP)", progress: hpPct, color: .systemGreen)
+        let regenCircle = makeProgressCircle(title: "REGEN", val: "+2/s", progress: 1.0, color: .systemGreen)
+        
+        let barsStack = UIStackView()
+        barsStack.axis = .vertical
+        barsStack.spacing = 8
+        barsStack.distribution = .fillEqually
+        barsStack.translatesAutoresizingMaskIntoConstraints = false
+        
+        var baseDamage = 30
+        if let equipped = InventoryManager.shared.getEquippedWeapon() {
+            baseDamage = equipped.damage
+        }
+        
+        func makeStatProgressBar(name: String, valueText: String, progress: Float) -> UIView {
+            let container = UIView()
+            container.translatesAutoresizingMaskIntoConstraints = false
+            
+            let label = UILabel()
+            label.text = "\(name): \(valueText)"
+            label.textColor = .white
+            label.font = .systemFont(ofSize: 9, weight: .bold)
+            label.translatesAutoresizingMaskIntoConstraints = false
+            container.addSubview(label)
+            
+            let bgTrack = UIView()
+            bgTrack.backgroundColor = UIColor.white.withAlphaComponent(0.10)
+            bgTrack.layer.cornerRadius = 3
+            bgTrack.clipsToBounds = true
+            bgTrack.translatesAutoresizingMaskIntoConstraints = false
+            container.addSubview(bgTrack)
+            
+            let fill = UIView()
+            fill.backgroundColor = UIColor(red: 1.00, green: 0.25, blue: 0.25, alpha: 1.0)
+            fill.layer.cornerRadius = 3
+            fill.translatesAutoresizingMaskIntoConstraints = false
+            bgTrack.addSubview(fill)
+            
+            NSLayoutConstraint.activate([
+                label.topAnchor.constraint(equalTo: container.topAnchor),
+                label.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+                
+                bgTrack.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 4),
+                bgTrack.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+                bgTrack.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+                bgTrack.heightAnchor.constraint(equalToConstant: 6),
+                bgTrack.bottomAnchor.constraint(equalTo: container.bottomAnchor),
+                
+                fill.topAnchor.constraint(equalTo: bgTrack.topAnchor),
+                fill.bottomAnchor.constraint(equalTo: bgTrack.bottomAnchor),
+                fill.leadingAnchor.constraint(equalTo: bgTrack.leadingAnchor),
+                fill.widthAnchor.constraint(equalTo: bgTrack.widthAnchor, multiplier: CGFloat(max(0.05, min(1.0, progress))))
+            ])
+            return container
+        }
+        
+        let fireRate = Double(InventoryManager.shared.getEquippedWeapon()?.fireRate ?? 2.0)
+        barsStack.addArrangedSubview(makeStatProgressBar(name: "DAMAGE", valueText: "\(baseDamage)", progress: Float(baseDamage) / 100.0))
+        barsStack.addArrangedSubview(makeStatProgressBar(name: "SPEED", valueText: "\(fireRate)/s", progress: Float(fireRate) / 10.0))
+        
+        let statsRow = UIStackView(arrangedSubviews: [hpCircle, regenCircle, barsStack])
+        statsRow.axis = .horizontal
+        statsRow.spacing = 14
+        statsRow.alignment = .center
+        statsRow.distribution = .fill
+        statsRow.translatesAutoresizingMaskIntoConstraints = false
+        contentStack.addArrangedSubview(statsRow)
+        
+        // 2. "Fuse mods" banner row
+        let realItems = InventoryManager.shared.items
+        
+        if realItems.isEmpty {
+            let emptyStateView = UIView()
+            emptyStateView.translatesAutoresizingMaskIntoConstraints = false
+            
+            let iconL = UILabel()
+            iconL.text = "🎒"
+            iconL.font = .systemFont(ofSize: 40)
+            iconL.textAlignment = .center
+            iconL.translatesAutoresizingMaskIntoConstraints = false
+            emptyStateView.addSubview(iconL)
+            
+            let textL = UILabel()
+            textL.text = "Your backpack is empty.\nDefeat enemies to find loot!"
+            textL.textColor = .white.withAlphaComponent(0.4)
+            textL.font = .systemFont(ofSize: 13, weight: .medium)
+            textL.textAlignment = .center
+            textL.numberOfLines = 0
+            textL.translatesAutoresizingMaskIntoConstraints = false
+            emptyStateView.addSubview(textL)
+            
+            contentStack.addArrangedSubview(emptyStateView)
+            
+            NSLayoutConstraint.activate([
+                emptyStateView.heightAnchor.constraint(equalToConstant: 120),
+                iconL.centerXAnchor.constraint(equalTo: emptyStateView.centerXAnchor),
+                iconL.topAnchor.constraint(equalTo: emptyStateView.topAnchor, constant: 20),
+                textL.topAnchor.constraint(equalTo: iconL.bottomAnchor, constant: 12),
+                textL.centerXAnchor.constraint(equalTo: emptyStateView.centerXAnchor),
+                textL.leadingAnchor.constraint(equalTo: emptyStateView.leadingAnchor, constant: 20),
+                textL.trailingAnchor.constraint(equalTo: emptyStateView.trailingAnchor, constant: -20)
+            ])
+        }
+        
+        // Render items
+        for item in realItems {
+            let emoji: String
+            let sub: String
+            var isEquipped = false
+            
+            if let weapon = item as? WeaponDTO {
+                emoji = weapon.type == .pistol ? "🔫" : (weapon.type == .smg ? "🎒" : "⚙️")
+                isEquipped = InventoryManager.shared.equippedWeaponId == weapon.id
+                sub = "\(weapon.tier.name) Tier • \(weapon.damage) DMG"
+            } else if let mod = item as? ModDTO {
+                emoji = "🔌"
+                sub = "\(mod.statAffected) Boost +\(Int(mod.multiplierBoost * 10))%"
+            } else {
+                emoji = "📦"
+                sub = item.description
+            }
+            
+            let itemCard = UIView()
+            itemCard.backgroundColor = UIColor.white.withAlphaComponent(0.02)
+            itemCard.layer.cornerRadius = 12
+            itemCard.layer.borderWidth = 1.0
+            itemCard.layer.borderColor = isEquipped
+                ? UIColor(red: 0.30, green: 0.85, blue: 0.30, alpha: 0.4).cgColor
+                : UIColor.white.withAlphaComponent(0.06).cgColor
+            itemCard.translatesAutoresizingMaskIntoConstraints = false
+            
+            let emojiL = UILabel()
+            emojiL.text = emoji
+            emojiL.font = .systemFont(ofSize: 22)
+            emojiL.translatesAutoresizingMaskIntoConstraints = false
+            itemCard.addSubview(emojiL)
+            
+            let titleL = UILabel()
+            titleL.text = item.name
+            titleL.font = .systemFont(ofSize: 12, weight: .bold)
+            titleL.textColor = .white
+            titleL.translatesAutoresizingMaskIntoConstraints = false
+            itemCard.addSubview(titleL)
+            
+            let subL = UILabel()
+            subL.text = sub
+            subL.font = .systemFont(ofSize: 9, weight: .semibold)
+            subL.textColor = isEquipped
+                ? UIColor(red: 0.30, green: 0.85, blue: 0.30, alpha: 1.0)
+                : UIColor.white.withAlphaComponent(0.40)
+            subL.translatesAutoresizingMaskIntoConstraints = false
+            itemCard.addSubview(subL)
+            
+            let sw = UISwitch()
+            sw.isOn = isEquipped
+            sw.onTintColor = UIColor(red: 0.30, green: 0.85, blue: 0.30, alpha: 1.0) // Apple green switch
+            sw.translatesAutoresizingMaskIntoConstraints = false
+            sw.addTarget(self, action: #selector(weaponSwitchToggledInSheet(_:)), for: .valueChanged)
+            sw.accessibilityIdentifier = item.id.uuidString
+            itemCard.addSubview(sw)
+            
+            contentStack.addArrangedSubview(itemCard)
+            
+            NSLayoutConstraint.activate([
+                itemCard.heightAnchor.constraint(equalToConstant: 52),
+                
+                emojiL.leadingAnchor.constraint(equalTo: itemCard.leadingAnchor, constant: 12),
+                emojiL.centerYAnchor.constraint(equalTo: itemCard.centerYAnchor),
+                
+                titleL.leadingAnchor.constraint(equalTo: emojiL.trailingAnchor, constant: 10),
+                titleL.topAnchor.constraint(equalTo: itemCard.topAnchor, constant: 10),
+                titleL.trailingAnchor.constraint(equalTo: sw.leadingAnchor, constant: -10),
+                
+                subL.leadingAnchor.constraint(equalTo: titleL.leadingAnchor),
+                subL.topAnchor.constraint(equalTo: titleL.bottomAnchor, constant: 1),
+                subL.trailingAnchor.constraint(equalTo: sw.leadingAnchor, constant: -10),
+                
+                sw.trailingAnchor.constraint(equalTo: itemCard.trailingAnchor, constant: -12),
+                sw.centerYAnchor.constraint(equalTo: itemCard.centerYAnchor)
+            ])
+        }
+    }
+    
+    @objc private func weaponSwitchToggledInSheet(_ sender: UISwitch) {
+        guard let wIdStr = sender.accessibilityIdentifier, let wId = UUID(uuidString: wIdStr) else { return }
+        
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        
+        if sender.isOn {
+            InventoryManager.shared.equipWeapon(id: wId)
+        } else {
+            InventoryManager.shared.equipWeapon(id: nil)
+        }
+        
+        refreshInventoryUI()
+        updateStatsBarLabels()
     }
 }
 
@@ -3185,5 +3868,20 @@ public final class BuildingExclusionZonesRenderer: MKOverlayRenderer {
         
         context.endTransparencyLayer()
         context.restoreGState()
+    }
+}
+
+// MARK: - UIGestureRecognizerDelegate
+extension MainMapViewController: UIGestureRecognizerDelegate {
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+    
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+        let loc = touch.location(in: view)
+        if combatControlBar.alpha > 0 && combatControlBar.frame.contains(loc) {
+            return false // Let the attack button handle its own taps
+        }
+        return true
     }
 }

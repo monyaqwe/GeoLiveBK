@@ -298,12 +298,19 @@ final class CharacterCustomizationViewController: UIViewController {
             if selectedGender == .female && cat == .beard { continue }
             
             let button = UIButton(type: .custom)
+            if #available(iOS 15.0, *) {
+                var config = UIButton.Configuration.plain()
+                config.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 14, bottom: 8, trailing: 14)
+                button.configuration = config
+            } else {
+                button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 14, bottom: 8, right: 14)
+            }
             button.setTitle("\(cat.icon) \(cat.rawValue)", for: .normal)
             button.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .bold)
             button.setTitleColor(UIColor(red: 0.08, green: 0.12, blue: 0.20, alpha: 0.60), for: .normal)
             button.backgroundColor = UIColor(red: 0.95, green: 0.96, blue: 0.98, alpha: 1.0)
             button.layer.cornerRadius = 16
-            button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 14, bottom: 8, right: 14)
+            
             button.translatesAutoresizingMaskIntoConstraints = false
             button.addTarget(self, action: #selector(categoryTapped(_:)), for: .touchUpInside)
             

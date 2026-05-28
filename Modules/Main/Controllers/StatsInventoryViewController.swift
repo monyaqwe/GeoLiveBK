@@ -72,7 +72,7 @@ public final class StatsInventoryViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .clear
         setupView()
-        setupStatsAndInventory()
+        refreshUI()
         setupGestures()
     }
     
@@ -129,6 +129,19 @@ public final class StatsInventoryViewController: UIViewController {
         ])
     }
     
+    private func refreshUI() {
+        if let equipped = InventoryManager.shared.getEquippedWeapon() {
+            baseDamage = equipped.damage
+        } else {
+            baseDamage = 30
+        }
+        
+        for subview in contentStack.arrangedSubviews {
+            subview.removeFromSuperview()
+        }
+        setupStatsAndInventory()
+    }
+    
     private func setupStatsAndInventory() {
         // 1. Stats Section Header
         contentStack.addArrangedSubview(makeSectionHeader(title: "⚙️  OPERATIVE ATTRIBUTES"))
@@ -155,15 +168,172 @@ public final class StatsInventoryViewController: UIViewController {
             statsStack.bottomAnchor.constraint(equalTo: statsView.bottomAnchor, constant: -16)
         ])
         
-        statsStack.addArrangedSubview(makeStatRow(icon: "🔮", name: "LEVEL", value: "\(level)"))
-        statsStack.addArrangedSubview(makeStatRow(icon: "❤️", name: "HEALTH", value: "\(hp) / \(maxHP)"))
-        statsStack.addArrangedSubview(makeStatRow(icon: "⚡", name: "XP MATRIX", value: "\(xp) / \(maxXP)"))
-        statsStack.addArrangedSubview(makeStatRow(icon: "💥", name: "FIREPOWER", value: "\(baseDamage) DMG"))
-        statsStack.addArrangedSubview(makeStatRow(icon: "💰", name: "LIQUID CASH", value: "$\(coins)"))
-        statsStack.addArrangedSubview(makeStatRow(icon: "💎", name: "PREMIUM GEMS", value: "\(gems)"))
+        // Top general stats bar: Level, XP, Cash, Gems
+        let metaStack = UIStackView()
+        metaStack.axis = .horizontal
+        metaStack.spacing = 8
+        metaStack.distribution = .fillEqually
+        metaStack.translatesAutoresizingMaskIntoConstraints = false
+        
+        func makeMetaLabel(title: String, val: String) -> UIView {
+            let container = UIView()
+            container.backgroundColor = UIColor.white.withAlphaComponent(0.04)
+            container.layer.cornerRadius = 8
+            container.translatesAutoresizingMaskIntoConstraints = false
+            
+            let nameL = UILabel()
+            nameL.text = title
+            nameL.textColor = .white.withAlphaComponent(0.4)
+            nameL.font = .systemFont(ofSize: 8, weight: .bold)
+            nameL.textAlignment = .center
+            nameL.translatesAutoresizingMaskIntoConstraints = false
+            container.addSubview(nameL)
+            
+            let valL = UILabel()
+            valL.text = val
+            valL.textColor = .white
+            valL.font = .systemFont(ofSize: 10, weight: .black)
+            valL.textAlignment = .center
+            valL.translatesAutoresizingMaskIntoConstraints = false
+            container.addSubview(valL)
+            
+            NSLayoutConstraint.activate([
+                nameL.topAnchor.constraint(equalTo: container.topAnchor, constant: 4),
+                nameL.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+                valL.topAnchor.constraint(equalTo: nameL.bottomAnchor, constant: 2),
+                valL.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+                valL.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -4)
+            ])
+            return container
+        }
+        
+        metaStack.addArrangedSubview(makeMetaLabel(title: "LEVEL", val: "\(level)"))
+        metaStack.addArrangedSubview(makeMetaLabel(title: "XP MATRIX", val: "\(xp)/\(maxXP)"))
+        metaStack.addArrangedSubview(makeMetaLabel(title: "CASH", val: "$\(coins)"))
+        metaStack.addArrangedSubview(makeMetaLabel(title: "GEMS", val: "\(gems)"))
+        
+        statsStack.addArrangedSubview(metaStack)
+        
+        // Custom HP & Recovery Circle Widgets + 2 progress lines
+        func makeProgressCircle(title: String, val: String, progress: CGFloat, color: UIColor) -> UIView {
+            let container = UIView()
+            container.translatesAutoresizingMaskIntoConstraints = false
+            container.backgroundColor = UIColor.white.withAlphaComponent(0.04)
+            container.layer.cornerRadius = 36
+            
+            let trackLayer = CAShapeLayer()
+            trackLayer.fillColor = UIColor.clear.cgColor
+            trackLayer.strokeColor = UIColor.white.withAlphaComponent(0.1).cgColor
+            trackLayer.lineWidth = 3
+            
+            let progressLayer = CAShapeLayer()
+            progressLayer.fillColor = UIColor.clear.cgColor
+            progressLayer.strokeColor = color.cgColor
+            progressLayer.lineWidth = 3
+            progressLayer.strokeEnd = progress
+            progressLayer.lineCap = .round
+            
+            let center = CGPoint(x: 36, y: 36)
+            let path = UIBezierPath(arcCenter: center, radius: 34.5, startAngle: -CGFloat.pi/2, endAngle: 1.5 * CGFloat.pi, clockwise: true)
+            trackLayer.path = path.cgPath
+            progressLayer.path = path.cgPath
+            
+            container.layer.addSublayer(trackLayer)
+            container.layer.addSublayer(progressLayer)
+            
+            let titleL = UILabel()
+            titleL.text = title
+            titleL.textColor = .white.withAlphaComponent(0.6)
+            titleL.font = .systemFont(ofSize: 8, weight: .bold)
+            titleL.textAlignment = .center
+            titleL.translatesAutoresizingMaskIntoConstraints = false
+            container.addSubview(titleL)
+            
+            let valL = UILabel()
+            valL.text = val
+            valL.textColor = .white
+            valL.font = .systemFont(ofSize: 11, weight: .black)
+            valL.textAlignment = .center
+            valL.translatesAutoresizingMaskIntoConstraints = false
+            container.addSubview(valL)
+            
+            NSLayoutConstraint.activate([
+                container.widthAnchor.constraint(equalToConstant: 72),
+                container.heightAnchor.constraint(equalToConstant: 72),
+                titleL.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+                titleL.centerYAnchor.constraint(equalTo: container.centerYAnchor, constant: -10),
+                valL.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+                valL.centerYAnchor.constraint(equalTo: container.centerYAnchor, constant: 8)
+            ])
+            return container
+        }
+        
+        let hpPct = CGFloat(hp) / CGFloat(max(1, maxHP))
+        let hpCircle = makeProgressCircle(title: "LIFE", val: "\(hp)", progress: hpPct, color: .systemGreen)
+        let regenCircle = makeProgressCircle(title: "REGEN", val: "+2/s", progress: 1.0, color: .systemGreen)
+        
+        let barsStack = UIStackView()
+        barsStack.axis = .vertical
+        barsStack.spacing = 8
+        barsStack.distribution = .fillEqually
+        barsStack.translatesAutoresizingMaskIntoConstraints = false
+        
+        func makeStatProgressBar(name: String, valueText: String, progress: Float) -> UIView {
+            let container = UIView()
+            container.translatesAutoresizingMaskIntoConstraints = false
+            
+            let label = UILabel()
+            label.text = "\(name): \(valueText)"
+            label.textColor = .white
+            label.font = .systemFont(ofSize: 9, weight: .bold)
+            label.translatesAutoresizingMaskIntoConstraints = false
+            container.addSubview(label)
+            
+            let bgTrack = UIView()
+            bgTrack.backgroundColor = UIColor.white.withAlphaComponent(0.10)
+            bgTrack.layer.cornerRadius = 3
+            bgTrack.clipsToBounds = true
+            bgTrack.translatesAutoresizingMaskIntoConstraints = false
+            container.addSubview(bgTrack)
+            
+            let fill = UIView()
+            fill.backgroundColor = UIColor(red: 1.00, green: 0.25, blue: 0.25, alpha: 1.0)
+            fill.layer.cornerRadius = 3
+            fill.translatesAutoresizingMaskIntoConstraints = false
+            bgTrack.addSubview(fill)
+            
+            NSLayoutConstraint.activate([
+                label.topAnchor.constraint(equalTo: container.topAnchor),
+                label.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+                
+                bgTrack.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 4),
+                bgTrack.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+                bgTrack.trailingAnchor.constraint(equalTo: container.trailingAnchor),
+                bgTrack.heightAnchor.constraint(equalToConstant: 6),
+                bgTrack.bottomAnchor.constraint(equalTo: container.bottomAnchor),
+                
+                fill.topAnchor.constraint(equalTo: bgTrack.topAnchor),
+                fill.bottomAnchor.constraint(equalTo: bgTrack.bottomAnchor),
+                fill.leadingAnchor.constraint(equalTo: bgTrack.leadingAnchor),
+                fill.widthAnchor.constraint(equalTo: bgTrack.widthAnchor, multiplier: CGFloat(max(0.05, min(1.0, progress))))
+            ])
+            return container
+        }
+        
+        let activeWeaponRate = Double(InventoryManager.shared.getEquippedWeapon()?.fireRate ?? 2.0)
+        barsStack.addArrangedSubview(makeStatProgressBar(name: "DAMAGE", valueText: "\(baseDamage)", progress: Float(baseDamage) / 100.0))
+        barsStack.addArrangedSubview(makeStatProgressBar(name: "SPEED", valueText: "\(activeWeaponRate)/s", progress: Float(activeWeaponRate) / 10.0))
+        
+        let statsRowContainer = UIStackView(arrangedSubviews: [hpCircle, regenCircle, barsStack])
+        statsRowContainer.axis = .horizontal
+        statsRowContainer.spacing = 14
+        statsRowContainer.alignment = .center
+        statsRowContainer.distribution = .fill
+        statsRowContainer.translatesAutoresizingMaskIntoConstraints = false
+        statsStack.addArrangedSubview(statsRowContainer)
         
         // 3. Inventory Section Header
-        contentStack.addArrangedSubview(makeSectionHeader(title: "🎒  ACTIVE BACKPACK / EQUIPMENT"))
+        contentStack.addArrangedSubview(makeSectionHeader(title: "🎒  ACTIVE BACKPACK / EQUIPMENT (TAP WEAPON TO EQUIP)"))
         
         // 4. Inventory Grid/List
         let realItems = InventoryManager.shared.items
@@ -193,9 +363,14 @@ public final class StatsInventoryViewController: UIViewController {
             for item in realItems {
                 let emoji: String
                 let sub: String
+                var isEquipped = false
+                
                 if let weapon = item as? WeaponDTO {
                     emoji = weapon.type == .pistol ? "🔫" : (weapon.type == .smg ? "🎒" : "⚙️")
-                    sub = "\(weapon.tier.name) Tier - \(weapon.damage) DMG"
+                    isEquipped = InventoryManager.shared.equippedWeaponId == weapon.id
+                    sub = isEquipped
+                        ? "\(weapon.tier.name) Tier - \(weapon.damage) DMG [ACTIVE GEAR ⚡]"
+                        : "\(weapon.tier.name) Tier - \(weapon.damage) DMG"
                 } else if let mod = item as? ModDTO {
                     emoji = "🔌"
                     sub = "\(mod.statAffected) Boost +\(Int(mod.multiplierBoost * 10))%"
@@ -205,10 +380,14 @@ public final class StatsInventoryViewController: UIViewController {
                 }
                 
                 let itemCard = UIView()
-                itemCard.backgroundColor = UIColor.white.withAlphaComponent(0.03)
+                itemCard.backgroundColor = isEquipped
+                    ? UIColor(red: 0.00, green: 0.94, blue: 1.00, alpha: 0.06)
+                    : UIColor.white.withAlphaComponent(0.03)
                 itemCard.layer.cornerRadius = 14
                 itemCard.layer.borderWidth = 1.0
-                itemCard.layer.borderColor = UIColor.white.withAlphaComponent(0.08).cgColor
+                itemCard.layer.borderColor = isEquipped
+                    ? UIColor(red: 0.00, green: 0.94, blue: 1.00, alpha: 0.50).cgColor
+                    : UIColor.white.withAlphaComponent(0.08).cgColor
                 itemCard.translatesAutoresizingMaskIntoConstraints = false
                 
                 let emojiL = UILabel()
@@ -220,16 +399,30 @@ public final class StatsInventoryViewController: UIViewController {
                 let titleL = UILabel()
                 titleL.text = item.name
                 titleL.font = .systemFont(ofSize: 13, weight: .bold)
-                titleL.textColor = .white
+                titleL.textColor = isEquipped ? UIColor(red: 0.00, green: 0.94, blue: 1.00, alpha: 1.0) : .white
                 titleL.translatesAutoresizingMaskIntoConstraints = false
                 itemCard.addSubview(titleL)
                 
                 let subL = UILabel()
                 subL.text = sub
                 subL.font = .systemFont(ofSize: 10, weight: .semibold)
-                subL.textColor = UIColor.white.withAlphaComponent(0.40)
+                subL.textColor = isEquipped
+                    ? UIColor(red: 0.00, green: 0.94, blue: 1.00, alpha: 0.70)
+                    : UIColor.white.withAlphaComponent(0.40)
                 subL.translatesAutoresizingMaskIntoConstraints = false
                 itemCard.addSubview(subL)
+                
+                var equipSwitch: UISwitch?
+                if let weapon = item as? WeaponDTO {
+                    let sw = UISwitch()
+                    sw.isOn = isEquipped
+                    sw.onTintColor = UIColor(red: 0.00, green: 0.94, blue: 1.00, alpha: 1.0)
+                    sw.translatesAutoresizingMaskIntoConstraints = false
+                    sw.addTarget(self, action: #selector(weaponSwitchToggled(_:)), for: .valueChanged)
+                    sw.accessibilityIdentifier = weapon.id.uuidString
+                    itemCard.addSubview(sw)
+                    equipSwitch = sw
+                }
                 
                 contentStack.addArrangedSubview(itemCard)
                 
@@ -239,11 +432,20 @@ public final class StatsInventoryViewController: UIViewController {
                     emojiL.centerYAnchor.constraint(equalTo: itemCard.centerYAnchor),
                     
                     titleL.leadingAnchor.constraint(equalTo: emojiL.trailingAnchor, constant: 12),
+                    titleL.trailingAnchor.constraint(equalTo: itemCard.trailingAnchor, constant: -80),
                     titleL.topAnchor.constraint(equalTo: itemCard.topAnchor, constant: 12),
                     
                     subL.leadingAnchor.constraint(equalTo: titleL.leadingAnchor),
+                    subL.trailingAnchor.constraint(equalTo: itemCard.trailingAnchor, constant: -80),
                     subL.topAnchor.constraint(equalTo: titleL.bottomAnchor, constant: 2)
                 ])
+                
+                if let sw = equipSwitch {
+                    NSLayoutConstraint.activate([
+                        sw.trailingAnchor.constraint(equalTo: itemCard.trailingAnchor, constant: -14),
+                        sw.centerYAnchor.constraint(equalTo: itemCard.centerYAnchor)
+                    ])
+                }
             }
         }
     }
@@ -341,4 +543,23 @@ public final class StatsInventoryViewController: UIViewController {
         let location = gesture.location(in: view)
         if !containerView.frame.contains(location) { closeTapped() }
     }
+    
+    @objc private func weaponSwitchToggled(_ sender: UISwitch) {
+        guard let wIdStr = sender.accessibilityIdentifier, let wId = UUID(uuidString: wIdStr) else { return }
+        
+        UIImpactFeedbackGenerator(style: .medium).impactOccurred()
+        
+        if sender.isOn {
+            InventoryManager.shared.equipWeapon(id: wId)
+        } else {
+            InventoryManager.shared.equipWeapon(id: nil)
+        }
+        
+        refreshUI()
+    }
+}
+
+// Custom Gesture Recognizer subclass to track weapon selection ID
+public final class WeaponTapGestureRecognizer: UITapGestureRecognizer {
+    public var weaponId: UUID?
 }

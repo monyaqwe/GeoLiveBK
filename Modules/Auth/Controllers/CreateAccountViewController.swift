@@ -56,9 +56,19 @@ final class CreateAccountViewController: UIViewController {
         button.layer.shadowOffset = CGSize(width: 0, height: 4)
         button.layer.shadowRadius = 8
         if let icon = UIImage(systemName: "g.circle.fill") {
-            button.setImage(icon, for: .normal)
-            button.tintColor = .black
-            button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 10)
+            if #available(iOS 15.0, *) {
+                var config = UIButton.Configuration.filled()
+                config.image = icon
+                config.imagePadding = 10
+                config.baseBackgroundColor = .white
+                config.baseForegroundColor = .black
+                config.title = "SIGN IN WITH GOOGLE"
+                button.configuration = config
+            } else {
+                button.setImage(icon, for: .normal)
+                button.tintColor = .black
+                button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 10)
+            }
         }
         return button
     }()

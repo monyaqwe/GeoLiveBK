@@ -70,8 +70,10 @@ final class AuthCoordinator {
                         return
                     }
                     
-                    // Create and present LoadingViewController once nickname is confirmed
                     let loadingVC = LoadingViewController(nickname: nickname, gender: finalGender, avatarImage: customizedImage, onComplete: { [weak selectionVC] in
+                        
+                        // Clear level rewards claimed state for a new game session!
+                        UserDefaults.standard.removeObject(forKey: "GeoLive_ClaimedRewards")
                         
                         // Initialize the MainMapViewController (standard Apple Map with live location)
                         let mapVC = MainMapViewController(nickname: nickname, gender: finalGender, avatarImage: customizedImage, onDisconnect: {

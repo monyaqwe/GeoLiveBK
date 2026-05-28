@@ -3,7 +3,8 @@ import CoreLocation
 
 /// Protocol for real-world mob spawning engine
 public protocol MapSpawnerServiceProtocol {
-    func spawnMobsAroundLocation(playerCoordinate: CLLocationCoordinate2D, dangerLevel: Int, completion: @escaping ([MobDTO]) -> Void)
+    func spawnMobsAroundLocation(playerCoordinate: CLLocationCoordinate2D, dangerLevel: Int, count: Int, completion: @escaping ([MobDTO]) -> Void)
+    func spawnRevengeWave(playerCoordinate: CLLocationCoordinate2D, dangerLevel: Int, sessionKills: Int, completion: @escaping ([MobDTO]) -> Void)
     func startProximitySpawnTimer(intervalSeconds: Double, playerLocationProvider: @escaping () -> CLLocationCoordinate2D)
     func stopSpawning()
 }
@@ -17,16 +18,11 @@ public final class MapSpawnerService: MapSpawnerServiceProtocol {
     
     private init() {}
     
-    public func spawnMobsAroundLocation(playerCoordinate: CLLocationCoordinate2D, dangerLevel: Int, completion: @escaping ([MobDTO]) -> Void) {
-        // High danger levels trigger slightly more mobs (up to 6), faster spawning, and tougher types
-        let baseCount = 2
-        let extraCount = dangerLevel / 4
-        let spawnCount = min(baseCount + extraCount, 6)
-        
+    public func spawnMobsAroundLocation(playerCoordinate: CLLocationCoordinate2D, dangerLevel: Int, count: Int = 1, completion: @escaping ([MobDTO]) -> Void) {
         var spawnedMobs: [MobDTO] = []
         let waveGroupId = UUID()
         
-        for i in 0..<spawnCount {
+        for _ in 0..<count {
             // Pick Mob Type based on danger level weightings
             let type: MobType
             let typeRoll = Int.random(in: 1...100) + (dangerLevel * 5)
@@ -39,8 +35,8 @@ public final class MapSpawnerService: MapSpawnerServiceProtocol {
                 type = .police
             }
             
-            // Truly random distance: between 50 and 1200 meters (reaching far beyond 150m/500m circles)
-            let distance = Double.random(in: 50.0...1200.0)
+            // Spawn distance: closer for revenge/engagement! (100 - 300 meters)
+            let distance = Double.random(in: 100.0...300.0)
             let angle = Double.random(in: 0.0...(2.0 * .pi))
             
             // 1 degree latitude ~ 111,000 meters
@@ -62,21 +58,28 @@ public final class MapSpawnerService: MapSpawnerServiceProtocol {
     public func startProximitySpawnTimer(intervalSeconds: Double, playerLocationProvider: @escaping () -> CLLocationCoordinate2D) {
         stopSpawning()
         
-        // Base dynamic interval gets shortened as dangerLevel rises
-        let currentDanger = DangerLevelManager.shared.currentDangerLevel
-        let adjustedInterval = max(intervalSeconds - Double(currentDanger * 2), 5.0)
-        
-        spawnTimer = Timer.scheduledTimer(withTimeInterval: adjustedInterval, repeats: true) { [weak self] _ in
+        // Exact 1-minute timer (60 seconds) for 1 passive mob
+        spawnTimer = Timer.scheduledTimer(withTimeInterval: 60.0, repeats: true) { [weak self] _ in
             guard let self = self else { return }
             
-            // 40% chance to actually trigger a spawn tick (slightly less frequent spawning)
-            guard Double.random(in: 0...1) < 0.40 else { return }
-            
             let coord = playerLocationProvider()
-            self.spawnMobsAroundLocation(playerCoordinate: coord, dangerLevel: DangerLevelManager.shared.currentDangerLevel) { [weak self] mobs in
+            self.spawnMobsAroundLocation(playerCoordinate: coord, dangerLevel: DangerLevelManager.shared.currentDangerLevel, count: 1) { [weak self] mobs in
                 self?.onNewMobsSpawned?(mobs)
             }
         }
+    }
+    
+    public func spawnRevengeWave(playerCoordinate: CLLocationCoordinate2D, dangerLevel: Int, sessionKills: Int, completion: @escaping ([MobDTO]) -> Void) {
+        let spawnCount: Int
+        if sessionKills <= 3 {
+            spawnCount = 1
+        } else if sessionKills <= 7 {
+            spawnCount = 2
+        } else {
+            spawnCount = 3
+        }
+        
+        spawnMobsAroundLocation(playerCoordinate: playerCoordinate, dangerLevel: dangerLevel, count: spawnCount, completion: completion)
     }
     
     public func stopSpawning() {

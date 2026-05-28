@@ -44,6 +44,19 @@ public final class InventoryManager: InventoryManagerProtocol {
         self.playerLevel = newLevel
     }
     
+    // Equip states
+    public private(set) var equippedWeaponId: UUID?
+    
+    public func equipWeapon(id: UUID?) {
+        equippedWeaponId = id
+        print("Inventory: Equipped weapon ID \(String(describing: id))")
+    }
+    
+    public func getEquippedWeapon() -> WeaponDTO? {
+        guard let eqId = equippedWeaponId else { return nil }
+        return _items.first(where: { $0.id == eqId }) as? WeaponDTO
+    }
+    
     public func canAddItem(_ item: ItemProtocol) -> Bool {
         return currentOccupiedSlots + item.slotOccupied <= maxSlots
     }

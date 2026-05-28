@@ -313,10 +313,18 @@ final class ShopViewController: UIViewController {
         let priceBtn = UIButton(type: .custom)
         priceBtn.setTitle(item.price.uppercased(), for: .normal)
         priceBtn.titleLabel?.font = UIFont.systemFont(ofSize: 10, weight: .black)
-        priceBtn.setTitleColor(UIColor(white: 0.08, alpha: 1.0), for: .normal)
-        priceBtn.backgroundColor = item.accentColor
+        if #available(iOS 15.0, *) {
+            var config = UIButton.Configuration.filled()
+            config.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 12, bottom: 8, trailing: 12)
+            config.baseBackgroundColor = item.accentColor
+            config.baseForegroundColor = UIColor(white: 0.08, alpha: 1.0)
+            priceBtn.configuration = config
+        } else {
+            priceBtn.setTitleColor(UIColor(white: 0.08, alpha: 1.0), for: .normal)
+            priceBtn.backgroundColor = item.accentColor
+            priceBtn.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
+        }
         priceBtn.layer.cornerRadius = 14
-        priceBtn.contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
         priceBtn.translatesAutoresizingMaskIntoConstraints = false
         priceBtn.addTarget(self, action: #selector(purchaseTapped(_:)), for: .touchUpInside)
         card.addSubview(priceBtn)
