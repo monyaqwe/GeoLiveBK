@@ -1253,6 +1253,7 @@ public final class MainMapViewController: UIViewController {
         // Update HP in view
         if let annView = mapView.view(for: mobAnn) as? MobAnnotationView {
             annView.updateHP(current: mob.currentHP, max: mob.maxHP)
+            annView.showFloatingDamage(amount: scaledDamage)
         }
         
         targetHPLabel.text = "HP: \(mob.currentHP)/\(mob.maxHP)"
@@ -1280,18 +1281,12 @@ public final class MainMapViewController: UIViewController {
                 message += " — LEVEL UP!"
             }
             
-            // Group clearance check
-            var groupLeveledUp = false
-            var newGroupLevel = 1
-            if let groupId = mob.groupId {
-                let remainingInGroup = activeMobAnnotations.filter { ann in
-                    ann != mobAnn && ann.mobDTO.groupId == groupId && ann.mobDTO.type == mob.type
-                }
-                if remainingInGroup.isEmpty {
-                    DangerLevelManager.shared.incrementLevel(for: mob.type)
-                    newGroupLevel = DangerLevelManager.shared.level(for: mob.type)
-                    groupLeveledUp = true
-                }
+            // Series-based mob type leveling check
+            var typeLeveledUp = false
+            var newTypeLevel = 1
+            if DangerLevelManager.shared.registerKill(for: mob.type) {
+                newTypeLevel = DangerLevelManager.shared.level(for: mob.type)
+                typeLeveledUp = true
             }
             
             updateStatsBarLabels()
@@ -1303,8 +1298,8 @@ public final class MainMapViewController: UIViewController {
                 lightUpRewardsButton()
             }
             
-            if groupLeveledUp {
-                showTopLevelUpBanner(message: "⚠️ NEIGHBORHOOD DANGER INCREASED\n\(mob.type.rawValue) group cleared! Leveled up to Lv. \(newGroupLevel)!")
+            if typeLeveledUp {
+                showTopLevelUpBanner(message: "⚠️ NEIGHBORHOOD DANGER INCREASED\n\(mob.type.rawValue) level raised to Lv. \(newTypeLevel)!")
             }
             
             mapView.removeAnnotation(mobAnn)
@@ -1317,29 +1312,43 @@ public final class MainMapViewController: UIViewController {
             }
             targetedMobAnnotation = nil
         } else {
-            // Mob only counter-attacks if outside the player's small inner circle (150m)
-            if distanceM >= 150 {
+            // Mobs can only shoot/counter-attack when inside your small 150m circle (their max attack range)
+            if distanceM <= 150 {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) { [weak self] in
                     guard let self = self else { return }
                     self.takeDamage(amount: mob.damage)
                 }
             } else {
-                showNotificationHUD(message: "🛡️ TARGET TOO CLOSE\nEnemy cannot fire at you inside your safe circle!")
+                showNotificationHUD(message: "🛡️ OUT OF RANGE\nEnemy is too far to fire at you (max range is 150m)!")
             }
         }
     }
     
     private func handleNewMobsSpawned(_ mobs: [MobDTO]) {
-        // Clear old mob annotations
-        mapView.removeAnnotations(activeMobAnnotations)
-        activeMobAnnotations.removeAll()
+        var updatedAnnotations: [MobAnnotation] = []
         
-        // Add new annotations
         for mob in mobs {
-            let ann = MobAnnotation(coordinate: mob.coordinate, mobDTO: mob)
-            activeMobAnnotations.append(ann)
-            mapView.addAnnotation(ann)
+            // Check if we already have this mob on the map
+            if let existing = activeMobAnnotations.first(where: { $0.mobDTO.id == mob.id }) {
+                existing.mobDTO = mob
+                // Smooth glide transition to the new coordinate
+                self.animateAnnotation(existing, toCoordinate: mob.coordinate, duration: 1.0)
+                updatedAnnotations.append(existing)
+            } else {
+                // New mob spawned
+                let ann = MobAnnotation(coordinate: mob.coordinate, mobDTO: mob)
+                mapView.addAnnotation(ann)
+                updatedAnnotations.append(ann)
+            }
         }
+        
+        // Clean up any old mobs that are no longer spawned
+        let toRemove = activeMobAnnotations.filter { oldAnn in
+            !mobs.contains(where: { $0.id == oldAnn.mobDTO.id })
+        }
+        mapView.removeAnnotations(toRemove)
+        
+        activeMobAnnotations = updatedAnnotations
     }
     
     // MARK: - Build Store & Dynamic Placement Engine

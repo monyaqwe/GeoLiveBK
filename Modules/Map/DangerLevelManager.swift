@@ -21,6 +21,15 @@ public final class DangerLevelManager: DangerLevelManagerProtocol {
         .police: 1
     ]
     
+    // Kill count tracking per MobType to enforce series-based leveling
+    private var typeKills: [MobType: Int] = [
+        .necroRats: 0,
+        .bandits: 0,
+        .police: 0
+    ]
+    
+    private let kKillsThreshold = 5 // Enforce a series of 5 kills of the same type to level up
+    
     public private(set) var currentDangerLevel: Int = 1 {
         didSet {
             onDangerLevelChanged?(currentDangerLevel)
@@ -45,6 +54,19 @@ public final class DangerLevelManager: DangerLevelManagerProtocol {
         currentDangerLevel = mobLevels.values.max() ?? 1
     }
     
+    // Registers a type-specific kill and returns true if it triggered a level-up
+    public func registerKill(for type: MobType) -> Bool {
+        let kills = (typeKills[type] ?? 0) + 1
+        typeKills[type] = kills
+        
+        if kills >= kKillsThreshold {
+            typeKills[type] = 0
+            incrementLevel(for: type)
+            return true
+        }
+        return false
+    }
+    
     public func registerMobKilled() {
         mobKillsCount += 1
         // Keep fallback logic if group mechanics are bypassed
@@ -58,6 +80,11 @@ public final class DangerLevelManager: DangerLevelManagerProtocol {
             .necroRats: 1,
             .bandits: 1,
             .police: 1
+        ]
+        typeKills = [
+            .necroRats: 0,
+            .bandits: 0,
+            .police: 0
         ]
     }
 }

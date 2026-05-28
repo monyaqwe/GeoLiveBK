@@ -20,7 +20,7 @@ public final class SkullAnnotationView: MKAnnotationView {
     private let emojiLabel: UILabel = {
         let label = UILabel()
         label.text = "💀"
-        label.font = .systemFont(ofSize: 32)
+        label.font = .systemFont(ofSize: 18) // Shrink font from 32 to 18
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -37,18 +37,18 @@ public final class SkullAnnotationView: MKAnnotationView {
     }
     
     private func setupView() {
-        frame = CGRect(x: 0, y: 0, width: 40, height: 40)
-        centerOffset = CGPoint(x: 0, y: -20)
+        frame = CGRect(x: 0, y: 0, width: 24, height: 24) // Shrink frame from 40x40 to 24x24
+        centerOffset = CGPoint(x: 0, y: -12)
         addSubview(emojiLabel)
         NSLayoutConstraint.activate([
             emojiLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
             emojiLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            emojiLabel.widthAnchor.constraint(equalToConstant: 40),
-            emojiLabel.heightAnchor.constraint(equalToConstant: 40)
+            emojiLabel.widthAnchor.constraint(equalToConstant: 24),
+            emojiLabel.heightAnchor.constraint(equalToConstant: 24)
         ])
         
         layer.shadowColor = UIColor.red.cgColor
-        layer.shadowRadius = 6.0
+        layer.shadowRadius = 4.0
         layer.shadowOpacity = 0.8
         layer.shadowOffset = .zero
     }

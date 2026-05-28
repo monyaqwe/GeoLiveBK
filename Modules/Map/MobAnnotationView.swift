@@ -112,4 +112,35 @@ public final class MobAnnotationView: MKAnnotationView {
             self.hpBar.layoutIfNeeded()
         }
     }
+    
+    public func showFloatingDamage(amount: Int) {
+        let label = UILabel()
+        label.text = "-\(amount)"
+        label.textColor = .red
+        label.font = UIFont.systemFont(ofSize: 22, weight: .black)
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(label)
+        
+        NSLayoutConstraint.activate([
+            label.centerXAnchor.constraint(equalTo: centerXAnchor),
+            label.bottomAnchor.constraint(equalTo: hpContainer.topAnchor, constant: -6)
+        ])
+        
+        // Glow effect
+        label.layer.shadowColor = UIColor.black.cgColor
+        label.layer.shadowRadius = 3.0
+        label.layer.shadowOpacity = 1.0
+        label.layer.shadowOffset = .zero
+        
+        label.transform = .identity
+        label.alpha = 1.0
+        
+        UIView.animate(withDuration: 0.8, delay: 0.0, options: .curveEaseOut, animations: {
+            label.transform = CGAffineTransform(translationX: CGFloat.random(in: -12...12), y: -35)
+            label.alpha = 0.0
+        }) { _ in
+            label.removeFromSuperview()
+        }
+    }
 }

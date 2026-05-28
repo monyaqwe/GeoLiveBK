@@ -53,89 +53,59 @@ final class AuthCoordinator {
                     return
                 }
                 
-                // 1. Create the MainDashboardViewController (appears after saving the character)
-                let dashboardVC = MainDashboardViewController(
-                    nickname: "", // Start empty to trigger the "NOT CONFIGURED" orange indicator
-                    gender: finalGender,
-                    avatarImage: customizedImage,
-                    onDisconnect: { [weak selectionVC] in
-                        // Clean disconnect back to registration
-                        if let appDelegate = UIApplication.shared.delegate as? AppDelegate,
-                           let window = appDelegate.window {
-                            let navigationController = UINavigationController()
-                            let newCoordinator = AuthCoordinator(navigationController: navigationController)
-                            appDelegate.appCoordinator = newCoordinator
-                            newCoordinator.start()
-                            window.rootViewController = navigationController
-                            window.makeKeyAndVisible()
+                // Bypass Operative Dashboard completely and go directly to NicknameEntryViewController!
+                weak var weakNicknameVC: NicknameEntryViewController?
+                let nicknameVC = NicknameEntryViewController(gender: finalGender, avatarImage: customizedImage, onContinue: { [weak selectionVC] nickname in
+                    guard let selectionVC = selectionVC else { return }
+                    
+                    let targetVC = weakNicknameVC ?? {
+                        var topVC: UIViewController = selectionVC
+                        while let presented = topVC.presentedViewController {
+                            topVC = presented
                         }
-                    }
-                )
-                
-                // 2. Tapping "CONFIGURE NICKNAME & MAP" on the Dashboard starts the nickname config
-                dashboardVC.onProceed = { [weak selectionVC, weak dashboardVC] in
-                    guard let selectionVC = selectionVC,
-                          let dashboardVC = dashboardVC else {
+                        return topVC as? NicknameEntryViewController
+                    }()
+                    
+                    guard let nicknameVC = targetVC else {
                         return
                     }
                     
-                    // 3. Create the NicknameEntryViewController to let user enter nickname
-                    weak var weakNicknameVC: NicknameEntryViewController?
-                    let nicknameVC = NicknameEntryViewController(gender: finalGender, avatarImage: customizedImage, onContinue: { [weak selectionVC] nickname in
-                        guard let selectionVC = selectionVC else { return }
+                    // Create and present LoadingViewController once nickname is confirmed
+                    let loadingVC = LoadingViewController(nickname: nickname, gender: finalGender, avatarImage: customizedImage, onComplete: { [weak selectionVC] in
                         
-                        let targetVC = weakNicknameVC ?? {
-                            var topVC: UIViewController = selectionVC
-                            while let presented = topVC.presentedViewController {
-                                topVC = presented
-                            }
-                            return topVC as? NicknameEntryViewController
-                        }()
-                        
-                        guard let nicknameVC = targetVC else {
-                            return
-                        }
-                        
-                        // 4. Create and present LoadingViewController once nickname is confirmed
-                        let loadingVC = LoadingViewController(nickname: nickname, gender: finalGender, avatarImage: customizedImage, onComplete: { [weak selectionVC] in
-                            
-                            // 5. Initialize the MainMapViewController (standard Apple Map with live location)
-                            let mapVC = MainMapViewController(nickname: nickname, gender: finalGender, avatarImage: customizedImage, onDisconnect: {
-                                if let appDelegate = UIApplication.shared.delegate as? AppDelegate,
-                                   let window = appDelegate.window {
-                                    let navigationController = UINavigationController()
-                                    let newCoordinator = AuthCoordinator(navigationController: navigationController)
-                                    appDelegate.appCoordinator = newCoordinator
-                                    newCoordinator.start()
-                                    window.rootViewController = navigationController
-                                    window.makeKeyAndVisible()
-                                }
-                            })
-                            
-                            // Replace window's root to route natively to Apple Map
+                        // Initialize the MainMapViewController (standard Apple Map with live location)
+                        let mapVC = MainMapViewController(nickname: nickname, gender: finalGender, avatarImage: customizedImage, onDisconnect: {
                             if let appDelegate = UIApplication.shared.delegate as? AppDelegate,
                                let window = appDelegate.window {
-                                selectionVC?.dismiss(animated: false, completion: nil)
-                                window.rootViewController = mapVC
+                                let navigationController = UINavigationController()
+                                let newCoordinator = AuthCoordinator(navigationController: navigationController)
+                                appDelegate.appCoordinator = newCoordinator
+                                newCoordinator.start()
+                                window.rootViewController = navigationController
                                 window.makeKeyAndVisible()
                             }
                         })
                         
-                        loadingVC.modalPresentationStyle = .fullScreen
-                        nicknameVC.present(loadingVC, animated: true, completion: nil)
-                        
-                    }, onCancel: { [weak dashboardVC] in
-                        // Tapping back dismisses nickname config to return to dashboard
-                        dashboardVC?.dismiss(animated: true, completion: nil)
+                        // Replace window's root to route natively to Apple Map
+                        if let appDelegate = UIApplication.shared.delegate as? AppDelegate,
+                           let window = appDelegate.window {
+                            selectionVC?.dismiss(animated: false, completion: nil)
+                            window.rootViewController = mapVC
+                            window.makeKeyAndVisible()
+                        }
                     })
                     
-                    weakNicknameVC = nicknameVC
-                    nicknameVC.modalPresentationStyle = .fullScreen
-                    dashboardVC.present(nicknameVC, animated: true, completion: nil)
-                }
+                    loadingVC.modalPresentationStyle = .fullScreen
+                    nicknameVC.present(loadingVC, animated: true, completion: nil)
+                    
+                }, onCancel: { [weak customizationVC] in
+                    // Tapping back dismisses nickname config to return to customization
+                    customizationVC?.dismiss(animated: true, completion: nil)
+                })
                 
-                dashboardVC.modalPresentationStyle = .fullScreen
-                customizationVC.present(dashboardVC, animated: true, completion: nil)
+                weakNicknameVC = nicknameVC
+                nicknameVC.modalPresentationStyle = .fullScreen
+                customizationVC.present(nicknameVC, animated: true, completion: nil)
                 
             }, onCancel: { [weak selectionVC] in
                 selectionVC?.dismiss(animated: true, completion: nil)
