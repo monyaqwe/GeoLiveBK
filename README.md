@@ -6,17 +6,17 @@
 [![WebSocket](https://img.shields.io/badge/Networking-WebSockets-violet.svg?style=for-the-badge&logo=socket.io)](https://developer.mozilla.org/en-US/docs/Web/API/WebSockets_API)
 [![Database](https://img.shields.io/badge/Database-SQLite-003B57.svg?style=for-the-badge&logo=sqlite)](https://sqlite.org/)
 
-**GeoLive** — это инновационная многопользовательская игра в реальном времени с элементами PvP, построенная на базе реальных географических карт (MapKit). Игроки могут перемещаться по реальному миру, строить и улучшать базы, совершать рейды на постройки соперников, собирать ценные останки врагов (Skulls) и сражаться друг с другом в реальном времени с использованием WebSocket-синхронизации.
+**GeoLive** is an innovative, real-time multiplayer PvP game built on top of real-world maps (MapKit). Players can move around the real world, build and upgrade bases, raid opponents' buildings, collect valuable fallen enemy remains (Skulls), and engage in real-time battles synced via WebSockets.
 
-Проект состоит из двух ключевых компонентов:
-1. **iOS Client (Swift / UIKit / MapKit)** — интерактивный картографический клиент с кастомным интерфейсом.
-2. **Go Backend (WebSockets / Spatial Hashing)** — высокопроизводительный игровой сервер, управляющий миром, PvP-боями и постоянным хранением данных в SQLite.
+The project is split into two core components:
+1. **iOS Client (Swift / UIKit / MapKit)** — An interactive map client with a premium custom user interface.
+2. **Go Backend (WebSockets / Spatial Hashing)** — A high-performance game server managing the active world state, PvP interactions, and permanent data persistence using SQLite.
 
 ---
 
-## 🛠 Архитектурная схема системы
+## 🛠 System Architecture
 
-Ниже представлена диаграмма взаимодействия систем в реальном времени:
+Below is a diagram showing the real-time interaction between components:
 
 ```mermaid
 graph TD
@@ -33,87 +33,87 @@ graph TD
 
 ---
 
-## ✨ Ключевые возможности проекта
+## ✨ Core Features
 
-| Модуль | Описание функционала | Технологии / Архитектура |
+| Module | Description | Tech / Architecture |
 | :--- | :--- | :--- |
-| **📍 Map PvP & Movement** | Отображение игроков на карте MapKit в реальном времени с плавным перемещением. | `MapKit`, `CoreLocation`, `WebSockets` |
-| **⚔️ PvP & Base Raids** | Рейды на базы других игроков при входе в радиус действия. Награда: +250 Coins и +100 XP. | `Geofencing`, `Spatial Proximity Check` |
-| **☠️ Skull Remains Sync** | Выпадение останков (черепов) поверженных врагов на карту, сбор черепов в радиусе с мгновенным обновлением у всех игроков. | `WebSockets Broadcast`, `Global Cooldowns` |
-| **📈 Global Auto-Collect** | Сбор монет и ресурсов со всех принадлежащих игроку зданий по долгому нажатию на экран. | `Swift UI-Gestures`, `Server validation` |
-| **🗄 SQLite DB & Backup** | Сохранение прогресса игрока (монеты, кристаллы, уровень, здания) с регулярным резервным копированием каждые 5 минут в фоновом режиме. | `go-sqlite3`, `Goroutines / Tickers` |
-| **🚀 Spatial Hashing** | Использование сетки координат для быстрого поиска ближайших игроков и оптимизации трафика сети. | `Thread-safe Grid Hashing (Server)` |
+| **📍 Map PvP & Movement** | Real-time player rendering and smooth movement synchronization across MapKit. | `MapKit`, `CoreLocation`, `WebSockets` |
+| **⚔️ PvP & Base Raids** | Raid other players' bases when moving within their proximity radius. Rewards: +250 Coins and +100 XP. | `Geofencing`, `Spatial Proximity Check` |
+| **☠️ Skull Remains Sync** | Slain enemies drop skull remains on the map. Collecting them in proximity updates instantly for all nearby players. | `WebSockets Broadcast`, `Global Cooldowns` |
+| **📈 Global Auto-Collect** | Long-press anywhere on the screen to trigger automated coin and resource collection from all owned buildings. | `Swift UI-Gestures`, `Server validation` |
+| **🗄 SQLite DB & Backup** | Permanent persistence of player profiles, levels, coins, gems, and building states with background backups every 5 minutes. | `go-sqlite3`, `Goroutines / Tickers` |
+| **🚀 Spatial Hashing** | Grid-based coordination mapping to search nearby players fast and minimize network overhead. | `Thread-safe Grid Hashing (Server)` |
 
 ---
 
-## 📂 Структура репозитория
+## 📂 Repository Directory Structure
 
 ```text
-├── GeoLive.xcodeproj        # Xcode проект приложения
-├── GeoLive.xcworkspace      # Xcode Workspace (используется для запуска с CocoaPods)
-├── Podfile                  # Файл конфигурации внешних iOS-зависимостей
-├── Modules/                 # Модульная структура iOS-клиента
-│   ├── Auth/                # Регистрация, авторизация и координация
-│   ├── Buildings/           # Модели и логика игровых построек
-│   └── Main/                # Основной игровой процесс
-│       ├── Controllers/     # Основной MainMapViewController (интеграция карты)
-│       ├── Services/        # GameWebSocketService (менеджер соединений)
-│       ├── Views/           # Кастомные аннотации, кнопки, алерты
-│       └── Models/          # Игровые структуры данных
-├── UIComponents/            # Повторно используемые компоненты интерфейса (алерты, плашки)
-├── Server/                  # Высокопроизводительный сервер на Go
-│   ├── db.go                # Инициализация SQLite, миграции схемы БД, бэкапы
+├── GeoLive.xcodeproj        # Xcode project file
+├── GeoLive.xcworkspace      # Xcode Workspace (use this to launch with CocoaPods)
+├── Podfile                  # CocoaPods dependency configuration
+├── Modules/                 # Modular iOS Client architecture
+│   ├── Auth/                # Registration, sign-in flow, and coordination
+│   ├── Buildings/           # Building models, structures, and upgrades
+│   └── Main/                # Core gameplay module
+│       ├── Controllers/     # MainMapViewController (core MapView integration)
+│       ├── Services/        # GameWebSocketService (network socket lifecycle)
+│       ├── Views/           # Custom annotations, controls, and alert views
+│       └── Models/          # Core game model structures
+├── UIComponents/            # Reusable UI alerts, modals, and notifications
+├── Server/                  # High-performance Go Backend
+│   ├── db.go                # SQLite initialization, schema migrations, and backups
 │   ├── world.go             # WorldManager, Grid-based Spatial Hashing
-│   ├── hub.go               # Хаб для координации WebSocket-клиентов
-│   ├── client.go            # Клиентские циклы чтения/записи сокетов
-│   ├── main.go              # Точка входа в сервер, HTTP/WS роутинг (порт 8082)
-│   └── models.go            # Общие DTO структуры для JSON-пакетов
-└── README.md                # Документация проекта
+│   ├── hub.go               # Hub for client routing and multiplexing WebSockets
+│   ├── client.go            # WebSocket read/write loops and handler logic
+│   ├── main.go              # Entry point, HTTP routes, and WebSocket upgraded listener (port 8082)
+│   └── models.go            # Shared data transfer objects (JSON payload schemas)
+└── README.md                # Project documentation
 ```
 
 ---
 
-## 🚀 Быстрый старт для разработчиков
+## 🚀 Quick Start Guide
 
-Так как локальные конфигурации участников команды полностью вынесены в `.gitignore`, проект разворачивается за пару минут.
+Since local machine user states and absolute paths are completely cleaned and managed by `.gitignore`, setting up the project takes less than two minutes.
 
-### Шаг 1: Настройка и запуск Backend (Go + SQLite)
+### Step 1: Spin up the Go Backend (Go + SQLite)
 
-Перейдите в папку сервера, соберите зависимости и запустите приложение.
+Navigate to the Server folder, download dependencies, and run the backend.
 
 ```bash
-# Переход в директорию сервера
+# Navigate to the server folder
 cd Server
 
-# Скачивание и оптимизация зависимостей
+# Tidy and fetch Go dependencies
 go mod tidy
 
-# Запуск Go сервера (база данных geolive.db создастся автоматически)
+# Start the Go server (the database geolive.db is created automatically)
 go run .
 ```
 
-*Сервер запустится на порту `8082` (для предотвращения конфликтов со стандартными портами macOS).*
+*The server will start running on port `8082` (preventing address conflicts with native macOS services).*
 
-### Шаг 2: Настройка iOS клиента (Xcode + CocoaPods)
+### Step 2: Initialize the iOS Client (Xcode + CocoaPods)
 
-Убедитесь, что у вас установлен [CocoaPods](https://cocoapods.org/).
+Ensure you have [CocoaPods](https://cocoapods.org/) installed on your macOS machine.
 
 ```bash
-# Установка iOS-зависимостей из корневой директории
+# Install iOS dependencies from the root directory
 pod install
 ```
 
 > [!IMPORTANT]  
-> Всегда открывайте файл рабочей области **`GeoLive.xcworkspace`** в Xcode, а не индивидуальный проект `.xcodeproj`.
+> Always open the **`GeoLive.xcworkspace`** workspace file in Xcode, rather than the raw `.xcodeproj` file.
 
 ---
 
-## 📡 Протокол WebSocket взаимодействия (Примеры сообщений)
+## 📡 WebSocket API Protocol (Sample Payloads)
 
-Обмен игровыми событиями между iOS-клиентом и Go-сервером происходит посредством JSON-сообщений следующего формата.
+All events between the iOS Client and Go Server are transferred as lightweight JSON structures.
 
-### 1. Обновление локации игрока (Отправка на сервер)
-Отправляется клиентом при изменении геопозиции на карте:
+### 1. Location Update (Client ➔ Server)
+Sent by the client whenever the player moves or core location updates:
 ```json
 {
   "type": "location",
@@ -123,8 +123,8 @@ pod install
 }
 ```
 
-### 2. Рейд на чужую базу (Синхронизация PvP)
-Инициируется клиентом, когда игрок атакует здание врага:
+### 2. Base Raid Event (Client ➔ Server ➔ Broadcast)
+Fired when a player triggers an attack on an enemy base inside their range:
 ```json
 {
   "type": "base_raid",
@@ -135,8 +135,8 @@ pod install
 }
 ```
 
-### 3. Выпадение останков (Событие от Сервера)
-Рассылается сервером всем игрокам в радиусе видимости при появлении нового Skull Remains на карте:
+### 3. Skull Remains Spawn (Server ➔ Client Broadcast)
+Broadcast by the server to all players within view range when a collectible skull spawns on the map:
 ```json
 {
   "type": "skull_spawn",
@@ -150,9 +150,9 @@ pod install
 
 ---
 
-## 🤝 Совместная разработка и Git-правила
+## 🤝 Collaboration & Git Guidelines
 
-Для предотвращения конфликтов версий и ошибок путей при работе в команде, строго соблюдайте следующие правила:
-1. **Никогда не коммитьте скрытые папки Xcode**: Папка `.xcworkspace/xcuserdata/` содержит пути к вашему локальному диску на Mac и находится в глобальном игнорировании.
-2. **Папка `Pods/` закрыта для коммитов**: Все внешние библиотеки подтягиваются индивидуально каждым разработчиком через `pod install`.
-3. **Локальная база данных SQLite**: Файлы `Server/geolive.db` и файлы транзакций `geolive.db-journal` также полностью игнорируются, чтобы разработчики не перезаписывали прогресс друг друга.
+To maintain workspace stability and prevent absolute path conflicts on different Mac machines:
+1. **Never commit Xcode User Data**: The `.xcworkspace/xcuserdata/` directory contains local developer cache states and is strictly ignored.
+2. **Do not commit `Pods/`**: External Swift frameworks must be handled locally on each system using `pod install`.
+3. **Local SQLite databases**: Do not commit `Server/geolive.db` or its transaction journals to avoid overwriting each other's local testing progress.
