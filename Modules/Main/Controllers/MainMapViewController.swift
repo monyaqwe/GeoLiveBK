@@ -3897,14 +3897,30 @@ public final class BuildingExclusionZonesRenderer: MKOverlayRenderer {
 // MARK: - UIGestureRecognizerDelegate
 extension MainMapViewController: UIGestureRecognizerDelegate {
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        // Do not allow map gestures (like mapSwipeUp or mapTap) to recognize simultaneously with the map's internal pan/zoom gestures.
+        // This prevents accidental menu opening when panning or zooming the map.
+        if gestureRecognizer.view is MKMapView || otherGestureRecognizer.view is MKMapView {
+            return false
+        }
         return true
     }
     
     public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
         let loc = touch.location(in: view)
+        
+        // Let the attack button handle its own taps
         if combatControlBar.alpha > 0 && combatControlBar.frame.contains(loc) {
-            return false // Let the attack button handle its own taps
+            return false
         }
+        
+        // If the touch is inside the bottom bar, map gesture recognizers should not receive it
+        if gestureRecognizer.view is MKMapView {
+            let locInBottomBar = touch.location(in: bottomBar)
+            if bottomBar.bounds.contains(locInBottomBar) {
+                return false
+            }
+        }
+        
         return true
     }
 }
