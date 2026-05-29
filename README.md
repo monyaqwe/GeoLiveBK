@@ -150,9 +150,3 @@ Broadcast by the server to all players within view range when a collectible skul
 
 ---
 
-## 🤝 Collaboration & Git Guidelines
-
-To maintain workspace stability and prevent absolute path conflicts on different Mac machines:
-1. **Never commit Xcode User Data**: The `.xcworkspace/xcuserdata/` directory contains local developer cache states and is strictly ignored.
-2. **Do not commit `Pods/`**: External Swift frameworks must be handled locally on each system using `pod install`.
-3. **Local SQLite databases**: Do not commit `Server/geolive.db` or its transaction journals to avoid overwriting each other's local testing progress.
