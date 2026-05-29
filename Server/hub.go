@@ -12,14 +12,16 @@ type Hub struct {
 	register   chan *Client
 	unregister chan *Client
 	mutex      sync.RWMutex
+	world      *WorldManager
 }
 
-func newHub() *Hub {
+func newHub(world *WorldManager) *Hub {
 	return &Hub{
 		broadcast:  make(chan []byte),
 		register:   make(chan *Client),
 		unregister: make(chan *Client),
 		clients:    make(map[*Client]bool),
+		world:      world,
 	}
 }
 
@@ -47,6 +49,9 @@ func (h *Hub) run() {
 				delete(h.clients, client)
 				close(client.send)
 				log.Printf("🔌 Client disconnected: %s (%s)", client.nickname, client.id)
+				
+				// Clean up from spatial world manager
+				h.world.RemovePlayer(client.id)
 				
 				// Notify other players about disconnect
 				leaveMsg, _ := json.Marshal(Message{

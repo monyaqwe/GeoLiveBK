@@ -67,14 +67,33 @@ func (c *Client) readPump() {
 				c.lat = msg.Location.Latitude
 				c.lon = msg.Location.Longitude
 				
-				// Broadcast movement to all other players
+				hp, maxHP, level := 100, 100, 1
+				if msg.Player != nil {
+					hp = msg.Player.HP
+					maxHP = msg.Player.MaxHP
+					level = msg.Player.Level
+				}
+				
+				// Update world manager thread-safe state
+				pState := c.hub.world.UpdatePlayer(c.id, c.nickname, c.lat, c.lon, hp, maxHP, level)
+				
+				// Broadcast updated movement and state back to neighborhood
 				moveMsg, _ := json.Marshal(Message{
 					Event:    "opponent_move",
 					PlayerID: c.id,
 					Nickname: c.nickname,
 					Location: msg.Location,
+					Player:   pState,
 				})
 				c.hub.broadcastToOthers(c, moveMsg)
+				
+				// Perform spatial radius query and return nearby players list
+				nearby := c.hub.world.GetPlayersInRadius(c.lat, c.lon)
+				nearbyMsg, _ := json.Marshal(Message{
+					Event:         "active_players_list",
+					ActivePlayers: nearby,
+				})
+				c.send <- nearbyMsg
 			}
 			
 		case "chat_message":

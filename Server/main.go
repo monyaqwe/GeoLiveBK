@@ -8,7 +8,8 @@ import (
 func main() {
 	log.Println("🚀 Initializing GeoLive Arena WebSocket Server...")
 	
-	hub := newHub()
+	world := newWorldManager()
+	hub := newHub(world)
 	go hub.run()
 	
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
@@ -19,7 +20,7 @@ func main() {
 		serveWs(hub, w, r)
 	})
 	
-	port := "8080"
+	port := "8082" // Shifted to 8082 to bypass local address-already-in-use conflicts!
 	log.Printf("📡 Live on port %s. Awaiting operatives...", port)
 	
 	if err := http.ListenAndServe(":"+port, nil); err != nil {
