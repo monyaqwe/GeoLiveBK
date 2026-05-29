@@ -1130,17 +1130,7 @@ public final class MainMapViewController: UIViewController {
             showLevelUpCongratulationAlert()
             lightUpRewardsButton()
             
-            // Award +50 damage pistol
-            let rewardPistol = WeaponDTO(type: .pistol, tier: .legendary, damage: 65) // 15 base + 50 DMG = 65 DMG
-            InventoryManager.shared.addItem(rewardPistol) { [weak self] result in
-                guard let self = self else { return }
-                switch result {
-                case .success:
-                    self.showNotificationHUD(message: "🎁 LEVEL 2 MILESTONE REWARD\nReceived Milestone Pistol (+50 DMG)!\nOpen Stats/Inventory to equip it!")
-                case .failure:
-                    self.showNotificationHUD(message: "⚠️ INVENTORY FULL\nCould not receive Milestone Pistol. Clear some space!")
-                }
-            }
+            // Pistol reward moved to rewardsVC claim.
         }
     }
     
@@ -1245,12 +1235,25 @@ public final class MainMapViewController: UIViewController {
         rewardsVC.currentLevel = playerLevel
         rewardsVC.coins = coins
         rewardsVC.gems = gems
-        rewardsVC.onRewardClaimed = { [weak self] message, cash, gemBonus in
+        rewardsVC.onRewardClaimed = { [weak self] level, message, cash, gemBonus in
             guard let self = self else { return }
             self.coins += cash
             self.gems += gemBonus
             self.updateStatsBarLabels()
             self.showNotificationHUD(message: "\(message)\nReceived $\(cash) & \(gemBonus) Gems!")
+            
+            // Level 2 Reward: Pistol (+20 damage)
+            if level == 2 {
+                let rewardPistol = WeaponDTO(type: .pistol, tier: .rare, damage: 35) // 15 base + 20 DMG
+                InventoryManager.shared.addItem(rewardPistol) { result in
+                    switch result {
+                    case .success:
+                        self.showNotificationHUD(message: "🔫 MILESTONE REWARD\nReceived Pistol (+20 DMG)!\nOpen Stats/Inventory to equip it!")
+                    case .failure:
+                        self.showNotificationHUD(message: "⚠️ INVENTORY FULL\nCould not receive Milestone Pistol. Clear some space!")
+                    }
+                }
+            }
         }
         rewardsVC.modalPresentationStyle = .overFullScreen
         rewardsVC.modalTransitionStyle = .crossDissolve
@@ -1371,7 +1374,8 @@ public final class MainMapViewController: UIViewController {
                 MapSpawnerService.shared.spawnRevengeWave(
                     playerCoordinate: playerCoord,
                     dangerLevel: DangerLevelManager.shared.currentDangerLevel,
-                    sessionKills: sessionKills
+                    sessionKills: sessionKills,
+                    mobType: mob.type
                 ) { [weak self] newMobs in
                     self?.handleNewMobsSpawned(newMobs)
                 }
@@ -1935,25 +1939,40 @@ public final class MainMapViewController: UIViewController {
             ? "COLLECT $\(pending) ⬆️"
             : "EMPTY 📭"
         collectBtn.setTitle(collectTitle, for: .normal)
-        collectBtn.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .bold)
         collectBtn.titleLabel?.numberOfLines = 1
+        
         if #available(iOS 15.0, *) {
             var config = UIButton.Configuration.filled()
-            config.contentInsets = NSDirectionalEdgeInsets(top: 6, leading: 12, bottom: 6, trailing: 12)
+            config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+                var outgoing = incoming
+                outgoing.font = UIFont.systemFont(ofSize: 13, weight: .black)
+                return outgoing
+            }
+            config.cornerStyle = .capsule
+            config.contentInsets = NSDirectionalEdgeInsets(top: 8, leading: 16, bottom: 8, trailing: 16)
             config.baseBackgroundColor = canCollect
-                ? UIColor(red: 0.25, green: 0.85, blue: 0.45, alpha: 1.0)
-                : UIColor.white.withAlphaComponent(0.10)
-            config.baseForegroundColor = canCollect ? UIColor(white: 0.08, alpha: 1) : .white
+                ? UIColor(red: 0.10, green: 0.80, blue: 0.35, alpha: 1.0)
+                : UIColor.white.withAlphaComponent(0.12)
+            config.baseForegroundColor = .white
             collectBtn.configuration = config
         } else {
-            collectBtn.contentEdgeInsets = UIEdgeInsets(top: 6, left: 12, bottom: 6, right: 12)
+            collectBtn.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .black)
+            collectBtn.contentEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
             collectBtn.backgroundColor = canCollect
-                ? UIColor(red: 0.25, green: 0.85, blue: 0.45, alpha: 1.0)
-                : UIColor.white.withAlphaComponent(0.10)
+                ? UIColor(red: 0.10, green: 0.80, blue: 0.35, alpha: 1.0)
+                : UIColor.white.withAlphaComponent(0.12)
+            collectBtn.layer.cornerRadius = 16
         }
-        collectBtn.layer.cornerRadius = 12
+        
+        if canCollect {
+            collectBtn.layer.shadowColor = UIColor(red: 0.10, green: 0.80, blue: 0.35, alpha: 1.0).cgColor
+            collectBtn.layer.shadowOpacity = 0.5
+            collectBtn.layer.shadowOffset = CGSize(width: 0, height: 4)
+            collectBtn.layer.shadowRadius = 8
+        }
+        
         collectBtn.layer.borderWidth = 1.0
-        collectBtn.layer.borderColor = UIColor.white.withAlphaComponent(canCollect ? 0.0 : 0.12).cgColor
+        collectBtn.layer.borderColor = UIColor.white.withAlphaComponent(canCollect ? 0.0 : 0.15).cgColor
         collectBtn.isEnabled = canCollect
         collectBtn.translatesAutoresizingMaskIntoConstraints = false
         collectBtn.addTarget(self, action: #selector(collectIncomeTapped), for: .touchUpInside)
@@ -3191,7 +3210,7 @@ public final class MainMapViewController: UIViewController {
     private func startMobMovementTimer() {
         mobMovementTimer?.invalidate()
         mobMovementTimer = Timer.scheduledTimer(withTimeInterval: 1.5, repeats: true) { [weak self] _ in
-            guard let self = self, !self.isPlayerDead else { return }
+            guard let self = self else { return }
             let userCoord = self.avatarAnnotation?.coordinate ?? CLLocationCoordinate2D(latitude: 37.3382, longitude: -121.8863)
             let playerCL = CLLocation(latitude: userCoord.latitude, longitude: userCoord.longitude)
             
@@ -3201,24 +3220,28 @@ public final class MainMapViewController: UIViewController {
                 let lonDiff = userCoord.longitude - mobAnn.coordinate.longitude
                 
                 let dist = sqrt(latDiff*latDiff + lonDiff*lonDiff)
+                guard dist > 0.00001 else { continue } // Avoid NaN
                 
-                // Mobs automatically fire at you periodically once angered and within safe circle (150m) range!
                 let mobCL = CLLocation(latitude: mobAnn.coordinate.latitude, longitude: mobAnn.coordinate.longitude)
                 let distM = playerCL.distance(from: mobCL)
                 
-                if self.hasAngeredMobs && distM <= 150 {
-                    self.takeDamage(amount: mob.damage)
+                if !self.isPlayerDead {
+                    // Mobs automatically fire at you periodically once angered and within safe circle (150m) range!
+                    if self.hasAngeredMobs && distM <= 150 {
+                        self.takeDamage(amount: mob.damage)
+                    }
+                    guard dist > 0.0002 else { continue } // Stop when very close to living player
+                } else {
+                    // Player is dead: disperse. If they run far enough away, they'll be cleaned up by handleNewMobsSpawned later.
+                    if distM > 1000 { continue } // Stop rendering movement if they are already far
                 }
-                
-                // Mobs always pursue the player now
-                // guard self.hasAngeredMobs else { continue }
-                
-                guard dist > 0.0002 else { continue } // Stop when very close
                 
                 // Glide step speed step: 0.00015 (~15 meters per 1.5s)
                 let step: Double = 0.00015
-                let moveLat = (latDiff / dist) * step
-                let moveLon = (lonDiff / dist) * step
+                let direction: Double = self.isPlayerDead ? -1.0 : 1.0 // Move away if player is dead
+                
+                let moveLat = (latDiff / dist) * step * direction
+                let moveLon = (lonDiff / dist) * step * direction
                 
                 let newCoord = CLLocationCoordinate2D(
                     latitude: mobAnn.coordinate.latitude + moveLat,

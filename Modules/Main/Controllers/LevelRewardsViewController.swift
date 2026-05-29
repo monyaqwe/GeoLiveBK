@@ -6,7 +6,7 @@ public final class LevelRewardsViewController: UIViewController {
     public var coins: Int = 0
     public var gems: Int = 0
     
-    public var onRewardClaimed: ((String, Int, Int) -> Void)? // message, coinsAwarded, gemsAwarded
+    public var onRewardClaimed: ((Int, String, Int, Int) -> Void)? // level, message, coinsAwarded, gemsAwarded
     
     private var claimedLevels: Set<Int> = []
     
@@ -260,7 +260,7 @@ public final class LevelRewardsViewController: UIViewController {
         UIImpactFeedbackGenerator(style: .medium).impactOccurred()
         
         // Notify callback to trigger update
-        onRewardClaimed?("CLAIMED: \(milestone.rewardTitle)!", milestone.cashBonus, milestone.gemBonus)
+        onRewardClaimed?(milestone.level, "CLAIMED: \(milestone.rewardTitle)!", milestone.cashBonus, milestone.gemBonus)
         
         // Reload rewards list
         for view in contentStack.arrangedSubviews {

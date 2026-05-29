@@ -3,8 +3,8 @@ import CoreLocation
 
 /// Protocol for real-world mob spawning engine
 public protocol MapSpawnerServiceProtocol {
-    func spawnMobsAroundLocation(playerCoordinate: CLLocationCoordinate2D, dangerLevel: Int, count: Int, completion: @escaping ([MobDTO]) -> Void)
-    func spawnRevengeWave(playerCoordinate: CLLocationCoordinate2D, dangerLevel: Int, sessionKills: Int, completion: @escaping ([MobDTO]) -> Void)
+    func spawnMobsAroundLocation(playerCoordinate: CLLocationCoordinate2D, dangerLevel: Int, count: Int, forcedType: MobType?, completion: @escaping ([MobDTO]) -> Void)
+    func spawnRevengeWave(playerCoordinate: CLLocationCoordinate2D, dangerLevel: Int, sessionKills: Int, mobType: MobType, completion: @escaping ([MobDTO]) -> Void)
     func startProximitySpawnTimer(intervalSeconds: Double, playerLocationProvider: @escaping () -> CLLocationCoordinate2D)
     func stopSpawning()
 }
@@ -18,25 +18,28 @@ public final class MapSpawnerService: MapSpawnerServiceProtocol {
     
     private init() {}
     
-    public func spawnMobsAroundLocation(playerCoordinate: CLLocationCoordinate2D, dangerLevel: Int, count: Int = 1, completion: @escaping ([MobDTO]) -> Void) {
+    public func spawnMobsAroundLocation(playerCoordinate: CLLocationCoordinate2D, dangerLevel: Int, count: Int = 1, forcedType: MobType? = nil, completion: @escaping ([MobDTO]) -> Void) {
         var spawnedMobs: [MobDTO] = []
         let waveGroupId = UUID()
         
         for _ in 0..<count {
-            // Pick Mob Type based on danger level weightings
             let type: MobType
-            let typeRoll = Int.random(in: 1...100) + (dangerLevel * 5)
-            
-            if typeRoll < 45 {
-                type = .necroRats
-            } else if typeRoll < 85 {
-                type = .bandits
+            if let forced = forcedType {
+                type = forced
             } else {
-                type = .police
+                // Pick Mob Type based on danger level weightings
+                let typeRoll = Int.random(in: 1...100) + (dangerLevel * 5)
+                if typeRoll < 45 {
+                    type = .necroRats
+                } else if typeRoll < 85 {
+                    type = .bandits
+                } else {
+                    type = .police
+                }
             }
             
-            // Spawn distance: closer for revenge/engagement! (100 - 300 meters)
-            let distance = Double.random(in: 100.0...300.0)
+            // Spawn distance: around the edge of the 500m circle or slightly beyond (480 - 650 meters)
+            let distance = Double.random(in: 480.0...650.0)
             let angle = Double.random(in: 0.0...(2.0 * .pi))
             
             // 1 degree latitude ~ 111,000 meters
@@ -69,7 +72,7 @@ public final class MapSpawnerService: MapSpawnerServiceProtocol {
         }
     }
     
-    public func spawnRevengeWave(playerCoordinate: CLLocationCoordinate2D, dangerLevel: Int, sessionKills: Int, completion: @escaping ([MobDTO]) -> Void) {
+    public func spawnRevengeWave(playerCoordinate: CLLocationCoordinate2D, dangerLevel: Int, sessionKills: Int, mobType: MobType, completion: @escaping ([MobDTO]) -> Void) {
         let spawnCount: Int
         if sessionKills <= 3 {
             spawnCount = 1
@@ -79,7 +82,7 @@ public final class MapSpawnerService: MapSpawnerServiceProtocol {
             spawnCount = 3
         }
         
-        spawnMobsAroundLocation(playerCoordinate: playerCoordinate, dangerLevel: dangerLevel, count: spawnCount, completion: completion)
+        spawnMobsAroundLocation(playerCoordinate: playerCoordinate, dangerLevel: dangerLevel, count: spawnCount, forcedType: mobType, completion: completion)
     }
     
     public func stopSpawning() {
