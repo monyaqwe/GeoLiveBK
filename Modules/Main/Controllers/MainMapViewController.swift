@@ -285,6 +285,7 @@ public final class MainMapViewController: UIViewController {
     private let centerButton: UIButton = {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.isHidden = true // Hidden as per request, transferred to tapping the avatar icon
         
         let config = UIImage.SymbolConfiguration(pointSize: 18, weight: .semibold)
         let icon = UIImage(systemName: "location.fill", withConfiguration: config)
@@ -334,6 +335,72 @@ public final class MainMapViewController: UIViewController {
         
         return button
     }()
+    
+    // Voice chat button
+    private let voiceChatButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        let config = UIImage.SymbolConfiguration(pointSize: 18, weight: .bold)
+        let icon = UIImage(systemName: "cloud.fill", withConfiguration: config)
+        button.setImage(icon, for: .normal)
+        button.tintColor = UIColor(red: 0.20, green: 0.60, blue: 1.0, alpha: 1.0)
+        
+        button.backgroundColor = UIColor(white: 0.10, alpha: 0.85)
+        button.layer.cornerRadius = 26
+        button.layer.borderWidth = 1.0
+        button.layer.borderColor = UIColor(white: 0.25, alpha: 0.60).cgColor
+        
+        return button
+    }()
+    
+    // Voice recording HUD view
+    private let voiceRecordingHUD: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor.black.withAlphaComponent(0.85)
+        view.layer.cornerRadius = 24
+        view.layer.borderWidth = 1.5
+        view.layer.borderColor = UIColor(red: 0.20, green: 0.60, blue: 1.0, alpha: 0.8).cgColor
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.isHidden = true
+        view.clipsToBounds = true
+        
+        let blurEffect = UIBlurEffect(style: .dark)
+        let blurView = UIVisualEffectView(effect: blurEffect)
+        blurView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(blurView)
+        NSLayoutConstraint.activate([
+            blurView.topAnchor.constraint(equalTo: view.topAnchor),
+            blurView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            blurView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            blurView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        
+        return view
+    }()
+    
+    private let recordingMicLabel: UILabel = {
+        let label = UILabel()
+        label.text = "🎙️"
+        label.font = .systemFont(ofSize: 42)
+        label.textAlignment = .center
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private let recordingStatusLabel: UILabel = {
+        let label = UILabel()
+        label.text = "RECORDING VOICE...\nTalk now!"
+        label.font = .systemFont(ofSize: 14, weight: .bold)
+        label.textColor = .white
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private var voiceRecordingTimer: Timer?
+
     
     // Level badge - EMPHASIZED visually to weight 14pt black
     private let levelLabel: UILabel = {
@@ -571,7 +638,7 @@ public final class MainMapViewController: UIViewController {
         headerContainerView.addSubview(nicknameLabel)
         headerContainerView.addSubview(levelLabel)
         
-        nicknameLabel.text = "\(nickname) \(playerLevel)"
+        updateNicknameAndLevel()
         avatarThumb.image = avatarImage
         
         // Badge inside Quests Button
@@ -629,6 +696,12 @@ public final class MainMapViewController: UIViewController {
         view.addSubview(centerButton)
         view.addSubview(shopButton)
         view.addSubview(storeButton)
+        view.addSubview(voiceChatButton)
+        
+        // Voice recording HUD view
+        view.addSubview(voiceRecordingHUD)
+        voiceRecordingHUD.addSubview(recordingMicLabel)
+        voiceRecordingHUD.addSubview(recordingStatusLabel)
         
         view.bringSubviewToFront(bottomBar)
         
@@ -716,6 +789,25 @@ public final class MainMapViewController: UIViewController {
             storeButton.bottomAnchor.constraint(equalTo: shopButton.topAnchor, constant: -12),
             storeButton.widthAnchor.constraint(equalToConstant: 52),
             storeButton.heightAnchor.constraint(equalToConstant: 52),
+            
+            // Voice Chat Button
+            voiceChatButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            voiceChatButton.bottomAnchor.constraint(equalTo: storeButton.topAnchor, constant: -12),
+            voiceChatButton.widthAnchor.constraint(equalToConstant: 52),
+            voiceChatButton.heightAnchor.constraint(equalToConstant: 52),
+            
+            // Voice Recording HUD Layout
+            voiceRecordingHUD.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            voiceRecordingHUD.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            voiceRecordingHUD.widthAnchor.constraint(equalToConstant: 220),
+            voiceRecordingHUD.heightAnchor.constraint(equalToConstant: 160),
+            
+            recordingMicLabel.centerXAnchor.constraint(equalTo: voiceRecordingHUD.centerXAnchor),
+            recordingMicLabel.topAnchor.constraint(equalTo: voiceRecordingHUD.topAnchor, constant: 28),
+            
+            recordingStatusLabel.topAnchor.constraint(equalTo: recordingMicLabel.bottomAnchor, constant: 16),
+            recordingStatusLabel.leadingAnchor.constraint(equalTo: voiceRecordingHUD.leadingAnchor, constant: 12),
+            recordingStatusLabel.trailingAnchor.constraint(equalTo: voiceRecordingHUD.trailingAnchor, constant: -12),
         ])
         
         // Add rewardsButton constraint width
@@ -838,6 +930,13 @@ public final class MainMapViewController: UIViewController {
         centerButton.addTarget(self, action: #selector(centerOnUserTapped), for: .touchUpInside)
         shopButton.addTarget(self, action: #selector(shopButtonTapped), for: .touchUpInside)
         storeButton.addTarget(self, action: #selector(storeButtonTapped), for: .touchUpInside)
+        
+        voiceChatButton.addTarget(self, action: #selector(voiceChatPressed), for: .touchDown)
+        voiceChatButton.addTarget(self, action: #selector(voiceChatReleased), for: [.touchUpInside, .touchUpOutside])
+        
+        avatarThumb.isUserInteractionEnabled = true
+        let avatarTap = UITapGestureRecognizer(target: self, action: #selector(centerOnUserTapped))
+        avatarThumb.addGestureRecognizer(avatarTap)
         
         questsButton.addTarget(self, action: #selector(questsTapped), for: .touchUpInside)
         rewardsButton.addTarget(self, action: #selector(rewardsTapped), for: .touchUpInside)
@@ -1431,6 +1530,10 @@ public final class MainMapViewController: UIViewController {
             self.centerButton.alpha = 0
             self.shopButton.transform = CGAffineTransform(translationX: 0, y: 150)
             self.shopButton.alpha = 0
+            self.storeButton.transform = CGAffineTransform(translationX: 0, y: 150)
+            self.storeButton.alpha = 0
+            self.voiceChatButton.transform = CGAffineTransform(translationX: 0, y: 150)
+            self.voiceChatButton.alpha = 0
         }, completion: nil)
         
         let panelHeight: CGFloat = 280
@@ -1752,6 +1855,10 @@ public final class MainMapViewController: UIViewController {
             self.centerButton.alpha = 1.0
             self.shopButton.transform = .identity
             self.shopButton.alpha = 1.0
+            self.storeButton.transform = .identity
+            self.storeButton.alpha = 1.0
+            self.voiceChatButton.transform = .identity
+            self.voiceChatButton.alpha = 1.0
         }, completion: nil)
     }
     
@@ -1849,6 +1956,10 @@ public final class MainMapViewController: UIViewController {
             self.centerButton.alpha = 0
             self.shopButton.transform = CGAffineTransform(translationX: 0, y: 150)
             self.shopButton.alpha = 0
+            self.storeButton.transform = CGAffineTransform(translationX: 0, y: 150)
+            self.storeButton.alpha = 0
+            self.voiceChatButton.transform = CGAffineTransform(translationX: 0, y: 150)
+            self.voiceChatButton.alpha = 0
         }, completion: nil)
         
         let panel = UIView()
@@ -1935,17 +2046,17 @@ public final class MainMapViewController: UIViewController {
         let pending = building.pendingIncome
         let collectBtn = UIButton(type: .custom)
         let canCollect = pending > 0
-        let collectTitle = canCollect
-            ? "COLLECT $\(pending) ⬆️"
-            : "EMPTY 📭"
+        let collectTitle = canCollect ? "$\(pending)" : "$0"
         collectBtn.setTitle(collectTitle, for: .normal)
         collectBtn.titleLabel?.numberOfLines = 1
+        collectBtn.titleLabel?.textAlignment = .center
         
         if #available(iOS 15.0, *) {
             var config = UIButton.Configuration.filled()
+            config.titleAlignment = .center
             config.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
                 var outgoing = incoming
-                outgoing.font = UIFont.systemFont(ofSize: 13, weight: .black)
+                outgoing.font = UIFont.systemFont(ofSize: 14, weight: .black)
                 return outgoing
             }
             config.cornerStyle = .capsule
@@ -1956,7 +2067,7 @@ public final class MainMapViewController: UIViewController {
             config.baseForegroundColor = .white
             collectBtn.configuration = config
         } else {
-            collectBtn.titleLabel?.font = UIFont.systemFont(ofSize: 13, weight: .black)
+            collectBtn.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .black)
             collectBtn.contentEdgeInsets = UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
             collectBtn.backgroundColor = canCollect
                 ? UIColor(red: 0.10, green: 0.80, blue: 0.35, alpha: 1.0)
@@ -2439,6 +2550,10 @@ public final class MainMapViewController: UIViewController {
             self.centerButton.alpha = 1.0
             self.shopButton.transform = .identity
             self.shopButton.alpha = 1.0
+            self.storeButton.transform = .identity
+            self.storeButton.alpha = 1.0
+            self.voiceChatButton.transform = .identity
+            self.voiceChatButton.alpha = 1.0
         }, completion: nil)
     }
     
@@ -2633,6 +2748,20 @@ public final class MainMapViewController: UIViewController {
     }
 
     
+    private func updateNicknameAndLevel() {
+        let nameAttr = NSMutableAttributedString(string: "\(nickname) ", attributes: [
+            .foregroundColor: UIColor.white,
+            .font: UIFont.systemFont(ofSize: 15, weight: .bold)
+        ])
+        
+        let lvlAttr = NSAttributedString(string: "LVL \(playerLevel)", attributes: [
+            .foregroundColor: UIColor(red: 1.0, green: 0.85, blue: 0.10, alpha: 1.0), // Premium gold
+            .font: UIFont.systemFont(ofSize: 12, weight: .black)
+        ])
+        nameAttr.append(lvlAttr)
+        nicknameLabel.attributedText = nameAttr
+    }
+    
     public func updateStatsBarLabels() {
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
@@ -2652,7 +2781,7 @@ public final class MainMapViewController: UIViewController {
         bagLabel?.text = "\(occupied)/\(maxSlots)"
         
         // Update level label with XP remaining progression next to level callsign
-        nicknameLabel.text = "\(nickname) \(playerLevel)"
+        updateNicknameAndLevel()
         
         let req = requiredXP
         levelLabel.text = "\(req - playerXP) XP to level-up"
@@ -2849,7 +2978,6 @@ public final class MainMapViewController: UIViewController {
             }
         }
         
-        // Restore bottom bar and floating buttons when panels are dismissed
         let restoreBlock = {
             self.bottomBar.transform = .identity
             self.bottomBar.alpha = 1.0
@@ -2859,6 +2987,8 @@ public final class MainMapViewController: UIViewController {
             self.shopButton.alpha = 1.0
             self.storeButton.transform = .identity
             self.storeButton.alpha = 1.0
+            self.voiceChatButton.transform = .identity
+            self.voiceChatButton.alpha = 1.0
         }
         
         if animated {
@@ -2870,10 +3000,10 @@ public final class MainMapViewController: UIViewController {
     
     @objc private func centerOnUserTapped() {
         UIView.animate(withDuration: 0.12, animations: {
-            self.centerButton.transform = CGAffineTransform(scaleX: 0.88, y: 0.88)
+            self.avatarThumb.transform = CGAffineTransform(scaleX: 0.88, y: 0.88)
         }) { _ in
             UIView.animate(withDuration: 0.1) {
-                self.centerButton.transform = .identity
+                self.avatarThumb.transform = .identity
             }
         }
         
@@ -2891,6 +3021,71 @@ public final class MainMapViewController: UIViewController {
             mapView.setRegion(region, animated: true)
         }
     }
+    
+    @objc private func voiceChatPressed() {
+        UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+        
+        // Show HUD with pop-in animation
+        voiceRecordingHUD.isHidden = false
+        voiceRecordingHUD.alpha = 0.0
+        voiceRecordingHUD.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+        
+        recordingMicLabel.text = "🎙️"
+        recordingStatusLabel.text = "RECORDING VOICE...\nTalk now!"
+        recordingStatusLabel.textColor = .white
+        voiceRecordingHUD.layer.borderColor = UIColor(red: 0.20, green: 0.60, blue: 1.0, alpha: 0.8).cgColor
+        
+        UIView.animate(withDuration: 0.25, delay: 0, options: .curveEaseOut, animations: {
+            self.voiceRecordingHUD.alpha = 1.0
+            self.voiceRecordingHUD.transform = .identity
+            self.voiceChatButton.transform = CGAffineTransform(scaleX: 0.85, y: 0.85)
+        })
+        
+        // Start Mic Pulse Animation
+        voiceRecordingTimer?.invalidate()
+        var isPulsing = false
+        voiceRecordingTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { [weak self] _ in
+            guard let self = self else { return }
+            isPulsing.toggle()
+            UIView.animate(withDuration: 0.4) {
+                self.recordingMicLabel.transform = isPulsing ? CGAffineTransform(scaleX: 1.25, y: 1.25) : .identity
+                self.recordingMicLabel.alpha = isPulsing ? 0.6 : 1.0
+            }
+        }
+    }
+    
+    @objc private func voiceChatReleased() {
+        voiceRecordingTimer?.invalidate()
+        voiceRecordingTimer = nil
+        
+        UINotificationFeedbackGenerator().notificationOccurred(.success)
+        
+        // Show success state in HUD
+        recordingMicLabel.transform = .identity
+        recordingMicLabel.alpha = 1.0
+        recordingMicLabel.text = "☁️"
+        recordingStatusLabel.text = "VOICE SENT TO CLOUD!"
+        recordingStatusLabel.textColor = UIColor(red: 0.30, green: 0.85, blue: 0.45, alpha: 1.0) // Success green!
+        voiceRecordingHUD.layer.borderColor = UIColor(red: 0.30, green: 0.85, blue: 0.45, alpha: 0.8).cgColor
+        
+        UIView.animate(withDuration: 0.2, animations: {
+            self.voiceChatButton.transform = .identity
+        })
+        
+        // Dismiss HUD after a short delay
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) { [weak self] in
+            guard let self = self else { return }
+            UIView.animate(withDuration: 0.25, animations: {
+                self.voiceRecordingHUD.alpha = 0.0
+                self.voiceRecordingHUD.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
+            }) { _ in
+                if self.voiceRecordingHUD.alpha == 0.0 {
+                    self.voiceRecordingHUD.isHidden = true
+                }
+            }
+        }
+    }
+
     
     // MARK: - Location Manager Setup & Core Operations
     private func setupLocationManager() {
@@ -3225,20 +3420,33 @@ public final class MainMapViewController: UIViewController {
                 let mobCL = CLLocation(latitude: mobAnn.coordinate.latitude, longitude: mobAnn.coordinate.longitude)
                 let distM = playerCL.distance(from: mobCL)
                 
-                if !self.isPlayerDead {
-                    // Mobs automatically fire at you periodically once angered and within safe circle (150m) range!
-                    if self.hasAngeredMobs && distM <= 150 {
+                let step: Double
+                let direction: Double
+                
+                if self.isPlayerDead {
+                    // Player is dead: disperse rapidly away from player
+                    if distM > 1000 { continue }
+                    step = 0.00035
+                    direction = -1.0
+                } else if !self.hasAngeredMobs {
+                    // Mobs not angered: if they are inside player's circle (150m), disperse them outside it.
+                    if distM < 150 {
+                        step = 0.00020
+                        direction = -1.0
+                    } else {
+                        // If already outside, they stay put/idle
+                        continue
+                    }
+                } else {
+                    // Mobs angered and player is alive: pursue!
+                    step = 0.00015
+                    direction = 1.0
+                    
+                    if distM <= 150 {
                         self.takeDamage(amount: mob.damage)
                     }
                     guard dist > 0.0002 else { continue } // Stop when very close to living player
-                } else {
-                    // Player is dead: disperse. If they run far enough away, they'll be cleaned up by handleNewMobsSpawned later.
-                    if distM > 1000 { continue } // Stop rendering movement if they are already far
                 }
-                
-                // Glide step speed step: 0.00015 (~15 meters per 1.5s)
-                let step: Double = 0.00015
-                let direction: Double = self.isPlayerDead ? -1.0 : 1.0 // Move away if player is dead
                 
                 let moveLat = (latDiff / dist) * step * direction
                 let moveLon = (lonDiff / dist) * step * direction
@@ -3290,13 +3498,12 @@ public final class MainMapViewController: UIViewController {
     @objc private func handleMapLongPress(_ gesture: UILongPressGestureRecognizer) {
         guard gesture.state == .began else { return }
         
-        let touchPoint = gesture.location(in: mapView)
-        
-        // Find which annotation view's frame contains the touchPoint directly in mapView coordinates!
+        // Find which annotation view was pressed by checking local bounds
         var pressedAnnotation: MKAnnotation?
         for annotation in mapView.annotations {
-            if let view = mapView.view(for: annotation) {
-                if view.frame.contains(touchPoint) {
+            if let annView = mapView.view(for: annotation) {
+                let localPoint = gesture.location(in: annView)
+                if annView.bounds.contains(localPoint) {
                     pressedAnnotation = annotation
                     break
                 }
