@@ -2750,13 +2750,13 @@ public final class MainMapViewController: UIViewController {
     
     private func updateNicknameAndLevel() {
         let nameAttr = NSMutableAttributedString(string: "\(nickname) ", attributes: [
-            .foregroundColor: UIColor.white,
+            .foregroundColor: UIColor(red: 0.15, green: 0.65, blue: 1.0, alpha: 1.0), // Same blue as levelLabel
             .font: UIFont.systemFont(ofSize: 15, weight: .bold)
         ])
         
-        let lvlAttr = NSAttributedString(string: "LVL \(playerLevel)", attributes: [
-            .foregroundColor: UIColor(red: 1.0, green: 0.85, blue: 0.10, alpha: 1.0), // Premium gold
-            .font: UIFont.systemFont(ofSize: 12, weight: .black)
+        let lvlAttr = NSAttributedString(string: "\(playerLevel)", attributes: [
+            .foregroundColor: UIColor.white,
+            .font: UIFont.systemFont(ofSize: 15, weight: .black)
         ])
         nameAttr.append(lvlAttr)
         nicknameLabel.attributedText = nameAttr
@@ -3429,12 +3429,11 @@ public final class MainMapViewController: UIViewController {
                     step = 0.00035
                     direction = -1.0
                 } else if !self.hasAngeredMobs {
-                    // Mobs not angered: if they are inside player's circle (150m), disperse them outside it.
-                    if distM < 150 {
-                        step = 0.00020
+                    // Mobs not angered: disperse them away from the player until they are 500 meters away
+                    if distM < 500 {
+                        step = 0.00015
                         direction = -1.0
                     } else {
-                        // If already outside, they stay put/idle
                         continue
                     }
                 } else {
@@ -3520,19 +3519,12 @@ public final class MainMapViewController: UIViewController {
     }
     
     private func autoCollectAllBuildingsInCircle() {
-        guard let playerCoord = avatarAnnotation?.coordinate else { return }
-        let playerCL = CLLocation(latitude: playerCoord.latitude, longitude: playerCoord.longitude)
-        
         var collectedTotal = 0
         var totalXPGained = 0
         var buildingsCount = 0
         
-        // Find all building annotations within 500m
-        let buildingsToCollect = mapView.annotations.compactMap { $0 as? BuildingAnnotation }.filter { ann in
-            let mobCL = CLLocation(latitude: ann.coordinate.latitude, longitude: ann.coordinate.longitude)
-            let distance = playerCL.distance(from: mobCL)
-            return distance <= 500
-        }
+        // Find all building annotations on the map
+        let buildingsToCollect = mapView.annotations.compactMap { $0 as? BuildingAnnotation }
         
         for ann in buildingsToCollect {
             let amount = ann.buildingItem.collectIncome()
@@ -3588,13 +3580,7 @@ public final class MainMapViewController: UIViewController {
     }
     
     private func autoCollectAllNearbySkulls(from tappedSkull: SkullAnnotation) {
-        let centerCL = CLLocation(latitude: tappedSkull.coordinate.latitude, longitude: tappedSkull.coordinate.longitude)
-        
-        let skullsToCollect = mapView.annotations.compactMap { $0 as? SkullAnnotation }.filter { ann in
-            let skullCL = CLLocation(latitude: ann.coordinate.latitude, longitude: ann.coordinate.longitude)
-            let distance = centerCL.distance(from: skullCL)
-            return distance <= 250
-        }
+        let skullsToCollect = mapView.annotations.compactMap { $0 as? SkullAnnotation }
         
         guard !skullsToCollect.isEmpty else { return }
         
