@@ -112,13 +112,14 @@ public struct BuildingItem {
         accumulatedIncome  = 0
         lastCollectedDate  = Date()
         return amount
-    }
+    public var ownerId: String = ""
 
-    public init(type: BuildingType, coordinate: CLLocationCoordinate2D) {
+    public init(type: BuildingType, coordinate: CLLocationCoordinate2D, ownerId: String = "") {
         self.type              = type
         self.coordinate        = coordinate
         self.currentHP         = 100
         self.lastCollectedDate = Date()
+        self.ownerId           = ownerId
     }
 }
 

@@ -1,5 +1,4 @@
-# Xcode
-.DS_Store
+# Xcode / iOS
 build/
 DerivedData/
 *.hmap
@@ -7,3 +6,39 @@ DerivedData/
 *.dSYM.zip
 *.dSYM
 
+# Xcode User-specific files (these cause conflicts and contain local paths like Mac username)
+xcuserdata/
+*.xcuserdatad
+*.xcuserstate
+.sublime-project
+.sublime-workspace
+.vscode/
+
+# CocoaPods
+# Ignore the local Pods directory (each developer should run `pod install` locally)
+Pods/
+
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.Trashes
+*.icloud
+
+# Go / Server / Databases
+Server/geolive-server
+Server/*.db
+Server/*.db-journal
+Server/geolive_backup.db
+Server/geolive.db
+*.db
+*.db-journal
+*.log
+
+# Caches and temporary files
+*.tmp
+*.temp

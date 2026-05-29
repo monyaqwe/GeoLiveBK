@@ -22,6 +22,8 @@ type PlayerState struct {
 	HP       int      `json:"hp"`
 	MaxHP    int      `json:"max_hp"`
 	Level    int      `json:"level"`
+	Coins    int      `json:"coins"`
+	Gems     int      `json:"gems"`
 }
 
 // WorldManager manages spatial indexing and thread-safe operations on player states.
@@ -47,7 +49,7 @@ func getGridKey(lat, lon float64) GridKey {
 }
 
 // UpdatePlayer updates or creates a player's spatial state and moves them across grid cells if needed.
-func (w *WorldManager) UpdatePlayer(id, nickname string, lat, lon float64, hp, maxHP, level int) *PlayerState {
+func (w *WorldManager) UpdatePlayer(id, nickname string, lat, lon float64, hp, maxHP, level, coins, gems int) *PlayerState {
 	w.Lock()
 	defer w.Unlock()
 
@@ -63,6 +65,8 @@ func (w *WorldManager) UpdatePlayer(id, nickname string, lat, lon float64, hp, m
 			HP:       hp,
 			MaxHP:    maxHP,
 			Level:    level,
+			Coins:    coins,
+			Gems:     gems,
 		}
 		w.players[id] = state
 		w.addPlayerToGrid(id, newKey)
@@ -76,6 +80,8 @@ func (w *WorldManager) UpdatePlayer(id, nickname string, lat, lon float64, hp, m
 	state.HP = hp
 	state.MaxHP = maxHP
 	state.Level = level
+	state.Coins = coins
+	state.Gems = gems
 
 	// Manage cell transition if crossed boundaries
 	if oldKey != newKey {

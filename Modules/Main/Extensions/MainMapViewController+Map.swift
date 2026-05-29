@@ -3,11 +3,13 @@ import MapKit
 
 // MARK: - Skull Annotation Model
 public final class SkullAnnotation: NSObject, MKAnnotation {
+    public let id: String
     public dynamic var coordinate: CLLocationCoordinate2D
     public var title: String? { "REMAINS 💀" }
     public var subtitle: String? { "Tap to collect remains for +1 XP!" }
     
-    public init(coordinate: CLLocationCoordinate2D) {
+    public init(id: String = UUID().uuidString, coordinate: CLLocationCoordinate2D) {
+        self.id = id
         self.coordinate = coordinate
         super.init()
     }
@@ -95,6 +97,15 @@ extension MainMapViewController: MKMapViewDelegate {
             return view
         }
 
+        if let opponentAnn = annotation as? OpponentAnnotation {
+            let view = (mapView.dequeueReusableAnnotationView(withIdentifier: OpponentAnnotationView.reuseID)
+                        as? OpponentAnnotationView)
+                       ?? OpponentAnnotationView(annotation: opponentAnn, reuseIdentifier: OpponentAnnotationView.reuseID)
+            view.annotation = opponentAnn
+            view.configure(with: opponentAnn)
+            return view
+        }
+
         guard let avatarAnn = annotation as? AvatarAnnotation else { return nil }
         let view = (mapView.dequeueReusableAnnotationView(withIdentifier: AvatarAnnotationView.reuseID)
                     as? AvatarAnnotationView)
@@ -149,6 +160,12 @@ extension MainMapViewController: MKMapViewDelegate {
         if let mobAnn = view.annotation as? MobAnnotation {
             self.targetMob(mobAnn)
             mapView.deselectAnnotation(mobAnn, animated: false)
+            return
+        }
+
+        if let opponentAnn = view.annotation as? OpponentAnnotation {
+            self.targetOpponent(opponentAnn)
+            mapView.deselectAnnotation(opponentAnn, animated: false)
             return
         }
 

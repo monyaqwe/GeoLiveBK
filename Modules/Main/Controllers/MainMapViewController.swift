@@ -43,7 +43,9 @@ public final class MainMapViewController: UIViewController {
 
     // Mobs Targeting & Combat state
     public var targetedMobAnnotation: MobAnnotation?
+    public var targetedOpponentAnnotation: OpponentAnnotation?
     public var activeMobAnnotations: [MobAnnotation] = []
+    public var activeOpponentAnnotations: [String: OpponentAnnotation] = [:]
     
     public let combatControlBar: UIView = {
         let view = UIView()
@@ -562,6 +564,16 @@ public final class MainMapViewController: UIViewController {
         updateStatsBarLabels()
         startMobMovementTimer()
         
+        // Initialize and connect to Go WebSockets Server!
+        GameWebSocketService.shared.delegate = self
+        GameWebSocketService.shared.connect(nickname: nickname)
+        
+        // Listen to remote buildings constructed or destroyed by other players
+        NotificationCenter.default.addObserver(self, selector: #selector(handleRemoteBuildingPlaced(_:)), name: NSNotification.Name("RemoteBuildingPlaced"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleRemoteBuildingDestroyed(_:)), name: NSNotification.Name("RemoteBuildingDestroyed"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleRemoteRemainsSpawned(_:)), name: NSNotification.Name("RemoteRemainsSpawned"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(handleRemoteRemainsCollected(_:)), name: NSNotification.Name("RemoteRemainsCollected"), object: nil)
+        
         // 1 HP per second health regeneration
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
             guard let self = self, !self.isPlayerDead else { return }
@@ -571,6 +583,110 @@ public final class MainMapViewController: UIViewController {
                    let annotationView = self.mapView.view(for: avatarAnn) as? AvatarAnnotationView {
                     annotationView.updateHP(current: self.playerCurrentHP, max: self.playerMaxHP)
                 }
+            }
+        }
+    }
+    
+    @objc private func handleRemoteBuildingPlaced(_ notification: Notification) {
+        guard let info = notification.userInfo,
+              let idStr = info["id"] as? String,
+              let typeStr = info["type"] as? String,
+              let lat = info["lat"] as? Double,
+              let lon = info["lon"] as? Double,
+              let type = BuildingType(rawValue: typeStr) else { return }
+              
+        let owner = info["owner"] as? String ?? ""
+        let level = info["level"] as? Int ?? 1
+        let staff = info["staff"] as? Int ?? 0
+        let equip = info["equip"] as? Int ?? 0
+        let hp = info["hp"] as? Int ?? 100
+        
+        // Check if building already placed locally
+        let existingBuilding = mapView.annotations.first { ann in
+            if let bAnn = ann as? BuildingAnnotation {
+                return bAnn.buildingItem.id.uuidString == idStr
+            }
+            return false
+        } as? BuildingAnnotation
+        
+        if let existing = existingBuilding {
+            // Update its stats and HP dynamically - remote siege/upgrade sync receiver!
+            existing.buildingItem.level = level
+            existing.buildingItem.staffLevel = staff
+            existing.buildingItem.equipLevel = equip
+            existing.buildingItem.currentHP = hp
+            // We can determine HP state changes
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                if self.selectedBuildingAnnotation === existing {
+                    self.showBuildingInspectionPanel(for: existing)
+                }
+            }
+            return
+        }
+        
+        var newBuilding = BuildingItem(type: type, coordinate: CLLocationCoordinate2D(latitude: lat, longitude: lon), ownerId: owner)
+        newBuilding.level = level
+        newBuilding.staffLevel = staff
+        newBuilding.equipLevel = equip
+        newBuilding.currentHP = hp
+        
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            let annotation = BuildingAnnotation(coordinate: CLLocationCoordinate2D(latitude: lat, longitude: lon), buildingItem: newBuilding)
+            self.mapView.addAnnotation(annotation)
+            self.showNotificationHUD(message: "🏗 NEW REMOTE BUILDING PLACED!")
+        }
+    }
+    
+    @objc private func handleRemoteBuildingDestroyed(_ notification: Notification) {
+        guard let info = notification.userInfo,
+              let idStr = info["id"] as? String else { return }
+              
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            let annotationToRemove = self.mapView.annotations.first { ann in
+                if let bAnn = ann as? BuildingAnnotation {
+                    return bAnn.buildingItem.id.uuidString == idStr
+                }
+                return false
+            }
+            if let ann = annotationToRemove {
+                self.mapView.removeAnnotation(ann)
+                self.showNotificationHUD(message: "💥 REMOTE BUILDING DESTROYED!")
+                if self.selectedBuildingAnnotation === ann {
+                    self.dismissActivePanels(animated: true)
+                    self.selectedBuildingAnnotation = nil
+                }
+            }
+        }
+    }
+    
+    @objc private func handleRemoteRemainsSpawned(_ notification: Notification) {
+        guard let info = notification.userInfo,
+              let idStr = info["id"] as? String,
+              let lat = info["lat"] as? Double,
+              let lon = info["lon"] as? Double else { return }
+              
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            let exists = self.mapView.annotations.contains { ($0 as? SkullAnnotation)?.id == idStr }
+            guard !exists else { return }
+            
+            let remains = SkullAnnotation(id: idStr, coordinate: CLLocationCoordinate2D(latitude: lat, longitude: lon))
+            self.mapView.addAnnotation(remains)
+        }
+    }
+    
+    @objc private func handleRemoteRemainsCollected(_ notification: Notification) {
+        guard let info = notification.userInfo,
+              let idStr = info["id"] as? String else { return }
+              
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            let annotationToRemove = self.mapView.annotations.first { ($0 as? SkullAnnotation)?.id == idStr }
+            if let ann = annotationToRemove {
+                self.mapView.removeAnnotation(ann)
             }
         }
     }
@@ -1371,11 +1487,73 @@ public final class MainMapViewController: UIViewController {
         }
     }
     
+    public func targetOpponent(_ annotation: OpponentAnnotation) {
+        dismissActivePanels(animated: true)
+        self.targetedOpponentAnnotation = annotation
+        self.targetedMobAnnotation = nil // Clear mob target
+        
+        targetNameLabel.text = annotation.nickname.uppercased()
+        targetHPLabel.text = "HP: \(annotation.hp)/\(annotation.maxHP)"
+        
+        // Show combat control bar
+        UIView.animate(withDuration: 0.3) {
+            self.combatControlBar.alpha = 1.0
+            self.centerButtonBottomConstraint?.constant = -180
+            self.view.layoutIfNeeded()
+        }
+    }
+    
+    private func performAttackOnOpponent(_ opponentAnn: OpponentAnnotation) {
+        guard let playerCoord = avatarAnnotation?.coordinate else { return }
+        let playerCL  = CLLocation(latitude: playerCoord.latitude, longitude: playerCoord.longitude)
+        let targetCL  = CLLocation(latitude: opponentAnn.coordinate.latitude, longitude: opponentAnn.coordinate.longitude)
+        let distanceM = playerCL.distance(from: targetCL)
+        let attackRadius: Double = 500
+        
+        if distanceM > attackRadius {
+            showNotificationHUD(message: "OUT OF RANGE — opponent is outside the attack circle")
+            UINotificationFeedbackGenerator().notificationOccurred(.error)
+            return
+        }
+        
+        let t = distanceM / attackRadius
+        let multiplier = 1.0 - 0.80 * t
+        
+        var baseDamage: Double = 20
+        if let equipped = InventoryManager.shared.getEquippedWeapon() {
+            baseDamage = Double(equipped.damage)
+        }
+        let scaledDamage = Int(max(1, (baseDamage * multiplier).rounded()))
+        
+        UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+        
+        opponentAnn.hp -= scaledDamage
+        if opponentAnn.hp < 0 { opponentAnn.hp = 0 }
+        
+        if let annView = mapView.view(for: opponentAnn) as? OpponentAnnotationView {
+            annView.updateHP(current: opponentAnn.hp, max: opponentAnn.maxHP)
+            annView.triggerDamageFlash()
+        }
+        
+        targetHPLabel.text = "HP: \(opponentAnn.hp)/\(opponentAnn.maxHP)"
+        showNotificationHUD(message: "💥 Hit \(opponentAnn.nickname) for \(scaledDamage) dmg!")
+        
+        // Broadcast attack over WebSockets!
+        GameWebSocketService.shared.sendAttack(targetPlayerID: opponentAnn.id, damage: scaledDamage)
+        
+        if opponentAnn.hp <= 0 {
+            showNotificationHUD(message: "🏆 Opponent \(opponentAnn.nickname) defeated!")
+            hideCombatBar()
+            self.targetedOpponentAnnotation = nil
+        }
+    }
+    
     public func targetMob(_ annotation: MobAnnotation) {
         // Attack has absolute priority -> Dismiss building inspection panels immediately!
         dismissActivePanels(animated: true)
         
         self.targetedMobAnnotation = annotation
+        self.targetedOpponentAnnotation = nil // Clear opponent target
         
         targetNameLabel.text = annotation.mobDTO.type.rawValue.uppercased()
         targetHPLabel.text = "HP: \(annotation.mobDTO.currentHP)/\(annotation.mobDTO.maxHP)"
@@ -1389,6 +1567,11 @@ public final class MainMapViewController: UIViewController {
     }
     
     @objc private func attackBtnTapped() {
+        if let opponentAnn = targetedOpponentAnnotation {
+            performAttackOnOpponent(opponentAnn)
+            return
+        }
+        
         guard let mobAnn = targetedMobAnnotation else { return }
         
         // --- Range check: must be within attack circle (500m) ---
@@ -1445,6 +1628,12 @@ public final class MainMapViewController: UIViewController {
             // Drop skull remains at exact coordinates
             let skull = SkullAnnotation(coordinate: mobAnn.coordinate)
             mapView.addAnnotation(skull)
+            
+            GameWebSocketService.shared.sendSpawnRemains(
+                id: skull.id,
+                lat: mobAnn.coordinate.latitude,
+                lon: mobAnn.coordinate.longitude
+            )
             
             let message = "DEFEATED \(mob.type.rawValue.uppercased())! Earned $\(xpReward * 10)"
             
@@ -1909,6 +2098,18 @@ public final class MainMapViewController: UIViewController {
 
         let annotation = BuildingAnnotation(coordinate: tapCoordinate, buildingItem: newBuilding)
         mapView.addAnnotation(annotation)
+        
+        // Broadcast building construction to backend
+        GameWebSocketService.shared.sendPlaceBuilding(
+            id: newBuilding.id.uuidString,
+            type: type.rawValue,
+            lat: tapCoordinate.latitude,
+            lon: tapCoordinate.longitude,
+            level: newBuilding.level,
+            staffLevel: newBuilding.staffLevel,
+            equipLevel: newBuilding.equipLevel,
+            hp: newBuilding.currentHP
+        )
 
         // Update custom building exclusion overlay
         mapView.removeOverlay(buildingExclusionOverlay)
@@ -2440,6 +2641,47 @@ public final class MainMapViewController: UIViewController {
             upgradeButton.bottomAnchor.constraint(equalTo: hpProgressContainer.bottomAnchor, constant: 0),
             upgradeButton.widthAnchor.constraint(equalToConstant: 150),
             upgradeButton.heightAnchor.constraint(equalToConstant: 44),
+        ])
+        
+        let isOwnBuilding = placedBuildings.contains { $0.id == building.id }
+        
+        if !isOwnBuilding {
+            upgradeButton.setTitle("💥 SIEGE ATTACK", for: .normal)
+            upgradeButton.backgroundColor = UIColor(red: 1.00, green: 0.20, blue: 0.20, alpha: 1.0)
+            upgradeButton.layer.borderColor = UIColor(red: 1.00, green: 0.40, blue: 0.40, alpha: 0.8).cgColor
+            upgradeButton.removeTarget(self, action: #selector(upgradeBuildingTapped), for: .touchUpInside)
+            upgradeButton.addTarget(self, action: #selector(siegeAttackTapped), for: .touchUpInside)
+            
+            collectBtn.setTitle("FOREIGN ZONE", for: .normal)
+            collectBtn.isEnabled = false
+            if #available(iOS 15.0, *) {
+                collectBtn.configuration?.baseBackgroundColor = UIColor.white.withAlphaComponent(0.08)
+            } else {
+                collectBtn.backgroundColor = UIColor.white.withAlphaComponent(0.08)
+            }
+        }
+        
+        let demolishButton = UIButton(type: .custom)
+        demolishButton.setTitle(isOwnBuilding ? "DEMOLISH 🗑" : "🏳️ RETREAT", for: .normal)
+        demolishButton.titleLabel?.font = UIFont.systemFont(ofSize: 10, weight: .black)
+        demolishButton.backgroundColor = isOwnBuilding ? UIColor(red: 1.00, green: 0.15, blue: 0.15, alpha: 0.9) : UIColor.white.withAlphaComponent(0.12)
+        demolishButton.layer.cornerRadius = 14
+        demolishButton.translatesAutoresizingMaskIntoConstraints = false
+        if isOwnBuilding {
+            demolishButton.addTarget(self, action: #selector(demolishBuildingTapped), for: .touchUpInside)
+        } else {
+            demolishButton.addTarget(self, action: #selector(closeInspectionPanel), for: .touchUpInside)
+        }
+        panel.addSubview(demolishButton)
+        
+        NSLayoutConstraint.activate([
+            demolishButton.trailingAnchor.constraint(equalTo: panel.trailingAnchor, constant: -20),
+            demolishButton.bottomAnchor.constraint(equalTo: collectBtn.topAnchor, constant: -8),
+            demolishButton.widthAnchor.constraint(equalToConstant: 150),
+            demolishButton.heightAnchor.constraint(equalToConstant: 36)
+        ])
+        
+        NSLayoutConstraint.activate([
             
             // Expanded operations layout inside panel
             expandedView.topAnchor.constraint(equalTo: hpProgressContainer.bottomAnchor, constant: 14),
@@ -2579,6 +2821,18 @@ public final class MainMapViewController: UIViewController {
             placedBuildings[idx] = annotation.buildingItem
         }
         
+        // Broadcast upgrades to Go database server
+        GameWebSocketService.shared.sendPlaceBuilding(
+            id: annotation.buildingItem.id.uuidString,
+            type: annotation.buildingItem.type.rawValue,
+            lat: annotation.coordinate.latitude,
+            lon: annotation.coordinate.longitude,
+            level: annotation.buildingItem.level,
+            staffLevel: annotation.buildingItem.staffLevel,
+            equipLevel: annotation.buildingItem.equipLevel,
+            hp: annotation.buildingItem.currentHP
+        )
+        
         // Award XP for upgrading a building: 15 XP * level
         let xpAward = 15 * (currentLevel + 1)
         playerXP += xpAward
@@ -2634,6 +2888,23 @@ public final class MainMapViewController: UIViewController {
         annotation.buildingItem.staffLevel += 1
         annotation.buildingItem.currentHP = annotation.buildingItem.maxHP
         
+        // Sync back into placedBuildings array
+        if let idx = placedBuildings.firstIndex(where: { $0.id == annotation.buildingItem.id }) {
+            placedBuildings[idx] = annotation.buildingItem
+        }
+        
+        // Broadcast upgrades to Go database server
+        GameWebSocketService.shared.sendPlaceBuilding(
+            id: annotation.buildingItem.id.uuidString,
+            type: annotation.buildingItem.type.rawValue,
+            lat: annotation.coordinate.latitude,
+            lon: annotation.coordinate.longitude,
+            level: annotation.buildingItem.level,
+            staffLevel: annotation.buildingItem.staffLevel,
+            equipLevel: annotation.buildingItem.equipLevel,
+            hp: annotation.buildingItem.currentHP
+        )
+        
         mapView.removeAnnotation(annotation)
         mapView.addAnnotation(annotation)
         
@@ -2665,6 +2936,23 @@ public final class MainMapViewController: UIViewController {
         annotation.buildingItem.equipLevel += 1
         annotation.buildingItem.currentHP = annotation.buildingItem.maxHP
         
+        // Sync back into placedBuildings array
+        if let idx = placedBuildings.firstIndex(where: { $0.id == annotation.buildingItem.id }) {
+            placedBuildings[idx] = annotation.buildingItem
+        }
+        
+        // Broadcast upgrades to Go database server
+        GameWebSocketService.shared.sendPlaceBuilding(
+            id: annotation.buildingItem.id.uuidString,
+            type: annotation.buildingItem.type.rawValue,
+            lat: annotation.coordinate.latitude,
+            lon: annotation.coordinate.longitude,
+            level: annotation.buildingItem.level,
+            staffLevel: annotation.buildingItem.staffLevel,
+            equipLevel: annotation.buildingItem.equipLevel,
+            hp: annotation.buildingItem.currentHP
+        )
+        
         mapView.removeAnnotation(annotation)
         mapView.addAnnotation(annotation)
         
@@ -2676,6 +2964,116 @@ public final class MainMapViewController: UIViewController {
         let prevState = activeSheetState
         showBuildingInspectionPanel(for: annotation)
         transitionInspectionPanel(to: prevState)
+    }
+
+    @objc private func demolishBuildingTapped() {
+        guard let annotation = selectedBuildingAnnotation else { return }
+        
+        let confirmAlert = UIAlertController(
+            title: "DEMOLISH BUILDING",
+            message: "Are you sure you want to demolish \(annotation.buildingItem.name)? This will remove it from the map.",
+            preferredStyle: .alert
+        )
+        confirmAlert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        confirmAlert.addAction(UIAlertAction(title: "Demolish", style: .destructive, handler: { [weak self] _ in
+            guard let self = self else { return }
+            
+            // Broadcast destruction over WebSocket first
+            GameWebSocketService.shared.sendDestroyBuilding(buildingID: annotation.buildingItem.id.uuidString)
+            
+            // Remove locally
+            self.mapView.removeAnnotation(annotation)
+            if let idx = self.placedBuildings.firstIndex(where: { $0.id == annotation.buildingItem.id }) {
+                self.placedBuildings.remove(at: idx)
+            }
+            
+            // Remove exclusion overlay coordinates
+            self.mapView.removeOverlay(self.buildingExclusionOverlay)
+            self.buildingExclusionOverlay.removeCoordinate(annotation.coordinate)
+            self.mapView.addOverlay(self.buildingExclusionOverlay, level: .aboveRoads)
+            
+            self.closeInspectionPanel()
+            self.showNotificationHUD(message: "🏗 Building Demolished successfully!")
+        }))
+        
+        present(confirmAlert, animated: true, completion: nil)
+    }
+
+    @objc private func siegeAttackTapped() {
+        guard let annotation = selectedBuildingAnnotation else { return }
+        
+        // Attack range check: must be inside 500m attack radius
+        guard let playerCoord = avatarAnnotation?.coordinate else { return }
+        let playerCL  = CLLocation(latitude: playerCoord.latitude, longitude: playerCoord.longitude)
+        let targetCL  = CLLocation(latitude: annotation.coordinate.latitude, longitude: annotation.coordinate.longitude)
+        let distanceM = playerCL.distance(from: targetCL)
+        let attackRadius: Double = 500
+        
+        if distanceM > attackRadius {
+            showNotificationHUD(message: "OUT OF RANGE — building is outside the 500m siege zone")
+            UINotificationFeedbackGenerator().notificationOccurred(.error)
+            return
+        }
+        
+        let t = distanceM / attackRadius
+        let multiplier = 1.0 - 0.70 * t
+        
+        var baseDamage: Double = 25
+        if let equipped = InventoryManager.shared.getEquippedWeapon() {
+            baseDamage = Double(equipped.damage) * 1.25 // Weapon siege bonus!
+        }
+        let scaledDamage = Int(max(1, (baseDamage * multiplier).rounded()))
+        
+        UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+        
+        annotation.buildingItem.currentHP -= scaledDamage
+        if annotation.buildingItem.currentHP < 0 { annotation.buildingItem.currentHP = 0 }
+        
+        // Redraw stats on inspection panel
+        showBuildingInspectionPanel(for: annotation)
+        
+        showNotificationHUD(message: "💥 Sieged base! Hit \(annotation.buildingItem.name) for \(scaledDamage) dmg!")
+        
+        // Broadcast structure attack damage to all players
+        GameWebSocketService.shared.sendPlaceBuilding(
+            id: annotation.buildingItem.id.uuidString,
+            type: annotation.buildingItem.type.rawValue,
+            lat: annotation.coordinate.latitude,
+            lon: annotation.coordinate.longitude,
+            level: annotation.buildingItem.level,
+            staffLevel: annotation.buildingItem.staffLevel,
+            equipLevel: annotation.buildingItem.equipLevel
+        )
+        
+        if annotation.buildingItem.currentHP <= 0 {
+            showNotificationHUD(message: "🏆 SUCCESS! Foreign base demolished!")
+            
+            // Broadcast demolition packet
+            GameWebSocketService.shared.sendDestroyBuilding(buildingID: annotation.buildingItem.id.uuidString)
+            
+            // Remove locally
+            self.mapView.removeAnnotation(annotation)
+            self.closeInspectionPanel()
+            
+            // Award bonus: +250 Coins and +100 XP!
+            coins += 250
+            playerXP += 100
+            
+            var req = requiredXP
+            var levelUpOccurred = false
+            while playerXP >= req {
+                playerXP -= req
+                playerLevel += 1
+                levelUpOccurred = true
+                req = Int(100 * pow(1.5, Double(playerLevel - 1)))
+            }
+            updateStatsBarLabels()
+            if levelUpOccurred {
+                showTopLevelUpBanner(message: "⚡ PLAYER LEVEL UP!\nYou advanced to Level \(playerLevel)!")
+                showLevelUpCongratulationAlert()
+                lightUpRewardsButton()
+            }
+        }
     }
 
     // MARK: - Income Collection
@@ -3155,6 +3553,9 @@ public final class MainMapViewController: UIViewController {
         
         placeAvatarAtLocation(coordinate)
         
+        // Sync position and state to Go WebSockets server!
+        GameWebSocketService.shared.sendLocation(coordinate: coordinate, hp: playerCurrentHP, maxHP: playerMaxHP, level: playerLevel, coins: coins, gems: gems)
+        
         if !hasShownWelcomeBanner {
             hasShownWelcomeBanner = true
             let geocoder = CLGeocoder()
@@ -3378,6 +3779,9 @@ public final class MainMapViewController: UIViewController {
         
         // Remove annotation from map
         mapView.removeAnnotation(annotation)
+        
+        // Broadcast remains pickup over WebSockets
+        GameWebSocketService.shared.sendCollectRemains(id: annotation.id)
     }
     
     private func showLevelUpCongratulationAlert() {

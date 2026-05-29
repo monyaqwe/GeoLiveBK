@@ -67,15 +67,20 @@ func (c *Client) readPump() {
 				c.lat = msg.Location.Latitude
 				c.lon = msg.Location.Longitude
 				
-				hp, maxHP, level := 100, 100, 1
+				hp, maxHP, level, coins, gems := 100, 100, 1, 10000, 10
 				if msg.Player != nil {
 					hp = msg.Player.HP
 					maxHP = msg.Player.MaxHP
 					level = msg.Player.Level
+					coins = msg.Player.Coins
+					gems = msg.Player.Gems
 				}
 				
 				// Update world manager thread-safe state
-				pState := c.hub.world.UpdatePlayer(c.id, c.nickname, c.lat, c.lon, hp, maxHP, level)
+				pState := c.hub.world.UpdatePlayer(c.id, c.nickname, c.lat, c.lon, hp, maxHP, level, coins, gems)
+				
+				// Persist coordinates and stats to Database
+				c.hub.db.SavePlayer(pState)
 				
 				// Broadcast updated movement and state back to neighborhood
 				moveMsg, _ := json.Marshal(Message{
@@ -114,13 +119,49 @@ func (c *Client) readPump() {
 			})
 			c.hub.broadcast <- attackMsg
 			
+		case "place_building":
+			// Persist building construction into database
+			if msg.Location != nil {
+				c.hub.db.SaveBuilding(msg.BuildingID, msg.BuildingType, msg.Location.Latitude, msg.Location.Longitude, msg.Level, msg.StaffLevel, msg.EquipLevel)
+			}
+			
+			placeMsg, _ := json.Marshal(Message{
+				Event:        "place_building",
+				PlayerID:     c.id,
+				BuildingID:   msg.BuildingID,
+				BuildingType: msg.BuildingType,
+				Location:     msg.Location,
+				Level:        msg.Level,
+				StaffLevel:   msg.StaffLevel,
+				EquipLevel:   msg.EquipLevel,
+			})
+			c.hub.broadcast <- placeMsg
+
 		case "destroy_building":
+			// Demolish building in database
+			c.hub.db.DeleteBuilding(msg.BuildingID)
+			
 			destroyMsg, _ := json.Marshal(Message{
 				Event:      "building_destroyed",
 				PlayerID:   c.id,
 				BuildingID: msg.BuildingID,
 			})
 			c.hub.broadcast <- destroyMsg
+			
+		case "spawn_remains":
+			spawnMsg, _ := json.Marshal(Message{
+				Event:     "spawn_remains",
+				RemainsID: msg.RemainsID,
+				Location:  msg.Location,
+			})
+			c.hub.broadcast <- spawnMsg
+			
+		case "collect_remains":
+			collectMsg, _ := json.Marshal(Message{
+				Event:     "collect_remains",
+				RemainsID: msg.RemainsID,
+			})
+			c.hub.broadcast <- collectMsg
 		}
 	}
 }
@@ -178,13 +219,26 @@ func serveWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
 		nickname = "Operative"
 	}
 	
+	uuidParam := r.URL.Query().Get("uuid")
+	if uuidParam == "" {
+		uuidParam = uuid.New().String()
+	}
+	
+	// Query database for stable persistent player stats / profile
+	dbPlayer := hub.db.GetOrCreatePlayer(uuidParam, nickname)
+	
 	client := &Client{
 		hub:      hub,
 		conn:     conn,
 		send:     make(chan []byte, 256),
-		id:       uuid.New().String(),
-		nickname: nickname,
+		id:       dbPlayer.ID,
+		nickname: dbPlayer.Nickname,
+		lat:      dbPlayer.Location.Latitude,
+		lon:      dbPlayer.Location.Longitude,
 	}
+	
+	// Seed spatial memory with loaded coordinates, coins and gems
+	hub.world.UpdatePlayer(client.id, client.nickname, client.lat, client.lon, dbPlayer.HP, dbPlayer.MaxHP, dbPlayer.Level, dbPlayer.Coins, dbPlayer.Gems)
 	
 	client.hub.register <- client
 	
@@ -194,8 +248,16 @@ func serveWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
 		PlayerID: client.id,
 		Nickname: client.nickname,
 		Message:  "🟢 Handshake complete! Welcome to GeoLive Arena.",
+		Player:   dbPlayer,
 	})
 	client.send <- welcomeMsg
+	
+	// Transmit all active pre-existing structures to this client so they sync on startup
+	savedBuildings := hub.db.LoadAllBuildings()
+	for _, bMsg := range savedBuildings {
+		bData, _ := json.Marshal(bMsg)
+		client.send <- bData
+	}
 	
 	go client.writePump()
 	go client.readPump()

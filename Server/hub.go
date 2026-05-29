@@ -13,15 +13,17 @@ type Hub struct {
 	unregister chan *Client
 	mutex      sync.RWMutex
 	world      *WorldManager
+	db         *Database
 }
 
-func newHub(world *WorldManager) *Hub {
+func newHub(world *WorldManager, db *Database) *Hub {
 	return &Hub{
 		broadcast:  make(chan []byte),
 		register:   make(chan *Client),
 		unregister: make(chan *Client),
 		clients:    make(map[*Client]bool),
 		world:      world,
+		db:         db,
 	}
 }
 

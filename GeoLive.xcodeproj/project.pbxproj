@@ -11,6 +11,7 @@
 		089BB79BC844DF55398FD1EE /* InventoryManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34049DCB8B05070B074730D4 /* InventoryManager.swift */; };
 		0BDD3B46AB2C498419CBC13E /* male_glass_classic.png in Resources */ = {isa = PBXBuildFile; fileRef = D0AB257A064CA96E6A8AE7D6 /* male_glass_classic.png */; };
 		142302AEEA5AFD1CAC72E6ED /* StatsInventoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054522127BD9BC05329B72E5 /* StatsInventoryViewController.swift */; };
+		15438F71A6F35C53416948BA /* MainMapViewController+WebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFC236804C994C261E05C91 /* MainMapViewController+WebSocket.swift */; };
 		1666CD9673AE0CA9B89B5AC9 /* female_hat_crown.png in Resources */ = {isa = PBXBuildFile; fileRef = 12739D80E67D9280A7C88487 /* female_hat_crown.png */; };
 		198801FBF6B2DCD1736A9031 /* female_hair_short.png in Resources */ = {isa = PBXBuildFile; fileRef = FB7A76C6A83DB02AD04EC9E0 /* female_hair_short.png */; };
 		1BC9FEA5A5C26197F99A796E /* CharacterSelectionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0FB2750F9DE5F618239F4C7D /* CharacterSelectionViewModel.swift */; };
@@ -35,6 +36,7 @@
 		7112254E87015E2DF09088E4 /* DefenderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B6402F9C981454D66E448BA /* DefenderManager.swift */; };
 		718586EB5DEDF649F3547D95 /* male_hat_crown.png in Resources */ = {isa = PBXBuildFile; fileRef = 2049D9C284660F876B2E72D1 /* male_hat_crown.png */; };
 		71D655B01CC70C592A8F2415 /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30FEDC9BF329017C782201B1 /* MapViewModel.swift */; };
+		7249B270C0013F6D03AFF28E /* OpponentAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD54268AC425BEDFB300A75D /* OpponentAnnotation.swift */; };
 		77058FB66C77E7D4EE113E51 /* male_hat_cap.png in Resources */ = {isa = PBXBuildFile; fileRef = E32D42D614D9409255C0F9F1 /* male_hat_cap.png */; };
 		7A8CEC527CEF523463BFF136 /* MainModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04D20332568822060BF2CDBA /* MainModels.swift */; };
 		7EBB45F2E5D1539D0652B9D0 /* FusionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1694BFA5C5B388AEAA1C6783 /* FusionService.swift */; };
@@ -44,6 +46,7 @@
 		893D1CE3D17D0D4C0DAC974A /* AuthCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E26A819D34BBF674FB612E41 /* AuthCoordinator.swift */; };
 		8A297E18AEB2449558CE9663 /* LevelRewardsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3B15703230E45942B3A5BB85 /* LevelRewardsViewController.swift */; };
 		8AB5FA73385FE4DEA79DBBA2 /* NicknameEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E32BC213D57F9D83590BDFEE /* NicknameEntryViewController.swift */; };
+		92F17C3993EEA92E9C997ADA /* GameWebSocketService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29344FBDA1DC31CC3863C7A9 /* GameWebSocketService.swift */; };
 		9576282E13D3C951CAFFC7AA /* male_cloth_red_polo.png in Resources */ = {isa = PBXBuildFile; fileRef = 728A6DDDB08FAA6333EF9FAB /* male_cloth_red_polo.png */; };
 		9576DC17EB1CFB729A73B04F /* female_hat_cap.png in Resources */ = {isa = PBXBuildFile; fileRef = F9E846F8D91F7724F8E07192 /* female_hat_cap.png */; };
 		99B97C956885DBCEDCF5C86B /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AE21CEB8C6F8A2DE5430E7C /* NetworkManager.swift */; };
@@ -73,6 +76,7 @@
 		F27E3D1F12F9F1473E8939D2 /* CreateAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDA196B731CBAA3E2AC2DC97 /* CreateAccountViewController.swift */; };
 		F2B629DAB94147932172123C /* MainMapViewController+Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DFE68592AC12A349B5117A9 /* MainMapViewController+Map.swift */; };
 		F2E0369E4803D9DE11C7A7A6 /* MapBuildingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B5EC4EA9E9E6885E0EF5876 /* MapBuildingView.swift */; };
+		F636256A6F4FAB1933291A05 /* OpponentAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6A1A6BEC24B9F88592162A6 /* OpponentAnnotationView.swift */; };
 		F724AF1A448841A30F600F14 /* GachaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 641B8B343925BF59A28FBB23 /* GachaService.swift */; };
 		FEE00A6EF0B35E0EEB36C448 /* male_beard_full.png in Resources */ = {isa = PBXBuildFile; fileRef = 6323CDCA614B094412CAD85E /* male_beard_full.png */; };
 		FF7B17E8CDD890D0A6FCE7A4 /* AvatarAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF4E2163D00CBA1F0A93CFB0 /* AvatarAnnotationView.swift */; };
@@ -84,6 +88,7 @@
 		054522127BD9BC05329B72E5 /* StatsInventoryViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StatsInventoryViewController.swift; path = Modules/Main/Controllers/StatsInventoryViewController.swift; sourceTree = "<group>"; };
 		05A8FEB1E720BF4B9E5FD0AF /* CharacterSelectionViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CharacterSelectionViewModel.swift; path = Modules/Auth/Controllers/CharacterSelectionViewModel.swift; sourceTree = "<group>"; };
 		0A9A0C637F4C46F2AB8485E1 /* Mob.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Mob.swift; path = Core/DataModels/Mob.swift; sourceTree = "<group>"; };
+		0AFC236804C994C261E05C91 /* MainMapViewController+WebSocket.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "MainMapViewController+WebSocket.swift"; path = "Modules/Main/Extensions/MainMapViewController+WebSocket.swift"; sourceTree = "<group>"; };
 		0B8BD0FDB5F18C786DDC6A71 /* StatCalculationService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StatCalculationService.swift; path = Core/Managers/StatCalculationService.swift; sourceTree = "<group>"; };
 		0FB2750F9DE5F618239F4C7D /* CharacterSelectionViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CharacterSelectionViewModel.swift; path = Modules/Auth/Controllers/CharacterSelectionViewModel.swift; sourceTree = "<group>"; };
 		12739D80E67D9280A7C88487 /* female_hat_crown.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = female_hat_crown.png; path = Modules/Auth/Assets/female_hat_crown.png; sourceTree = "<group>"; };
@@ -100,6 +105,7 @@
 		20E60C3F87794335C714E9F1 /* MainMapViewController+Location.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = "MainMapViewController+Location.swift"; path = "Modules/Main/Extensions/MainMapViewController+Location.swift"; sourceTree = "<group>"; };
 		246DAEFCDBC0F3B9467ADE55 /* MapSpawnerService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MapSpawnerService.swift; path = Modules/Map/MapSpawnerService.swift; sourceTree = "<group>"; };
 		250CAB81631999BA8267355E /* InventoryViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = InventoryViewModel.swift; path = Modules/Inventory/InventoryViewModel.swift; sourceTree = "<group>"; };
+		29344FBDA1DC31CC3863C7A9 /* GameWebSocketService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GameWebSocketService.swift; path = Modules/Main/Services/GameWebSocketService.swift; sourceTree = "<group>"; };
 		2CEEC5731CFBAEEFB4CFE427 /* DangerLevelManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DangerLevelManager.swift; path = Modules/Map/DangerLevelManager.swift; sourceTree = "<group>"; };
 		30FEDC9BF329017C782201B1 /* MapViewModel.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MapViewModel.swift; path = Modules/Map/MapViewModel.swift; sourceTree = "<group>"; };
 		3111306021D4860ED056AAD4 /* StoreViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StoreViewController.swift; path = Modules/Store/StoreViewController.swift; sourceTree = "<group>"; };
@@ -156,9 +162,11 @@
 		B2A63034547D47F84487C569 /* male_hair_curly.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = male_hair_curly.png; path = Modules/Auth/Assets/male_hair_curly.png; sourceTree = "<group>"; };
 		B8B3A791A721AF9B4A0306B6 /* GoogleMapStyleService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GoogleMapStyleService.swift; path = Core/Managers/GoogleMapStyleService.swift; sourceTree = "<group>"; };
 		BBFD516841051C7033012A2A /* MainDashboardViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = MainDashboardViewController.swift; path = Modules/Auth/Controllers/MainDashboardViewController.swift; sourceTree = "<group>"; };
+		BD54268AC425BEDFB300A75D /* OpponentAnnotation.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OpponentAnnotation.swift; path = Modules/Main/Models/OpponentAnnotation.swift; sourceTree = "<group>"; };
 		BDAB11BC85B6C295C46E8E01 /* StoreViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = StoreViewController.swift; path = Modules/Store/StoreViewController.swift; sourceTree = "<group>"; };
 		C40B09774FB793DCF94B16A8 /* NicknameEntryViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = NicknameEntryViewController.swift; path = Modules/Auth/Controllers/NicknameEntryViewController.swift; sourceTree = "<group>"; };
 		C45725A65A5DBCD461104DFF /* female_hair_curly.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; name = female_hair_curly.png; path = Modules/Auth/Assets/female_hair_curly.png; sourceTree = "<group>"; };
+		C6A1A6BEC24B9F88592162A6 /* OpponentAnnotationView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = OpponentAnnotationView.swift; path = Modules/Main/Views/OpponentAnnotationView.swift; sourceTree = "<group>"; };
 		CA0D0C3224D94A31C5B77285 /* DangerLevelManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = DangerLevelManager.swift; path = Modules/Map/DangerLevelManager.swift; sourceTree = "<group>"; };
 		CC1207B50D564BFFF8F2C395 /* CharacterCustomizationViewController.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = CharacterCustomizationViewController.swift; path = Modules/Auth/Controllers/CharacterCustomizationViewController.swift; sourceTree = "<group>"; };
 		CD9B2FC916E082223488FC69 /* GoogleMapStyleService.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = GoogleMapStyleService.swift; path = Core/Managers/GoogleMapStyleService.swift; sourceTree = "<group>"; };
@@ -376,6 +384,7 @@
 				EE60C4C0271E89ECBF6153BC /* Extensions */,
 				103F37C9FA77356A9D035CBE /* Controllers */,
 				6D74918D3702BE7E503EECC7 /* Views */,
+				785F7CD3C8F39428E72DD777 /* Services */,
 			);
 			name = Main;
 			sourceTree = "<group>";
@@ -429,6 +438,7 @@
 			isa = PBXGroup;
 			children = (
 				FF4E2163D00CBA1F0A93CFB0 /* AvatarAnnotationView.swift */,
+				C6A1A6BEC24B9F88592162A6 /* OpponentAnnotationView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -446,6 +456,14 @@
 				420F9BBBC5E258E31ECE310A /* MainDashboardViewController.swift */,
 			);
 			name = Controllers;
+			sourceTree = "<group>";
+		};
+		785F7CD3C8F39428E72DD777 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				29344FBDA1DC31CC3863C7A9 /* GameWebSocketService.swift */,
+			);
+			name = Services;
 			sourceTree = "<group>";
 		};
 		7CA725883BB90F2E840323BC /* Models */ = {
@@ -554,6 +572,7 @@
 			isa = PBXGroup;
 			children = (
 				04D20332568822060BF2CDBA /* MainModels.swift */,
+				BD54268AC425BEDFB300A75D /* OpponentAnnotation.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -746,6 +765,7 @@
 			children = (
 				20E60C3F87794335C714E9F1 /* MainMapViewController+Location.swift */,
 				3DFE68592AC12A349B5117A9 /* MainMapViewController+Map.swift */,
+				0AFC236804C994C261E05C91 /* MainMapViewController+WebSocket.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -997,6 +1017,10 @@
 				2D5F409B3506FE80382C0719 /* MobAnnotationView.swift in Sources */,
 				142302AEEA5AFD1CAC72E6ED /* StatsInventoryViewController.swift in Sources */,
 				8A297E18AEB2449558CE9663 /* LevelRewardsViewController.swift in Sources */,
+				7249B270C0013F6D03AFF28E /* OpponentAnnotation.swift in Sources */,
+				15438F71A6F35C53416948BA /* MainMapViewController+WebSocket.swift in Sources */,
+				F636256A6F4FAB1933291A05 /* OpponentAnnotationView.swift in Sources */,
+				92F17C3993EEA92E9C997ADA /* GameWebSocketService.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

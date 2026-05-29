@@ -42,6 +42,7 @@
       allowLocationSimulation = "YES">
       <PathRunnable
          runnableDebuggingMode = "0"
+         BundleIdentifier = "com.geosity.geeliveAppp2334"
          FilePath = "/Users/makarmonko/Library/Developer/Xcode/DerivedData/GeoLive-fkqztrdcuytsukcqrwmoqmbjcuvj/Build/Products/Debug-iphoneos/GeoLive.app">
       </PathRunnable>
       <MacroExpansion>
