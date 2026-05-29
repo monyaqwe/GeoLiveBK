@@ -84,7 +84,7 @@ func (c *Client) readPump() {
 				Nickname: c.nickname,
 				Message:  msg.Message,
 			})
-			c.hub.broadcast(chatMsg)
+			c.hub.broadcast <- chatMsg
 			
 		case "attack_player":
 			attackMsg, _ := json.Marshal(Message{
@@ -93,7 +93,7 @@ func (c *Client) readPump() {
 				TargetPlayerID: msg.TargetPlayerID,
 				Damage:         msg.Damage,
 			})
-			c.hub.broadcast(attackMsg)
+			c.hub.broadcast <- attackMsg
 			
 		case "destroy_building":
 			destroyMsg, _ := json.Marshal(Message{
@@ -101,7 +101,7 @@ func (c *Client) readPump() {
 				PlayerID:   c.id,
 				BuildingID: msg.BuildingID,
 			})
-			c.hub.broadcast(destroyMsg)
+			c.hub.broadcast <- destroyMsg
 		}
 	}
 }
